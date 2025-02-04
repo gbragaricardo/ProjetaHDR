@@ -1,0 +1,33 @@
+
+- Visual Studio 
+
+- Criar nova solucao -> Class Library(.Net FrameWork(4.8)) [Place Solutin and project int the same location]
+
+- Add References (PresentationCore, PresentationFramework, System.Data.Linq, System.Drawing) + Browse -> Add(C:\Program Files\Autodesk\Revit 2024(ou outro ano)\RevitAPI.dll and RevitAPIUI.dll -> OK
+
+- Select RevitAPI.dll and RevitAPIUI.dll -> properties -> set Copy Local = false
+
+- Using Autodesk.Revit.UI [Pode ser necessario setar outros usings do revit, mas o visual studio costuma indicar ou colocar automaticamente]
+
+- Renomear a classe existente para Application.cs -> Setar essa classe como herança de IExternalApplication e implementar interface dos metodos OnShutdown e OnStartup -> return Result.Succeeded
+
+- Considerando a correta progressão da classe Application, criar um folder com o próprio nome do repositorio ou plugin ex: ProjetaHDR e criar uma pasta chamada Resources dentro
+
+- Ao inserir images dentro da pasta Resources inserir com extensao .ico e definir properties como Resource e copy to output directory = Copy If Newer
+
+- Criar ADDIN - Add new Item - Text File - Inserir nome do Projeto com extensao .addin ex:(ProjetaHDR.addin)
+
+- DENTRO DAS TAGS PADROES DO ADDIN - <Assembly> = o nome da .dll main na pasta que estiver a partir do addin ex: BaseOffice/BaseOffice.dll 
+
+- <AddInId> -> Tools -> Create Guid -> New Guid no formato 4. Registry Format [Retirar as chaves {}]
+
+- <FullClassName> O nome da classe Application junto com o NameSpace ex: <FullClassName>BaseOffice.Application</FullClassName>
+
+- Configurar project properties -> Ir na aba project do visual studio -> Ultima opção que tem o nome do projeto e properties ex: BaseOffice Properties 
+				-> aba Debug Marque Open With External Program -> C:\Program Files\Autodesk\Revit 2024(ou outro ano)\Revit.exe
+
+- Build Events -> Post Build Events Command Line ->
+
+	
+
+	
