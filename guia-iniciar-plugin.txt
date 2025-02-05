@@ -31,3 +31,30 @@
 	
 
 	
+	REM Define os caminhos
+
+	SET LOCAL_TARGET="$(ProjectDir)\$(ProjectName)"
+
+	SET REVIT_ADDINS="%AppData%\Autodesk\Revit\Addins\2024"
+
+
+
+	REM Cria a pasta ProjetaHDR dentro do diretório do projeto, se não existir
+
+	if not exist %LOCAL_TARGET% mkdir %LOCAL_TARGET%
+
+
+
+	REM Copia todas as DLLs geradas para a pasta ProjetaHDR
+
+	xcopy /Y  "$(TargetDir)*.dll" %LOCAL_TARGET%
+
+
+
+	REM Copia a pasta inteira ProjetaHDR para o diretório de addins do Revit
+
+	xcopy /Y /E /I %LOCAL_TARGET% %REVIT_ADDINS%\"$(ProjectName)"
+
+	REM Copia o arquivo .addin para o diretório de addins do Revit
+
+	copy /Y "$(ProjectDir)\$(ProjectName).addin" %REVIT_ADDINS%
