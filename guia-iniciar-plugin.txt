@@ -29,32 +29,43 @@
 - Build Events -> Post Build Events Command Line ->
 
 	
+REM Define os caminhos corretamente
 
-	
-	REM Define os caminhos
+SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
 
-	SET LOCAL_TARGET="$(ProjectDir)\$(ProjectName)"
-
-	SET REVIT_ADDINS="%AppData%\Autodesk\Revit\Addins\2024"
+SET REVIT_ADDINS=%AppData%\Autodesk\Revit\Addins\2024
 
 
 
-	REM Cria a pasta ProjetaHDR dentro do diretório do projeto, se não existir
+REM Garante que a pasta de destino exista antes da cópia
 
-	if not exist %LOCAL_TARGET% mkdir %LOCAL_TARGET%
-
-
-
-	REM Copia todas as DLLs geradas para a pasta ProjetaHDR
-
-	xcopy /Y  "$(TargetDir)*.dll" %LOCAL_TARGET%
+if not exist "%LOCAL_TARGET%" mkdir "%LOCAL_TARGET%"
 
 
 
-	REM Copia a pasta inteira ProjetaHDR para o diretório de addins do Revit
+REM Garante que a pasta do Revit Addins exista antes da cópia
+if not exist "%REVIT_ADDINS%" mkdir "%REVIT_ADDINS%"
 
-	xcopy /Y /E /I %LOCAL_TARGET% %REVIT_ADDINS%\"$(ProjectName)"
 
-	REM Copia o arquivo .addin para o diretório de addins do Revit
 
-	copy /Y "$(ProjectDir)\$(ProjectName).addin" %REVIT_ADDINS%
+REM Copia todas as DLLs geradas para a pasta dentro do projeto, sem subpastas
+
+xcopy /Y "$(TargetDir)*.dll" "%LOCAL_TARGET%"
+
+
+
+REM Copia a pasta BaseOffice para o diretório de Addins do Revit
+
+xcopy /Y /E /I "%LOCAL_TARGET%" "%REVIT_ADDINS%\$(ProjectName)"
+
+
+
+REM Copia o arquivo .addin para o diretório de Addins do Revit
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%REVIT_ADDINS%"
+
+
+
+REM Copia o arquivo .addin para a pasta do projeto
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%LOCAL_TARGET%"

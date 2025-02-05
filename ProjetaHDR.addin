@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+	<AddIn Type="Application">
+		<Name>ProjetaHDR</Name>
+		<FullClassName>ProjetaHDR.Application</FullClassName>
+		<Description>Grupo Projeta - Setor Hidrossanitário</Description>
+		<VisibilityMode>AlwaysVisible</VisibilityMode>
+		<Assembly>ProjetaHDR/ProjetaHDR.dll</Assembly>
+		<AddInId>7F1F9A2A-C80C-49DD-9E4E-17853FF1A00F</AddInId>
+		<VendorId>ED</VendorId>
+		<VendorDescription>Engenharia Digital - Ricardo</VendorDescription>
+	</AddIn>
+</RevitAddIns>

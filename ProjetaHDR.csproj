@@ -31,8 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,12 +53,60 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Application.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="ProjetaHDR\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ProjetaHDR.addin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\blueword.ico" />
+    <Content Include="ProjetaHDR\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>REM Define os caminhos corretamente
+
+SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
+
+SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
+
+
+
+REM Garante que a pasta de destino exista antes da cópia
+
+if not exist "%25LOCAL_TARGET%25" mkdir "%25LOCAL_TARGET%25"
+
+
+
+REM Garante que a pasta do Revit Addins exista antes da cópia
+if not exist "%25REVIT_ADDINS%25" mkdir "%25REVIT_ADDINS%25"
+
+
+
+REM Copia todas as DLLs geradas para a pasta dentro do projeto, sem subpastas
+
+xcopy /Y "$(TargetDir)*.dll" "%25LOCAL_TARGET%25"
+
+
+
+REM Copia a pasta BaseOffice para o diretório de Addins do Revit
+
+xcopy /Y /E /I "%25LOCAL_TARGET%25" "%25REVIT_ADDINS%25\$(ProjectName)"
+
+
+
+REM Copia o arquivo .addin para o diretório de Addins do Revit
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%25REVIT_ADDINS%25"
+
+
+
+REM Copia o arquivo .addin para a pasta do projeto
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%25LOCAL_TARGET%25"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
