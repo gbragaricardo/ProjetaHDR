@@ -9,12 +9,29 @@ namespace ProjetaHDR.Utils
 {
     internal static class TagManager
     {
-        public static ElementId GetTagsId(Document doc, string detalheEscolhido)
+        public static ElementId GetTagId(Document doc, string tagMode)
         {
             return new FilteredElementCollector(doc)
                 .OfCategory(BuiltInCategory.OST_PipeTags)
                 .WhereElementIsElementType()
-                .FirstOrDefault(e => e.Name == detalheEscolhido)?.Id;
+                .ToElements()
+                .FirstOrDefault(e => e.Name == tagMode).Id;
+        }
+
+        public static void CreateTags(Document doc, IList<Element> elementsList, ElementId tagId, IList<XYZ> insertionPoint, View activeView = null)
+        {
+            if (activeView == null)
+                activeView = doc.ActiveView;
+
+            for (int i = 0; i < elementsList.Count; i++)
+            {
+                IndependentTag.Create(doc,
+                    tagId,
+                    activeView.Id,
+                    new Reference(elementsList[i]),
+                    false, TagOrientation.Horizontal,
+                    insertionPoint[i]);
+            }
         }
 
         public static void DeleteExistingTags(Document doc, IList<Element> elementsList, ElementId tagTypeId, View activeView = null)
@@ -55,34 +72,6 @@ namespace ProjetaHDR.Utils
             }
         }
 
-        public static void CreateTags(Document doc, IList<Element> elementsList, ElementId tagId, IList<XYZ> insertionPoint, View activeView = null)
-        {
-            if (activeView == null)
-                activeView = doc.ActiveView;
-
-            for (int i = 0; i < elementsList.Count; i++)
-            {
-                IndependentTag.Create(doc,
-                    tagId,
-                    activeView.Id, 
-                    new Reference(elementsList[i]), 
-                    false, TagOrientation.Horizontal,
-                    insertionPoint[i]);
-            }
-        }
-
-        public static void SetarValorAoParametroInclinacao(IList<Element> tubos)
-        {
-            foreach (Element tubo in tubos)
-            {
-                var parametro = tubo.LookupParameter("PRJ HDR: Inclinacao Tag");
-                if (parametro != null)
-                {
-                    parametro.Set("1%");
-                }
-                parametro.Set("1%");
-            }
-        }
     }
 
 }

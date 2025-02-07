@@ -55,7 +55,10 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="Commands\Dev.cs" />
-    <Compile Include="Commands\DiameterTagger.cs" />
+    <Compile Include="Commands\FlowTag.cs" />
+    <Compile Include="Commands\SlopeTag.cs" />
+    <Compile Include="Commands\DiameterTag.cs" />
+    <Compile Include="Utils\PipeUtils\FilterPipelines.cs" />
     <Compile Include="Utils\PipeUtils\PipeFilters.cs" />
     <Compile Include="OnStartup\UIBuilder.cs" />
     <Compile Include="OnStartup\RibbonManager.cs" />

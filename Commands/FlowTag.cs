@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProjetaHDR.Commands
 {
-    internal class DiameterTagger : RevitCommandBase, IExternalCommand
+    internal class FlowTag : RevitCommandBase, IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
