@@ -14,6 +14,7 @@ namespace ProjetaHDR.RevitContext
         public UIDocument UiDoc { get; private set; }
         public Autodesk.Revit.ApplicationServices.Application App { get; private set; }
         public Document Doc { get; private set; }
+        public View ActiveView { get; private set; }
 
         public RevitContext(UIApplication uiApp)
         {

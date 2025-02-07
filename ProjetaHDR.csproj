@@ -54,9 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
-    <Compile Include="Commands\DevCommand.cs" />
+    <Compile Include="Commands\Dev.cs" />
+    <Compile Include="Commands\DiameterTagger.cs" />
+    <Compile Include="Utils\PipeUtils\PipeFilters.cs" />
+    <Compile Include="OnStartup\UIBuilder.cs" />
+    <Compile Include="OnStartup\RibbonManager.cs" />
+    <Compile Include="OnStartup\AddinAppLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RevitContext\RevitCommandBase.cs" />
     <Compile Include="RevitContext\RevitContext.cs" />
+    <Compile Include="Utils\PipeUtils\PipeUtils.cs" />
+    <Compile Include="Utils\TagUtils\TagManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />

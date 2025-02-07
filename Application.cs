@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.UI;
+using ProjetaHDR.OnStartup;
 
 namespace ProjetaHDR
 {
@@ -17,7 +18,12 @@ namespace ProjetaHDR
 
         public Result OnStartup(UIControlledApplication application)
         {
+
+            try { AddinAppLoader.StartupMain(application); }
+            catch { TaskDialog.Show("ProjetaHDR", "Erro ao inicializar Plugin ProjetaHDR"); }
+
             return Result.Succeeded;
+
 
         }
     }
