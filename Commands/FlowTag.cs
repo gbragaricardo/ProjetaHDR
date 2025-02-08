@@ -17,7 +17,7 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
-            using (Transaction transacao = new Transaction(Context.Doc, "Tag Diametro"))
+            using (Transaction transacao = new Transaction(Context.Doc, "Tag Fluxo"))
             {
 
                 transacao.Start();

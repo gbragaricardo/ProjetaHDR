@@ -16,24 +16,38 @@ namespace ProjetaHDR.Commands
     [Transaction(TransactionMode.Manual)]
     internal class DiameterTag : RevitCommandBase, IExternalCommand
     {
-        public IList<Element> SanitaryPipes { get; set; }
         public double LengthFilterOption { get; set; }
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
-
-            LengthFilterOption = 0.2;
+            
 
             using (Transaction transacao = new Transaction(Context.Doc, "Tag Diametro"))
             {
-
-                SanitaryPipes = FilterPipelines.PipelineSanitary(Context.Doc, LengthFilterOption, "Diametro");
-
                 transacao.Start();
 
-                TagManager.DeleteExistingTags(Context.Doc, SanitaryPipes, FilterPipelines.TagId);
-                TagManager.CreateTags(Context.Doc, SanitaryPipes, FilterPipelines.TagId, FilterPipelines.SanitaryInsertPoints);
+                var unfilteredPipes = PipeFilters.GetPipesOnView(Context.Doc);
+                var IsHydraulic = PipeFilters.HasPvcMarromPipes(Context.Doc, unfilteredPipes);
+
+                if(IsHydraulic == true)
+                {
+                    LengthFilterOption = 0.1;
+
+                    unfilteredPipes = PipeFilters.GetPvcMarromPipes(Context.Doc, unfilteredPipes);
+
+                    var hydPipe = new FilterAndTagPipelines(Context.Doc, "Diametro", LengthFilterOption, true);
+
+                    hydPipe.PipelineHydraulic(unfilteredPipes);
+                }
+                else
+                {
+                    LengthFilterOption = 0.2;
+
+                    var sanpipe = new FilterAndTagPipelines(Context.Doc, "Diametro", LengthFilterOption, false);
+
+                    sanpipe.PipelineSanitary(unfilteredPipes);
+                }
 
                 transacao.Commit();
                 return Result.Succeeded;

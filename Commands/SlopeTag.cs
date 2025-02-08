@@ -16,23 +16,31 @@ namespace ProjetaHDR.Commands
     [Transaction(TransactionMode.Manual)]
     internal class SlopeTag : RevitCommandBase, IExternalCommand
     {
-        public IList<Element> SanitaryPipes { get; set; }
+
         public double LengthFilterOption { get; set; }
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
-
             LengthFilterOption = 0.2;
 
             using (Transaction transacao = new Transaction(Context.Doc, "Tag Inclinacao"))
             {
-                SanitaryPipes = FilterPipelines.PipelineSanitary(Context.Doc, LengthFilterOption, "Inclinacao");
-
                 transacao.Start();
-                PipeUtils.SetPipeSlope(SanitaryPipes);
-                TagManager.DeleteExistingTags(Context.Doc, SanitaryPipes, FilterPipelines.TagId);
-                TagManager.CreateTags(Context.Doc, SanitaryPipes, FilterPipelines.TagId, FilterPipelines.SanitaryInsertPoints);
+
+                var unfilteredPipes = PipeFilters.GetPipesOnView(Context.Doc);
+                var IsHydraulic = PipeFilters.HasPvcMarromPipes(Context.Doc, unfilteredPipes);
+
+                if (IsHydraulic == true)
+                {
+                   return Result.Cancelled;
+                }
+                else
+                {
+                    var SanitaryPipeline = new FilterAndTagPipelines(Context.Doc, "Inclinacao", LengthFilterOption, false);
+
+                    SanitaryPipeline.PipelineSanitary(unfilteredPipes);
+                }
 
                 transacao.Commit();
                 return Result.Succeeded;
