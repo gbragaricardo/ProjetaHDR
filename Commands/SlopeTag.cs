@@ -37,9 +37,10 @@ namespace ProjetaHDR.Commands
                 }
                 else
                 {
-                    var SanitaryPipeline = new FilterAndTagPipelines(Context.Doc, "Inclinacao", LengthFilterOption, false);
+                    var sanpipe = new FilterAndTagPipelines(Context.Doc, "Inclinacao", LengthFilterOption, false);
 
-                    SanitaryPipeline.PipelineSanitary(unfilteredPipes);
+                    sanpipe.PipelineSanitary(unfilteredPipes);
+                    sanpipe.PipelineCreate();
                 }
 
                 transacao.Commit();

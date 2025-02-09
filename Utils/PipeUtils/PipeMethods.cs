@@ -64,7 +64,7 @@ namespace ProjetaHDR.Utils
             return relativePositions;
         }
 
-        public static IList<XYZ> GetTaginsertPoint(IList<Element> pipes, IList<string> planPositions, string tagMode, bool IsHydraulic)
+        public static IList<XYZ> GetTaginsertPoint(IList<Element> pipes, string tagMode, bool IsHydraulic, IList<string> planPositions = null)
         {
             List<XYZ> insertPoints = new List<XYZ>();
             int clock = 0;
@@ -75,6 +75,9 @@ namespace ProjetaHDR.Utils
                 if (curve == null) continue;
 
                 XYZ pontoMedio = curve.Curve.Evaluate(0.5, true);
+
+                if (tagMode == "Flow") 
+                { insertPoints.Add(pontoMedio); continue; }
 
                 Parameter diameterParameter = pipe.get_Parameter(BuiltInParameter.RBS_PIPE_OUTER_DIAMETER);
                 double offset = diameterParameter.AsDouble() / 2;
@@ -89,7 +92,25 @@ namespace ProjetaHDR.Utils
             return insertPoints;
         }
 
+        public static IList<string> GetPipeFlow(IList<Element> elementPipes, bool IsHydraulic)
+        {
+            IList<string> directions = new List<string>();
+            string tempDirection = null;
 
+            foreach (var elementPipe in elementPipes)
+            {
+                if (elementPipe is Pipe pipe)
+                {
+                    // Obtém a direção do fluxo para cada tubo
+                    string flowDirection = PipeUtils.AnalyzePipeFlow(pipe, tempDirection, IsHydraulic);
+                    tempDirection = flowDirection;
+
+                    directions.Add(flowDirection);
+                }
+            }
+
+            return directions;
+        }
 
 
 

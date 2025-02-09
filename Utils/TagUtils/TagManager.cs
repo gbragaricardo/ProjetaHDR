@@ -34,6 +34,22 @@ namespace ProjetaHDR.Utils
             }
         }
 
+        public static void CreateTags(Document doc, IList<Element> elementsList, IList<ElementId> tagsId, IList<XYZ> insertionPoint, View activeView = null)
+        {
+            if (activeView == null)
+                activeView = doc.ActiveView;
+
+            for (int i = 0; i < elementsList.Count; i++)
+            {
+                IndependentTag.Create(doc,
+                    tagsId[i],
+                    activeView.Id,
+                    new Reference(elementsList[i]),
+                    false, TagOrientation.Horizontal,
+                    insertionPoint[i]);
+            }
+        }
+
         public static void DeleteExistingTags(Document doc, IList<Element> elementsList, ElementId tagTypeId, View activeView = null)
         {
             

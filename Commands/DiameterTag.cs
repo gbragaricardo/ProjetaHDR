@@ -39,6 +39,7 @@ namespace ProjetaHDR.Commands
                     var hydPipe = new FilterAndTagPipelines(Context.Doc, "Diametro", LengthFilterOption, true);
 
                     hydPipe.PipelineHydraulic(unfilteredPipes);
+                    hydPipe.PipelineCreate();
                 }
                 else
                 {
@@ -47,6 +48,7 @@ namespace ProjetaHDR.Commands
                     var sanpipe = new FilterAndTagPipelines(Context.Doc, "Diametro", LengthFilterOption, false);
 
                     sanpipe.PipelineSanitary(unfilteredPipes);
+                    sanpipe.PipelineCreate();
                 }
 
                 transacao.Commit();

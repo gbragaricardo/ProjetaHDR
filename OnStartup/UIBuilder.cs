@@ -13,6 +13,7 @@ namespace ProjetaHDR.OnStartup
         internal static PushButton DevPushButton { get; set; }
         internal static PushButton DiameterTagPushButton { get; set; }
         internal static PushButton SlopeTagPushButton { get; set; }
+        internal static PushButton FlowTagPushButton { get; set; }
 
         internal static void BuildUI(UIControlledApplication application)
         {
@@ -37,6 +38,14 @@ namespace ProjetaHDR.OnStartup
             SlopeTagPushButton = RibbonManager.CriarPushButton
             ("SlopeTag", "Tag\nInclinacao",
             "ProjetaHDR.Commands.SlopeTag",
+            panelMain,
+            "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
+            "dev.ico",
+            true);
+
+            FlowTagPushButton = RibbonManager.CriarPushButton
+            ("Flow Tag", "Tag\nFluxo",
+            "ProjetaHDR.Commands.FlowTag",
             panelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
             "dev.ico",
