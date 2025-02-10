@@ -115,17 +115,17 @@ namespace ProjetaHDR.Utils
             return insertPoints;
         }
 
-        public static IList<string> GetPipeFlow(IList<Element> elementPipes, bool IsHydraulic)
+        public static IList<string> GetPipeFlow(IList<Element> elementPipes, bool IsHydraulic, ViewDirections viewDirections)
         {
             IList<string> directions = new List<string>();
-            string tempDirection = null;
+            string tempDirection = "Direita";
 
             foreach (var elementPipe in elementPipes)
             {
                 if (elementPipe is Pipe pipe)
                 {
                     // Obtém a direção do fluxo para cada tubo
-                    string flowDirection = PipeUtils.AnalyzePipeFlow(pipe, tempDirection, IsHydraulic);
+                    string flowDirection = PipeUtils.AnalyzePipeFlow(pipe, tempDirection, IsHydraulic, viewDirections);
                     tempDirection = flowDirection;
 
                     directions.Add(flowDirection);

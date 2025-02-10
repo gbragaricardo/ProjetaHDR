@@ -32,7 +32,10 @@ namespace ProjetaHDR.Commands
 
                 if (IsHydraulic == true)
                 {
-                    LengthFilterOption = 0.1;
+                    if (Context.ActiveView is View3D)
+                        LengthFilterOption = 0.2;
+                    else
+                        LengthFilterOption = 0.14;
 
                     unfilteredPipes = PipeFilters.GetPvcMarromPipes(Context.Doc, unfilteredPipes);
 

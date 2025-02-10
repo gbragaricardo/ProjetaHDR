@@ -21,7 +21,6 @@ namespace ProjetaHDR.Utils
         public bool IsHydraulic { get; set; }
         public double LengthOption { get; set; }
         public IList<string> FlowDirections { get; private set; }
-
         public ViewDirections ViewDirections { get; set; }
 
         internal FilterAndTagPipelines(Document doc, View view, string tagMode, double lengthOption, bool isHydraulic)
@@ -59,7 +58,7 @@ namespace ProjetaHDR.Utils
 
         internal void PipelineFlow()
         {
-            FlowDirections = PipeMethods.GetPipeFlow(Pipes, IsHydraulic);
+            FlowDirections = PipeMethods.GetPipeFlow(Pipes, IsHydraulic, ViewDirections);
             InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, ViewDirections, RelativePosition);
             TagsIds = new List<ElementId>();
 

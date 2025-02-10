@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.11.3.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>packages\DocumentFormat.OpenXml.2.11.3\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
@@ -45,19 +48,34 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="Commands\Dev.cs" />
     <Compile Include="Commands\FlowTag.cs" />
+    <Compile Include="Commands\InfoMemorial.cs" />
+    <Compile Include="Commands\NestedPipeFittings.cs" />
     <Compile Include="Commands\SlopeTag.cs" />
     <Compile Include="Commands\DiameterTag.cs" />
+    <Compile Include="Utils\DocsUtils\WordHandler.cs" />
+    <Compile Include="Utils\DocsUtils\WordReplacer.cs" />
+    <Compile Include="Utils\ParameterUtils\FamilyParameterUtils.cs" />
+    <Compile Include="Utils\PipeFittingUtils\PipeFittingUtils.cs" />
     <Compile Include="Utils\PipeUtils\FilterAndTagPipelines.cs" />
     <Compile Include="Utils\PipeUtils\PipeFilters.cs" />
     <Compile Include="OnStartup\UIBuilder.cs" />
@@ -73,8 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
+    <Folder Include="WPF\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="ProjetaHDR.addin" />
   </ItemGroup>
   <ItemGroup>
