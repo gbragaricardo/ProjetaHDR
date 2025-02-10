@@ -36,7 +36,7 @@ namespace ProjetaHDR.Commands
 
                     unfilteredPipes = PipeFilters.GetPvcMarromPipes(Context.Doc, unfilteredPipes);
 
-                    var hydPipe = new FilterAndTagPipelines(Context.Doc, "Flow", LengthFilterOption, true);
+                    var hydPipe = new FilterAndTagPipelines(Context.Doc, Context.Doc.ActiveView, "Flow", LengthFilterOption, true);
 
                     hydPipe.PipelineHydraulic(unfilteredPipes);
                     hydPipe.PipelineFlow();
@@ -45,7 +45,7 @@ namespace ProjetaHDR.Commands
                 {
                     LengthFilterOption = 0.2;
 
-                    var sanpipe = new FilterAndTagPipelines(Context.Doc, "Flow", LengthFilterOption, false);
+                    var sanpipe = new FilterAndTagPipelines(Context.Doc, Context.Doc.ActiveView, "Flow", LengthFilterOption, false);
 
                     sanpipe.PipelineSanitary(unfilteredPipes);
                     sanpipe.PipelineFlow();

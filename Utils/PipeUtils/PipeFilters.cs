@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.DB;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace ProjetaHDR.Utils
             }).ToList(); 
         }
 
-        public static IList<Element> RemoveVerticals(IList<Element> pipes)
+        public static IList<Element> RemoveSanitaryVerticals(IList<Element> pipes)
         {
             return pipes.Where(tubo =>
             {
@@ -42,16 +43,26 @@ namespace ProjetaHDR.Utils
             }).ToList();
         }
 
-        public static IList<Element> RemoveViewParallels(IList<Element> pipes)
+        public static IList<Element> RemoveViewParallels(IList<Element> pipes, ViewDirections viewDirections)
         {
+            var up = viewDirections.Up;
+            var right = viewDirections.Right;
+
             return pipes.Where(tubo =>
             {
                 LocationCurve pipeCurve = tubo.Location as LocationCurve;
                 XYZ startPoint = pipeCurve.Curve.GetEndPoint(0);
                 XYZ endPoint = pipeCurve.Curve.GetEndPoint(1);
 
-                return Math.Round(startPoint.X) != Math.Round(endPoint.X) ||
-                       Math.Round(startPoint.Z) != Math.Round(endPoint.Z);
+                XYZ pipeDirection = endPoint - startPoint;
+
+                double absProjRight = Math.Abs(pipeDirection.DotProduct(right));
+                double absProjUp = Math.Abs(pipeDirection.DotProduct(up));
+
+                // Define um limiar para considerar um tubo "estritamente" horizontal ou vertical
+                double margin = 0.001;
+
+                return absProjRight > margin || absProjUp > margin;
             }).ToList();
         }
 

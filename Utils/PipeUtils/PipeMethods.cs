@@ -44,27 +44,50 @@ namespace ProjetaHDR.Utils
             }
         }
 
-        public static IList<string> GetRelativeViewPosition(IList<Element> pipes, double margin, bool IsHydraulic)
+        internal static IList<string> GetRelativeViewPosition(IList<Element> pipes, ViewDirections viewDirections)
         {
             List<string> relativePositions = new List<string>();
 
             foreach (Element pipe in pipes)
             {
+
                 LocationCurve pipeCurve = pipe.Location as LocationCurve;
                 if (pipeCurve == null) continue;
 
+                // Obtém os pontos extremos da curva do tubo
                 XYZ startPoint = pipeCurve.Curve.GetEndPoint(0);
                 XYZ endPoint = pipeCurve.Curve.GetEndPoint(1);
 
-                XYZ vectors = (endPoint - startPoint).Normalize();
+                // Calcula a direção do tubo
+                XYZ pipeDirection = endPoint - startPoint;
 
-                relativePositions.Add(PipeUtils.AnalyzePostion(vectors, margin, IsHydraulic));
+                // Projeta a direção do tubo nos vetores da vista
+                double projRight = pipeDirection.DotProduct(viewDirections.Right);
+                double projUp = pipeDirection.DotProduct(viewDirections.Up);
+                double absProjRight = Math.Abs(pipeDirection.DotProduct(viewDirections.Right));
+                double absProjUp = Math.Abs(pipeDirection.DotProduct(viewDirections.Up));
 
+                // Define um limiar para considerar um tubo "estritamente" horizontal ou vertical
+                double margin = 0.001;
+
+                // Se a projeção é muito maior em um eixo do que no outro, ele é Horizontal ou Vertical
+                if (absProjRight > absProjUp + margin)
+                    relativePositions.Add("Horizontal");
+
+                else if (absProjUp > absProjRight + margin)
+                    relativePositions.Add("Vertical");
+
+                else if (projUp * projRight > 0)
+                    relativePositions.Add("Diagonal Positiva");
+
+                else
+                    relativePositions.Add("Diagonal Negativa");
             }
+
             return relativePositions;
         }
 
-        public static IList<XYZ> GetTaginsertPoint(IList<Element> pipes, string tagMode, bool IsHydraulic, IList<string> planPositions = null)
+        public static IList<XYZ> GetTaginsertPoint(IList<Element> pipes, string tagMode, ViewDirections viewDirections, IList<string> planPositions = null)
         {
             List<XYZ> insertPoints = new List<XYZ>();
             int clock = 0;
@@ -82,7 +105,7 @@ namespace ProjetaHDR.Utils
                 Parameter diameterParameter = pipe.get_Parameter(BuiltInParameter.RBS_PIPE_OUTER_DIAMETER);
                 double offset = diameterParameter.AsDouble() / 2;
 
-                XYZ xyzOffset = PipeUtils.AnalyzeOffset(offset, planPositions[clock], tagMode, IsHydraulic);
+                XYZ xyzOffset = PipeUtils.AnalyzeOffset(offset, planPositions[clock], tagMode, viewDirections);
 
                 insertPoints.Add(pontoMedio + xyzOffset);
 
@@ -111,9 +134,5 @@ namespace ProjetaHDR.Utils
 
             return directions;
         }
-
-
-
-
     }
 }

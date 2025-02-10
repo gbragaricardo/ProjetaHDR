@@ -22,32 +22,35 @@ namespace ProjetaHDR.Utils
         public double LengthOption { get; set; }
         public IList<string> FlowDirections { get; private set; }
 
-        internal FilterAndTagPipelines(Document doc, string tagMode, double lengthOption, bool isHydraulic)
+        public ViewDirections ViewDirections { get; set; }
+
+        internal FilterAndTagPipelines(Document doc, View view, string tagMode, double lengthOption, bool isHydraulic)
         {
             Doc = doc;
             TagMode = tagMode;
             IsHydraulic = isHydraulic;
             LengthOption = lengthOption;
+            ViewDirections = new ViewDirections(view);
         }
 
         internal void PipelineHydraulic(IList<Element> unfilteredPipes)
         {
             Pipes = PipeFilters.FilterByLength(unfilteredPipes, LengthOption);
-            Pipes = PipeFilters.RemoveViewParallels(Pipes);
+            Pipes = PipeFilters.RemoveViewParallels(Pipes, ViewDirections);
         }
 
         internal void PipelineSanitary(IList<Element> unfilteredPipes)
         {
             Pipes = PipeFilters.FilterByLength(unfilteredPipes, LengthOption);
-            Pipes = PipeFilters.RemoveVerticals(Pipes);
+            Pipes = PipeFilters.RemoveSanitaryVerticals(Pipes);
 
-            if(TagMode == "Slope") PipeMethods.SetPipeSlope(Pipes);
+            if(TagMode == "Inclinacao") PipeMethods.SetPipeSlope(Pipes);
         }
 
         internal void PipelineCreate()
         {
-            RelativePosition = PipeMethods.GetRelativeViewPosition(Pipes, 0.1, IsHydraulic);
-            InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, IsHydraulic, RelativePosition);
+            RelativePosition = PipeMethods.GetRelativeViewPosition(Pipes, ViewDirections);
+            InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, ViewDirections, RelativePosition);
 
             TagId = TagManager.GetTagId(Doc, TagMode);
             TagManager.DeleteExistingTags(Doc, Pipes, TagId);
@@ -57,7 +60,7 @@ namespace ProjetaHDR.Utils
         internal void PipelineFlow()
         {
             FlowDirections = PipeMethods.GetPipeFlow(Pipes, IsHydraulic);
-            InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, IsHydraulic, RelativePosition);
+            InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, ViewDirections, RelativePosition);
             TagsIds = new List<ElementId>();
 
             foreach (var direction in FlowDirections)

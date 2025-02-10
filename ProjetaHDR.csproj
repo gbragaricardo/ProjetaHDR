@@ -69,6 +69,7 @@
     <Compile Include="Utils\PipeUtils\PipeMethods.cs" />
     <Compile Include="Utils\PipeUtils\PipeUtils.cs" />
     <Compile Include="Utils\TagUtils\TagManager.cs" />
+    <Compile Include="Utils\ViewUtils\ViewDirections.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
