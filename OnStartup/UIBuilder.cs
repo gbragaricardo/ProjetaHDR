@@ -12,16 +12,19 @@ namespace ProjetaHDR.OnStartup
     {
         internal static RibbonPanel PanelMain { get; set; }
         internal static RibbonPanel Tabelas { get; set; }
+        internal static RibbonPanel Documents { get; set; }
         internal static PushButton DevPushButton { get; set; }
         internal static PushButton DiameterTagPushButton { get; set; }
         internal static PushButton SlopeTagPushButton { get; set; }
         internal static PushButton FlowTagPushButton { get; set; }
         internal static PushButton NestedPipeFittingsPushButton { get; set; }
+        internal static PushButton MemoHDS { get; set; }
 
         internal static void BuildUI(UIControlledApplication application)
         {
             PanelMain = RibbonManager.CriarRibbonPanel(application, "Main");
             Tabelas = RibbonManager.CriarRibbonPanel(application, "Tabelas");
+            Documents = RibbonManager.CriarRibbonPanel(application, "Documentos");
 
 
 
@@ -62,6 +65,14 @@ namespace ProjetaHDR.OnStartup
             "ProjetaHDR.Commands.NestedPipeFittings",
             Tabelas,
             "Insere o sistema em conexoes aninhadas",
+            "dev.ico",
+            true);
+
+            MemoHDS = RibbonManager.CriarPushButton
+            ("Memorial descritivo HDS", "HDS - Memorial\nDescritivo",
+            "ProjetaHDR.Commands.MemoHDS",
+            Documents,
+            "Exporta Memorial descritivo HDS",
             "dev.ico",
             true);
 

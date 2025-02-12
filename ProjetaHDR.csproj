@@ -67,16 +67,18 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="Commands\Dev.cs" />
-    <Compile Include="Commands\FlowTag.cs" />
-    <Compile Include="Commands\InfoMemorial.cs" />
+    <Compile Include="Commands\MemosExport\Helpers\Sheets.cs" />
+    <Compile Include="Commands\MemosExport\Helpers\WordHandler.cs" />
+    <Compile Include="Commands\MemosExport\Helpers\WordReplacer.cs" />
+    <Compile Include="Commands\Taggers\FlowTag.cs" />
+    <Compile Include="Commands\MemosExport\MemoHDS.cs" />
+    <Compile Include="Commands\MemosExport\Helpers\DocHandler.cs" />
     <Compile Include="Commands\NestedPipeFittings.cs" />
-    <Compile Include="Commands\SlopeTag.cs" />
-    <Compile Include="Commands\DiameterTag.cs" />
-    <Compile Include="Utils\DocsUtils\WordHandler.cs" />
-    <Compile Include="Utils\DocsUtils\WordReplacer.cs" />
+    <Compile Include="Commands\Taggers\SlopeTag.cs" />
+    <Compile Include="Commands\Taggers\DiameterTag.cs" />
     <Compile Include="Utils\ParameterUtils\FamilyParameterUtils.cs" />
     <Compile Include="Utils\PipeFittingUtils\PipeFittingUtils.cs" />
-    <Compile Include="Utils\PipeUtils\FilterAndTagPipelines.cs" />
+    <Compile Include="Commands\Taggers\Helpers\FilterAndTagPipelines.cs" />
     <Compile Include="Utils\PipeUtils\PipeFilters.cs" />
     <Compile Include="OnStartup\UIBuilder.cs" />
     <Compile Include="OnStartup\RibbonManager.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Utils\PipeUtils\PipeMethods.cs" />
     <Compile Include="Utils\PipeUtils\PipeUtils.cs" />
     <Compile Include="Utils\TagUtils\TagManager.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\ViewUtils\ViewDirections.cs" />
   </ItemGroup>
   <ItemGroup>

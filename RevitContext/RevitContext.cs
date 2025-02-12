@@ -22,6 +22,7 @@ namespace ProjetaHDR.RevitContext
             UiDoc = uiApp.ActiveUIDocument;
             App = uiApp.Application;
             Doc = UiDoc?.Document;
+            ActiveView = Doc.ActiveView;
         }
     }
 }
