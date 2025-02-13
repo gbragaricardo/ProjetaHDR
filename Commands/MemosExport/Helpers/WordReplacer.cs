@@ -22,18 +22,27 @@ namespace ProjetaHDR.Commands.MemosExport.Helpers
         }
         internal void ProjectInfoReplaces()
         {
-            var handler = new WordHandler(_projectInfo, _exportPath);
+            using (var handler = new WordHandler(_projectInfo, _exportPath))
+            {
+                string titleBlock = Sheets.GetTitleBlockName(_doc);
+                var consorcio = Sheets.ValidateTitleBlock(titleBlock);
 
-            string titleBlock = Sheets.GetTitleBlockName(_doc);
-            var consorcio = Sheets.ValidateTitleBlock(titleBlock);
+                handler.OpenWordDocument();
 
-            handler.ReplaceText("ProjectName", "Nome do projeto");
-            handler.ReplaceText("Contratante", "Nome do Contratante");
-            handler.ReplaceText("Date", "Data do Projeto");
-            handler.ReplaceText("TITLE", "Título do Arquivo");
-            //handler.ReplaceText("City", Cidade);
-            //handler.ReplaceText("State", Estado);
-            handler.ReplaceText("Consorcio", consorcio);
+
+                handler.ReplaceText("ProjectName", "Nome do projeto");
+                handler.ReplaceText("Contratante", "Nome do Contratante");
+                handler.ReplaceText("Date", "Data do Projeto");
+                handler.ReplaceText("TITLE", "Título do Arquivo");
+                //handler.ReplaceText("City", Cidade);
+                //handler.ReplaceText("State", Estado);
+                handler.ReplaceText("Consorcio", consorcio);
+
+
+                handler.DeleteSpecificParagraph();
+
+                handler.SaveAndClose();
+            }
         }
 
     }
