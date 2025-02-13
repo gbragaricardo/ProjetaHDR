@@ -30,7 +30,7 @@ namespace ProjetaHDR.Commands
             using (Transaction transacao = new Transaction(doc, "DEV"))
             {
                     transacao.Start();
-            
+            /*
                     // 🔹 Buscar a tabela de planejamento pelo nome
                     IList<ViewSchedule> Listschedule = new FilteredElementCollector(doc)
                     .OfClass(typeof(ViewSchedule))
@@ -51,8 +51,7 @@ namespace ProjetaHDR.Commands
                         activeView.HideElements(elementosTabela.Select(x => x.Id).ToList());
                      }
                     // 🔹 Obtém todos os elementos listados na tabela
-                    
-
+              */      
                     
                      transacao.Commit();
 

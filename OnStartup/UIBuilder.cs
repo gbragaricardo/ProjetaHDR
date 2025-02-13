@@ -34,7 +34,7 @@ namespace ProjetaHDR.OnStartup
             PanelMain,
             "Modo Desenvolvedor",
             "dev.ico",
-            true);
+            false);
 
             DiameterTagPushButton = RibbonManager.CriarPushButton
             ("DiameterTag", "Tag\nDiâmetro",
