@@ -8,7 +8,7 @@ using ProjetaHDR.OnStartup;
 
 namespace ProjetaHDR
 {
-    public class Application : IExternalApplication
+    public class AddinApp : IExternalApplication
     {
         public Result OnShutdown(UIControlledApplication application)
         {

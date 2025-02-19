@@ -15,6 +15,8 @@ namespace ProjetaHDR.OnStartup
     {
         internal static readonly string TabName = "ProjetaHDR";
         private static readonly string ThisAssemblyPath = Assembly.GetExecutingAssembly().Location;
+        internal static List<PushButton> PushButtonsList = new List<PushButton>();
+
 
         // Criar painel
         internal static RibbonPanel CriarRibbonPanel(UIControlledApplication application, string nomePainel)
@@ -62,6 +64,7 @@ namespace ProjetaHDR.OnStartup
 
             // Define a imagem como o ícone do botão
             pushButton.LargeImage = bitmap;
+            PushButtonsList.Add(pushButton);
 
             return pushButton;
         }

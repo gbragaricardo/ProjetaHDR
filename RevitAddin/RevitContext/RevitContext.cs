@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Autodesk.Revit.ApplicationServices;
 
 namespace ProjetaHDR.RevitContext
 {
@@ -12,7 +13,7 @@ namespace ProjetaHDR.RevitContext
     {
         public UIApplication UiApp { get; private set; }
         public UIDocument UiDoc { get; private set; }
-        public Autodesk.Revit.ApplicationServices.Application App { get; private set; }
+        public Application App { get; private set; }
         public Document Doc { get; private set; }
         public View ActiveView { get; private set; }
 

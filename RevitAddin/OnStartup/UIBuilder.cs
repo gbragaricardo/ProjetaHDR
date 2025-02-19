@@ -10,25 +10,22 @@ namespace ProjetaHDR.OnStartup
 {
     internal static class UIBuilder
     {
-        internal static RibbonPanel PanelMain { get; set; }
-        internal static RibbonPanel Tabelas { get; set; }
-        internal static RibbonPanel Documents { get; set; }
-        internal static PushButton DevPushButton { get; set; }
-        internal static PushButton DiameterTagPushButton { get; set; }
-        internal static PushButton SlopeTagPushButton { get; set; }
-        internal static PushButton FlowTagPushButton { get; set; }
-        internal static PushButton NestedPipeFittingsPushButton { get; set; }
-        internal static PushButton MemoHDS { get; set; }
 
         internal static void BuildUI(UIControlledApplication application)
         {
-            PanelMain = RibbonManager.CriarRibbonPanel(application, "Main");
-            Tabelas = RibbonManager.CriarRibbonPanel(application, "Tabelas");
-            Documents = RibbonManager.CriarRibbonPanel(application, "Documentos");
+            var PanelMain = RibbonManager.CriarRibbonPanel(application, "Main");
+            var Tabelas = RibbonManager.CriarRibbonPanel(application, "Tabelas");
+            var Documents = RibbonManager.CriarRibbonPanel(application, "Documentos");
 
+            var LoginPushButton = RibbonManager.CriarPushButton
+            ("Home", "Grupo\nProjeta",
+            "ProjetaHDR.Commands.Login",
+            PanelMain,
+            "Sobre",
+            "dev.ico",
+            true);
 
-
-            DevPushButton = RibbonManager.CriarPushButton
+            var DevPushButton = RibbonManager.CriarPushButton
             ("Dev", "Dev",
             "ProjetaHDR.Commands.Dev",
             PanelMain,
@@ -36,45 +33,45 @@ namespace ProjetaHDR.OnStartup
             "dev.ico",
             false);
 
-            DiameterTagPushButton = RibbonManager.CriarPushButton
+            var DiameterTagPushButton = RibbonManager.CriarPushButton
             ("DiameterTag", "Tag\nDiâmetro",
             "ProjetaHDR.Commands.DiameterTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
             "dev.ico",
-            true);
+            false);
 
-            SlopeTagPushButton = RibbonManager.CriarPushButton
+            var SlopeTagPushButton = RibbonManager.CriarPushButton
             ("SlopeTag", "Tag\nInclinacao",
             "ProjetaHDR.Commands.SlopeTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
             "dev.ico",
-            true);
+            false);
 
-            FlowTagPushButton = RibbonManager.CriarPushButton
+            var FlowTagPushButton = RibbonManager.CriarPushButton
             ("Flow Tag", "Tag\nFluxo",
             "ProjetaHDR.Commands.FlowTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
             "dev.ico",
-            true);
+            false);
 
-            NestedPipeFittingsPushButton = RibbonManager.CriarPushButton
+            var NestedPipeFittingsPushButton = RibbonManager.CriarPushButton
             ("Nested PF", "Nested\nFittings",
             "ProjetaHDR.Commands.NestedPipeFittings",
             Tabelas,
             "Insere o sistema em conexoes aninhadas",
             "dev.ico",
-            true);
+            false);
 
-            MemoHDS = RibbonManager.CriarPushButton
+            var MemoHDS = RibbonManager.CriarPushButton
             ("Memorial descritivo HDS", "HDS - Memorial\nDescritivo",
             "ProjetaHDR.Commands.MemoHDS",
             Documents,
             "Exporta Memorial descritivo HDS",
             "dev.ico",
-            true);
+            false);
 
             //var nomeBotao = RibbonManager.CriarPushButton
             //("NomeInterno", "NomeExibido",
