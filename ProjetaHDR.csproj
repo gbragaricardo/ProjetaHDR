@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\FamiliesCommand\ShowFamiliesPage.cs" />
     <Compile Include="RevitAddin\Commands\Login\Login.cs" />
     <Compile Include="RevitAddin\Commands\MemosExport\Helpers\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\MemosExport\Helpers\WordHandler.cs" />
@@ -72,9 +73,11 @@
     <Compile Include="RevitAddin\Commands\NestedPipeFittings\NestedPipeFittings.cs" />
     <Compile Include="RevitAddin\Commands\Taggers\SlopeTag.cs" />
     <Compile Include="RevitAddin\Commands\Taggers\DiameterTag.cs" />
+    <Compile Include="RevitAddin\RevitContext\RevitStaticContext.cs" />
     <Compile Include="UI\MVVMCore\ObservableObject.cs" />
     <Compile Include="UI\MVVMCore\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\ViewModels\FamiliesViewModel.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
     <Compile Include="UI\Views\FamiliesView.xaml.cs">
       <DependentUpon>FamiliesView.xaml</DependentUpon>
@@ -123,6 +126,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\UIResources\logo-projeta-main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\dev.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProjetaHDR\Icons\dev.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

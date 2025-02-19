@@ -8,7 +8,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ProjetaHDR.Commands.Helpers;
 using ProjetaHDR.Commands.MemosExport.Helpers;
-using ProjetaHDR.RevitContext;
 using ProjetaHDR.Utils;
 
 namespace ProjetaHDR.Commands

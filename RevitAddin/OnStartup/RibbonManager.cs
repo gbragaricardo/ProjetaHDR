@@ -61,7 +61,6 @@ namespace ProjetaHDR.OnStartup
             // Cria a imagem do ícone
             Uri uri = new Uri(iconPath);
             BitmapImage bitmap = new BitmapImage(uri);
-
             // Define a imagem como o ícone do botão
             pushButton.LargeImage = bitmap;
             PushButtonsList.Add(pushButton);

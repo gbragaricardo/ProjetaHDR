@@ -7,7 +7,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.ApplicationServices;
 
-namespace ProjetaHDR.RevitContext
+namespace ProjetaHDR
 {
     public class RevitContext
     {

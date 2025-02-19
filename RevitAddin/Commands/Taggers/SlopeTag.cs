@@ -3,7 +3,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using ProjetaHDR.Commands.Helpers;
 using ProjetaHDR.OnStartup;
-using ProjetaHDR.RevitContext;
 using ProjetaHDR.Utils;
 using System;
 using System.Collections.Generic;

@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using ProjetaHDR.RevitContext;
-
-namespace ProjetaHDR.RevitContext
+namespace ProjetaHDR
 {
     public abstract class RevitCommandBase
     {

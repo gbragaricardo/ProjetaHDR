@@ -95,6 +95,7 @@
             </Border>
             
             <Button Content="Login"
+                    IsEnabled="{Binding IsLoggedOff}"
                     Command="{Binding LoginCommand}"
                     CommandParameter="{Binding ElementName=PasswordInput}"
                     HorizontalAlignment="Center"

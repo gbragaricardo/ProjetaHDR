@@ -2,7 +2,6 @@
 using ProjetaHDR.Commands;
 using ProjetaHDR.UI.Services;
 using System.Windows.Input;
-using ProjetaHDR.RevitContext;
 using System.Windows.Controls;
 using Autodesk.Revit.DB;
 using ProjetaHDR.OnStartup;
@@ -16,7 +15,7 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class LoginViewModel : ObservableObject
     {
-        private string _username;
+        private string _username = "admin";
         public string Username
         {
             get => _username;
@@ -44,15 +43,27 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-
+        private bool isLoggedOff = true;
+        public bool IsLoggedOff
+        {
+            get => isLoggedOff;
+            set
+            {
+                if (isLoggedOff != value)
+                {
+                    isLoggedOff = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public BitmapImage ImagesPath{ get; set; }
 
-        RevitContext.RevitContext _context;
+        private readonly RevitContext _context;
         private readonly AuthService _authService;
         public RelayCommand LoginCommand { get; }
 
-        public LoginViewModel(RevitContext.RevitContext context)
+        public LoginViewModel(RevitContext context)
         {
             _authService = new AuthService();
             LoginCommand = new RelayCommand(ExecuteLogin);
@@ -76,6 +87,7 @@ namespace ProjetaHDR.UI.ViewModels
                 if (_authService.Authenticate(Username, password))
                 {
                     Message = "Login bem-sucedido!";
+                    IsLoggedOff = false;
                     EnableUI();
                 }
                 else

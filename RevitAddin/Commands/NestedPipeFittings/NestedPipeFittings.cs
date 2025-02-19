@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using ProjetaHDR.RevitContext;
 using ProjetaHDR.Utils;
 
 namespace ProjetaHDR.Commands

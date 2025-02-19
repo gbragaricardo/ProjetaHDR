@@ -72,29 +72,22 @@ namespace ProjetaHDR.Commands.Helpers
             // Loop para encontrar todas as ocorrências
             while (findObject.Execute())
             {
-                // Captura o texto encontrado (com seu case original)
                 string foundText = range.Text;
 
-                // Ajusta o "newText" com base no case do "foundText"
                 string adjustedNewText = AdjustNewTextCase(foundText, newText);
 
-                // Substitui manualmente o texto antigo pelo novo (com case ajustado)
                 range.Text = adjustedNewText;
 
-                // Aplica o destaque
                 range.HighlightColorIndex = WordInterop.WdColorIndex.wdBrightGreen;
 
-                // Move o range para continuar a busca
                 range.Collapse(WordInterop.WdCollapseDirection.wdCollapseEnd);
             }
         }
 
-        // Método para ajustar o case do novo texto com base no texto encontrado
         private string AdjustNewTextCase(string foundText, string newText)
         {
             if (string.IsNullOrEmpty(foundText)) return newText;
 
-            // Exemplo de lógica para ajustar o case:
             if (foundText.All(char.IsUpper))
             {
                 return newText.ToUpper(); // Se o texto antigo era UPPER, novo texto também será
@@ -120,11 +113,12 @@ namespace ProjetaHDR.Commands.Helpers
                 findObject.Wrap = WordInterop.WdFindWrap.wdFindStop;
                 findObject.MatchWildcards = true; // Ativa wildcards
 
-                // Padrão ajustado para incluir possíveis espaços, quebras de linha ou traços
-                findObject.Text = "CSharpApagarReformaInicio*CSharpApagarReformaFinal"; // ^13 representa quebras de parágrafo
-                findObject.Replacement.Text = " "; // Substitui por vazio
+                findObject.Text = "TagInicio*TagFinal";
 
-                object replaceAll = WordInterop.WdReplace.wdReplaceOne;
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
                 findObject.Execute(Replace: ref replaceAll);
 
             }

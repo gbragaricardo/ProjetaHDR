@@ -1,5 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using ProjetaHDR.Commands;
+using ProjetaHDR.UI.ViewModels;
+using ProjetaHDR.UI.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,14 @@ namespace ProjetaHDR.OnStartup
             var Tabelas = RibbonManager.CriarRibbonPanel(application, "Tabelas");
             var Documents = RibbonManager.CriarRibbonPanel(application, "Documentos");
 
+            
+
             var LoginPushButton = RibbonManager.CriarPushButton
             ("Home", "Grupo\nProjeta",
             "ProjetaHDR.Commands.Login",
             PanelMain,
             "Sobre",
-            "dev.ico",
+            "dev.png",
             true);
 
             var DevPushButton = RibbonManager.CriarPushButton
@@ -30,7 +34,7 @@ namespace ProjetaHDR.OnStartup
             "ProjetaHDR.Commands.Dev",
             PanelMain,
             "Modo Desenvolvedor",
-            "dev.ico",
+            "dev.png",
             false);
 
             var DiameterTagPushButton = RibbonManager.CriarPushButton
@@ -38,7 +42,7 @@ namespace ProjetaHDR.OnStartup
             "ProjetaHDR.Commands.DiameterTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
-            "dev.ico",
+            "dev.png",
             false);
 
             var SlopeTagPushButton = RibbonManager.CriarPushButton
@@ -46,7 +50,7 @@ namespace ProjetaHDR.OnStartup
             "ProjetaHDR.Commands.SlopeTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
-            "dev.ico",
+            "dev.png",
             false);
 
             var FlowTagPushButton = RibbonManager.CriarPushButton
@@ -73,6 +77,14 @@ namespace ProjetaHDR.OnStartup
             "dev.ico",
             false);
 
+            var FamiliesCommand = RibbonManager.CriarPushButton
+            ("FamiliesCommand", "ShowFamiliesPage",
+            "ProjetaHDR.Commands.ShowFamiliesPage",
+            Documents,
+            "FamiliesCommand",
+            "dev.png",
+            false);
+
             //var nomeBotao = RibbonManager.CriarPushButton
             //("NomeInterno", "NomeExibido",
             //"NameSpace.Classe",
@@ -80,6 +92,20 @@ namespace ProjetaHDR.OnStartup
             //"Dica de uso",
             //"imagem.ico",
             //Enable = false);
+
+            DockablePaneId paneId = new DockablePaneId(new Guid("5072DFD8-7026-4CE6-A7C8-E56336EB21B2"));
+
+            // Criando a View que será exibida no Dockable Panel
+            var familiesViewModel = new FamiliesViewModel();
+
+            // Criar a View e passar a ViewModel para ela
+            var familiesView = new FamiliesView
+            {
+                DataContext = familiesViewModel
+            };
+
+            // Registrando o DockablePane corretamente
+            application.RegisterDockablePane(paneId, "Painel de Famílias", familiesView);
         }
     }
 }

@@ -7,7 +7,6 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.ApplicationServices;
-using ProjetaHDR.RevitContext;
 using System.Runtime.Remoting.Contexts;
 using ProjetaHDR.OnStartup;
 using ProjetaHDR.Utils;
