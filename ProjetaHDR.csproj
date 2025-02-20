@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\FamiliesCommand\FamilyItem.cs" />
     <Compile Include="RevitAddin\Commands\FamiliesCommand\ShowFamiliesPage.cs" />
     <Compile Include="RevitAddin\Commands\Login\Login.cs" />
     <Compile Include="RevitAddin\Commands\MemosExport\Helpers\Sheets.cs" />

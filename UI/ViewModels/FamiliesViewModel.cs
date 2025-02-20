@@ -7,31 +7,72 @@ using System.Windows.Input;
 
 namespace ProjetaHDR.UI.ViewModels
 {
+
     internal class FamiliesViewModel : ObservableObject
     {
-        private string _familiesFolder = @"C:\Users\Usuario\Desktop\Families"; // Defina o caminho das famílias
+        private readonly string familiesDirectory = @"C:\Families";  // Caminho das famílias
+        private readonly string thumbsDirectory;                     // Caminho das thumbnails
 
-        public ObservableCollection<string> Families { get; set; }
+        public ObservableCollection<FamilyItem> Families { get; set; }
 
         public ICommand RefreshCommand { get; }
 
         public FamiliesViewModel()
         {
-            Families = new ObservableCollection<string>();
-            RefreshCommand = new RelayCommand(LoadFamilies);
+            thumbsDirectory = Path.Combine(familiesDirectory, "Thumbs");
+            Families = new ObservableCollection<FamilyItem>();
+            RefreshCommand = new RelayCommand(_ => LoadFamilies());
             LoadFamilies();
         }
 
-        private void LoadFamilies(object parameter = null)
+        private void LoadFamilies()
         {
             Families.Clear();
-            if (Directory.Exists(_familiesFolder))
+
+            if (!Directory.Exists(familiesDirectory))
+                return;
+
+            var files = Directory.GetFiles(familiesDirectory, "*.rfa");
+
+            foreach (var file in files)
             {
-                foreach (var file in Directory.GetFiles(_familiesFolder, "*.rfa"))
-                {
-                    Families.Add(Path.GetFileName(file));
-                }
+                Families.Add(new FamilyItem(file, thumbsDirectory));
             }
         }
     }
+
+
+
+
+
+
+
+
+    //internal class FamiliesViewModel : ObservableObject
+    //{
+    //    private string _familiesFolder = @"C:\Families"; // Defina o caminho das famílias
+
+    //    public ObservableCollection<string> Families { get; set; }
+
+    //    public ICommand RefreshCommand { get; }
+
+    //    public FamiliesViewModel()
+    //    {
+    //        Families = new ObservableCollection<string>();
+    //        RefreshCommand = new RelayCommand(LoadFamilies);
+    //        LoadFamilies();
+    //    }
+
+    //    private void LoadFamilies(object parameter = null)
+    //    {
+    //        Families.Clear();
+    //        if (Directory.Exists(_familiesFolder))
+    //        {
+    //            foreach (var file in Directory.GetFiles(_familiesFolder, "*.rfa"))
+    //            {
+    //                Families.Add(Path.GetFileName(file));
+    //            }
+    //        }
+    //    }
+    //}
 }

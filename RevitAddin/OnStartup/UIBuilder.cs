@@ -99,10 +99,8 @@ namespace ProjetaHDR.OnStartup
             var familiesViewModel = new FamiliesViewModel();
 
             // Criar a View e passar a ViewModel para ela
-            var familiesView = new FamiliesView
-            {
-                DataContext = familiesViewModel
-            };
+
+            var familiesView = new FamiliesView(familiesViewModel);
 
             // Registrando o DockablePane corretamente
             application.RegisterDockablePane(paneId, "Painel de Famílias", familiesView);

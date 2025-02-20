@@ -8,12 +8,12 @@ namespace ProjetaHDR.UI.Views
     /// <summary>
     /// Interaction logic for FamiliesView.xaml
     /// </summary>
-    public partial class FamiliesView : UserControl, IDockablePaneProvider
+    public partial class FamiliesView : Page, IDockablePaneProvider
     {
-        internal FamiliesView()
+        internal FamiliesView(FamiliesViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = new FamiliesViewModel();
+            DataContext = viewModel;
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
