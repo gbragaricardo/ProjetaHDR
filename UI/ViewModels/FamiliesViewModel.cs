@@ -4,14 +4,31 @@ using System.Collections.ObjectModel;
 using ProjetaHDR.RevitAddin.RevitContext;
 using System.IO;
 using System.Windows.Input;
+using System;
 
 namespace ProjetaHDR.UI.ViewModels
 {
 
     internal class FamiliesViewModel : ObservableObject
     {
-        private readonly string familiesDirectory = @"C:\Families";  // Caminho das famílias
-        private readonly string thumbsDirectory;                     // Caminho das thumbnails
+        private readonly string familiesDirectory = @"P:\QUALIDADE\11 - ARQUIVOS BASE DAS DISCIPLINAS\SETOR DE BIM\ARQ\002. Bibliotecas\004. Guarda-corpo\001. BALAÚSTRE";  // Caminho das famílias
+        private readonly string thumbsDirectory; // Caminho das thumbnails
+
+
+        private string _search;
+        public string Search
+        {
+            get => _search;
+            set
+            {
+                if (_search != value)
+                {
+                    _search = value;
+                    OnPropertyChanged();
+                    LoadFamilies(_search);
+                }
+            }
+        }
 
         public ObservableCollection<FamilyItem> Families { get; set; }
 
@@ -39,6 +56,24 @@ namespace ProjetaHDR.UI.ViewModels
                 Families.Add(new FamilyItem(file, thumbsDirectory));
             }
         }
+        private void LoadFamilies(string search)
+        {
+            Families.Clear();
+
+            if (!Directory.Exists(familiesDirectory))
+                return;
+
+            var files = Directory.GetFiles(familiesDirectory, "*.rfa");
+
+            // Filtra só os arquivos cujo caminho (ou nome) contenha o 'search'
+            var filteredFiles = files.Where(file => file.IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0);
+
+            foreach (var file in filteredFiles)
+            {
+                Families.Add(new FamilyItem(file, thumbsDirectory));
+            }
+        }
+
     }
 
 

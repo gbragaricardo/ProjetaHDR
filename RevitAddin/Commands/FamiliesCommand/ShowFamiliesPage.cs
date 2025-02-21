@@ -29,7 +29,10 @@ namespace ProjetaHDR.Commands
 
             if (pane != null)
             {
-                pane.Show(); // Exibir o painel
+                if (pane.IsShown())
+                    pane.Hide();
+                else
+                    pane.Show(); // Exibir o painel
             }
 
             return Result.Succeeded;

@@ -22,7 +22,8 @@ namespace ProjetaHDR.UI.Views
             data.FrameworkElement = (FrameworkElement) this; // Define a UI que será exibida no painel
             data.InitialState = new DockablePaneState
             {
-                DockPosition = DockPosition.Right // Define a posição do painel
+                DockPosition = DockPosition.Right, // Define a posição do painel
+                MinimumWidth = 300
             };
         }
     }

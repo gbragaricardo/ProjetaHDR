@@ -15,6 +15,7 @@ namespace ProjetaHDR.OnStartup
 
         internal static void BuildUI(UIControlledApplication application)
         {
+            var teste = RibbonManager.CriarRibbonPanel(application, "⠀⠀⠀⠀⠀Login⠀⠀⠀⠀⠀");
             var PanelMain = RibbonManager.CriarRibbonPanel(application, "Main");
             var Tabelas = RibbonManager.CriarRibbonPanel(application, "Tabelas");
             var Documents = RibbonManager.CriarRibbonPanel(application, "Documentos");
@@ -22,23 +23,24 @@ namespace ProjetaHDR.OnStartup
             
 
             var LoginPushButton = RibbonManager.CriarPushButton
-            ("Home", "Grupo\nProjeta",
+            ("Home", "Grupo Projeta",
             "ProjetaHDR.Commands.Login",
-            PanelMain,
+            teste,
             "Sobre",
-            "dev.png",
+            "projetalarge.png",
             true);
 
             var DevPushButton = RibbonManager.CriarPushButton
-            ("Dev", "Dev",
+            ("Dev", "⠀Dev⠀",
             "ProjetaHDR.Commands.Dev",
             PanelMain,
             "Modo Desenvolvedor",
             "dev.png",
             false);
+            DevPushButton.Visible = false;
 
             var DiameterTagPushButton = RibbonManager.CriarPushButton
-            ("DiameterTag", "Tag\nDiâmetro",
+            ("DiameterTag", "Tag\n⠀Diâmetro⠀",
             "ProjetaHDR.Commands.DiameterTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
@@ -46,7 +48,7 @@ namespace ProjetaHDR.OnStartup
             false);
 
             var SlopeTagPushButton = RibbonManager.CriarPushButton
-            ("SlopeTag", "Tag\nInclinacao",
+            ("SlopeTag", "Tag\n⠀Inclinacao⠀",
             "ProjetaHDR.Commands.SlopeTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
@@ -54,7 +56,7 @@ namespace ProjetaHDR.OnStartup
             false);
 
             var FlowTagPushButton = RibbonManager.CriarPushButton
-            ("Flow Tag", "Tag\nFluxo",
+            ("Flow Tag", "Tag\n⠀Fluxo⠀",
             "ProjetaHDR.Commands.FlowTag",
             PanelMain,
             "Insere a Tag PRJ HDR: Diametro nos tubos da vista ativa",
@@ -62,7 +64,7 @@ namespace ProjetaHDR.OnStartup
             false);
 
             var NestedPipeFittingsPushButton = RibbonManager.CriarPushButton
-            ("Nested PF", "Nested\nFittings",
+            ("Nested PF", "⠀Nested⠀\n⠀Fittings⠀",
             "ProjetaHDR.Commands.NestedPipeFittings",
             Tabelas,
             "Insere o sistema em conexoes aninhadas",
@@ -70,7 +72,7 @@ namespace ProjetaHDR.OnStartup
             false);
 
             var MemoHDS = RibbonManager.CriarPushButton
-            ("Memorial descritivo HDS", "HDS - Memorial\nDescritivo",
+            ("Memorial descritivo HDS", "⠀HDS - Memorial⠀\n⠀Descritivo⠀",
             "ProjetaHDR.Commands.MemoHDS",
             Documents,
             "Exporta Memorial descritivo HDS",
@@ -78,7 +80,7 @@ namespace ProjetaHDR.OnStartup
             false);
 
             var FamiliesCommand = RibbonManager.CriarPushButton
-            ("FamiliesCommand", "ShowFamiliesPage",
+            ("FamiliesCommand", "⠀ShowFamiliesPage⠀",
             "ProjetaHDR.Commands.ShowFamiliesPage",
             Documents,
             "FamiliesCommand",

@@ -18,9 +18,8 @@ namespace ProjetaHDR
             FilePath = filePath;
             Name = Path.GetFileNameWithoutExtension(filePath);
 
-            // Define o caminho da imagem de pré-visualização
             string thumbPath = Path.Combine(thumbsDirectory, Name + ".png");
-            ThumbnailPath = File.Exists(thumbPath) ? thumbPath : "default.png";
+            ThumbnailPath = File.Exists(thumbPath) ? thumbPath : Path.Combine(thumbsDirectory, "projeta.png");
         }
     }
 }

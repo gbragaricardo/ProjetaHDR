@@ -116,6 +116,10 @@
     <Resource Include="ProjetaHDR\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Themes\FamiliesSearchButtonTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Views\FamiliesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ProjetaHDR\Icons\dev.png" />
+    <Resource Include="ProjetaHDR\Icons\projeta.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
