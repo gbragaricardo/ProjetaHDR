@@ -83,6 +83,27 @@ namespace ProjetaHDR.Commands.Helpers
                 range.Collapse(WordInterop.WdCollapseDirection.wdCollapseEnd);
             }
         }
+        public void DeleteSpecificParagraph(string nomeTag)
+        {
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.ClearFormatting();
+                findObject.MatchCase = false; // Ignora maiúsculas/minúsculas
+                findObject.MatchWholeWord = false;
+                findObject.Wrap = WordInterop.WdFindWrap.wdFindStop;
+                findObject.MatchWildcards = true; // Ativa wildcards
+
+                findObject.Text = $"{nomeTag}Inicio*{nomeTag}Final";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+        }
 
         private string AdjustNewTextCase(string foundText, string newText)
         {
@@ -101,29 +122,6 @@ namespace ProjetaHDR.Commands.Helpers
                 return MainUtils.Captalize(newText); // Mantém o padrão (ou adicione outras regras)
             }
         }
-
-        public void DeleteSpecificParagraph()
-        {
-            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
-            {
-                WordInterop.Find findObject = delrange.Find;
-                findObject.ClearFormatting();
-                findObject.MatchCase = false; // Ignora maiúsculas/minúsculas
-                findObject.MatchWholeWord = false;
-                findObject.Wrap = WordInterop.WdFindWrap.wdFindStop;
-                findObject.MatchWildcards = true; // Ativa wildcards
-
-                findObject.Text = "TagInicio*TagFinal";
-
-                findObject.Replacement.Text = ""; // Substitui por vazio
-
-
-                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
-                findObject.Execute(Replace: ref replaceAll);
-
-            }
-        }
-
 
         public void SaveAndClose()
         {

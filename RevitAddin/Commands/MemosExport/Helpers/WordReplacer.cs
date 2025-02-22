@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using Autodesk.Revit.DB;
@@ -14,10 +15,10 @@ namespace ProjetaHDR.Commands.MemosExport.Helpers
         internal ProjectInfo _projectInfo;
         internal string _exportPath;
 
-        public WordReplacer(Document doc, ProjectInfo projectInfo, string exportPath)
+        public WordReplacer(Document doc, string exportPath)
         {
             _doc = doc;
-            _projectInfo = projectInfo;
+            _projectInfo = doc.ProjectInformation;
             _exportPath = exportPath;
         }
         internal void ProjectInfoReplaces()
@@ -30,7 +31,7 @@ namespace ProjetaHDR.Commands.MemosExport.Helpers
                 handler.OpenWordDocument();
 
 
-                handler.ReplaceText("ProjectName", "Nome do projeto");
+                handler.ReplaceText("NOME DO PROJETO", "Nome do projeto");
                 handler.ReplaceText("Contratante", "Nome do Contratante");
                 handler.ReplaceText("Date", "Data do Projeto");
                 handler.ReplaceText("TITLE", "Título do Arquivo");
@@ -39,7 +40,7 @@ namespace ProjetaHDR.Commands.MemosExport.Helpers
                 handler.ReplaceText("Consorcio", consorcio);
 
 
-                handler.DeleteSpecificParagraph();
+                handler.DeleteSpecificParagraph("Reforma");
 
                 handler.SaveAndClose();
             }

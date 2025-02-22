@@ -27,7 +27,7 @@ namespace ProjetaHDR.OnStartup
             "ProjetaHDR.Commands.Login",
             teste,
             "Sobre",
-            "projetalarge.png",
+            "projeta.png",
             true);
 
             var DevPushButton = RibbonManager.CriarPushButton

@@ -79,9 +79,13 @@
     <Compile Include="UI\MVVMCore\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
     <Compile Include="UI\ViewModels\FamiliesViewModel.cs" />
+    <Compile Include="UI\ViewModels\ExportMMDViewModel.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
     <Compile Include="UI\Views\FamiliesView.xaml.cs">
       <DependentUpon>FamiliesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\ExportMMD.xaml.cs">
+      <DependentUpon>ExportMMD.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
@@ -103,7 +107,6 @@
     <Compile Include="RevitAddin\Utils\ViewUtils\ViewDirections.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ProjetaHDR\Docs\" />
     <Folder Include="UI\Images\" />
   </ItemGroup>
   <ItemGroup>
@@ -111,18 +114,28 @@
     <None Include="ProjetaHDR.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ProjetaHDR\Docs\mmd.docx" />
+    <None Include="ProjetaHDR\Docs\mmdarq.docx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UI\Themes\FamiliesSearchButtonTheme.xaml">
+    <Page Include="UI\Themes\InputBoxTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Themes\FamiliesSearchBoxTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Views\FamiliesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\ExportMMD.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\Views\LoginWindow.xaml">
       <SubType>Designer</SubType>

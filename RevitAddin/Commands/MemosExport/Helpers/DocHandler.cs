@@ -13,7 +13,7 @@ namespace ProjetaHDR.Commands.Helpers
     public static class DocHandler
     {
         internal static string NewPath { get; set; }
-        internal static string RootPath { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"Docs", "mmd.docx");
+        internal static string RootPath { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"Docs", "mmdarq.docx");
         public static string ObterCaminhoSalvar()
         {
             // Abrir janela "Salvar Como"
