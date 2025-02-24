@@ -31,6 +31,49 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+
+        private string _cidade;
+        public string InputCidade
+        {
+            get => _cidade;
+            set
+            {
+                if (_cidade != value)
+                {
+                    _cidade = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private string _estado;
+        public string InputEstado
+        {
+            get => _estado;
+            set
+            {
+                if (_estado != value)
+                {
+                    _estado = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _reforma;
+        public bool Reforma
+        {
+            get => _reforma;
+            set
+            {
+                if (_reforma != value)
+                {
+                    _reforma = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public RelayCommand ExportCommand { get; }
         private readonly RevitContext _context;
         private string _exportPath;
@@ -59,15 +102,17 @@ namespace ProjetaHDR.UI.ViewModels
 
 
                 handler.ReplaceText("NOME DO PROJETO", "Nome do projeto");
-                handler.ReplaceText("Contratante", "Nome do Contratante");
-                handler.ReplaceText("Date", "Data do Projeto");
-                handler.ReplaceText("TITLE", "Título do Arquivo");
-                //handler.ReplaceText("City", Cidade);
-                //handler.ReplaceText("State", Estado);
-                handler.ReplaceText("Consorcio", consorcio);
+                //handler.ReplaceText("Contratante", "Nome do Contratante");
+                //handler.ReplaceText("Date", "Data do Projeto");
+                //handler.ReplaceText("TITLE", "Título do Arquivo");
+                handler.ReplaceText("Cidade", InputCidade);
+                handler.ReplaceText("UF", InputEstado);
+                //handler.ReplaceText("Consorcio", consorcio);
 
-
-                handler.DeleteSpecificParagraph("Reforma");
+                if (Reforma)
+                    handler.DeleteSpecificParagraph("Reforma");
+                else
+                    handler.DeleteTags("Reforma");
 
                 handler.SaveAndClose();
 

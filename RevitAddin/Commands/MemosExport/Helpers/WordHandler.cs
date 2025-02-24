@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Microsoft.Office.Interop.Word;
 using ProjetaHDR.Utils;
 using WordInterop = Microsoft.Office.Interop.Word;
 
@@ -59,6 +60,36 @@ namespace ProjetaHDR.Commands.Helpers
                 FindAndReplace(range, textoAntigo, textoNovo);
             }
         }
+        public void DeleteTags(string nomeTag)
+        {
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.MatchCase = false;
+
+                findObject.Text = $"{nomeTag}Inicio";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.MatchCase = false;
+
+                findObject.Text = $"{nomeTag}Final";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+        }
 
         private void FindAndReplace(WordInterop.Range range, string oldText, string newText)
         {
@@ -109,11 +140,11 @@ namespace ProjetaHDR.Commands.Helpers
         {
             if (string.IsNullOrEmpty(foundText)) return newText;
 
-            if (foundText.All(char.IsUpper))
+            if (foundText == foundText.ToUpper())
             {
                 return newText.ToUpper(); // Se o texto antigo era UPPER, novo texto também será
             }
-            else if (foundText.All(char.IsLower))
+            else if (foundText == foundText.ToLower())
             {
                 return newText.ToLower(); // Se o texto antigo era lower, novo texto também será
             }
