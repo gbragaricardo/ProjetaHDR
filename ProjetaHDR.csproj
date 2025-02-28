@@ -58,36 +58,40 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application.cs" />
-    <Compile Include="Commands\Dev.cs" />
-    <Compile Include="Commands\MemosExport\Helpers\Sheets.cs" />
-    <Compile Include="Commands\MemosExport\Helpers\WordHandler.cs" />
-    <Compile Include="Commands\MemosExport\Helpers\WordReplacer.cs" />
-    <Compile Include="Commands\Taggers\FlowTag.cs" />
-    <Compile Include="Commands\MemosExport\MemoHDS.cs" />
-    <Compile Include="Commands\MemosExport\Helpers\DocHandler.cs" />
-    <Compile Include="Commands\NestedPipeFittings.cs" />
-    <Compile Include="Commands\Taggers\SlopeTag.cs" />
-    <Compile Include="Commands\Taggers\DiameterTag.cs" />
-    <Compile Include="Utils\ParameterUtils\FamilyParameterUtils.cs" />
-    <Compile Include="Utils\PipeFittingUtils\PipeFittingUtils.cs" />
-    <Compile Include="Commands\Taggers\Helpers\FilterAndTagPipelines.cs" />
-    <Compile Include="Utils\PipeUtils\PipeFilters.cs" />
-    <Compile Include="OnStartup\UIBuilder.cs" />
-    <Compile Include="OnStartup\RibbonManager.cs" />
-    <Compile Include="OnStartup\AddinAppLoader.cs" />
+    <Compile Include="AddinApp.cs" />
+    <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\WordReplacer.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\FlowTag.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\MemoHDS.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\DocHandler.cs" />
+    <Compile Include="RevitAddin\Commands\Parameters\SanFittings.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\SlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\DiameterTag.cs" />
+    <Compile Include="RevitAddin\Commands\Parameters\Services\NestedFittings.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\FilterAndTagPipelines.cs" />
+    <Compile Include="RevitAddin\Utils\PipeUtils.cs" />
+    <Compile Include="RevitAddin\OnStartup\UIBuilder.cs" />
+    <Compile Include="RevitAddin\OnStartup\RibbonManager.cs" />
+    <Compile Include="RevitAddin\OnStartup\AddinAppLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RevitContext\RevitCommandBase.cs" />
-    <Compile Include="RevitContext\RevitContext.cs" />
-    <Compile Include="Utils\PipeUtils\PipeMethods.cs" />
-    <Compile Include="Utils\PipeUtils\PipeUtils.cs" />
-    <Compile Include="Utils\TagUtils\TagManager.cs" />
-    <Compile Include="Utils\Utils.cs" />
-    <Compile Include="Utils\ViewUtils\ViewDirections.cs" />
+    <Compile Include="RevitAddin\RevitContext\RevitCommandBase.cs" />
+    <Compile Include="RevitAddin\RevitContext\RevitContext.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\PipeMethods.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\HelperMethods.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\TagManager.cs" />
+    <Compile Include="RevitAddin\Utils\BasicUtils.cs" />
+    <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
+    <Compile Include="UI\Core\ObservableObject.cs" />
+    <Compile Include="UI\Core\RelayCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="WPF\" />
+    <Folder Include="UI\Services\" />
+    <Folder Include="UI\Themes\" />
+    <Folder Include="UI\ViewModels\" />
+    <Folder Include="UI\Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
