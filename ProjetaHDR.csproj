@@ -117,6 +117,19 @@
   <ItemGroup>
     <Resource Include="UI\Resources\logo-projeta-main.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\eggprojeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\diameter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\porcentagem.png" />
+    <Resource Include="ProjetaHDR\Icons\setafluxo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\parameters.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM Define os caminhos corretamente
