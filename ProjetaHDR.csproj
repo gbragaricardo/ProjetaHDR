@@ -49,6 +49,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +61,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordReplacer.cs" />
@@ -85,13 +87,15 @@
     <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
     <Compile Include="UI\Core\ObservableObject.cs" />
     <Compile Include="UI\Core\RelayCommand.cs" />
+    <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\ViewModels\LoginViewModel.cs" />
+    <Compile Include="UI\Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="UI\Services\" />
     <Folder Include="UI\Themes\" />
-    <Folder Include="UI\ViewModels\" />
-    <Folder Include="UI\Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -99,6 +103,19 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\blueword.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UI\Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\dev.ico" />
+    <Resource Include="ProjetaHDR\Icons\projeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\logo-projeta-main.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
