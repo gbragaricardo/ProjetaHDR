@@ -19,8 +19,14 @@ namespace ProjetaHDR
         public Result OnStartup(UIControlledApplication application)
         {
 
-            try { AddinAppLoader.StartupMain(application); }
-            catch { TaskDialog.Show("ProjetaHDR", "Erro ao inicializar Plugin ProjetaHDR"); }
+            try 
+            { 
+                AddinAppLoader.StartupMain(application); 
+            }
+            catch (Exception ex)
+            { 
+                TaskDialog.Show("ProjetaHDR", $"Erro ao inicializar Plugin ProjetaHDR: {ex.Message}"); 
+            }
 
             return Result.Succeeded;
 

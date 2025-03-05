@@ -33,7 +33,7 @@ namespace ProjetaHDR.Startup
             "ProjetaHDR.Commands.Dev",
             PanelMain,
             "Modo Desenvolvedor",
-            "dev.png",
+            "dev.ico",
             false);
             DevPushButton.Visible = false;
 

@@ -102,7 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ProjetaHDR.addin" />
+    <None Include="ProjetaHDR.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\blueword.ico" />
