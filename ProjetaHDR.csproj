@@ -31,22 +31,159 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="RevitAPI">
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="RevitAPIUI">
+      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="AddinApp.cs" />
+    <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\Login.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\WordReplacer.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\FlowTag.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\MemoHDS.cs" />
+    <Compile Include="RevitAddin\Commands\Memorials\Services\DocHandler.cs" />
+    <Compile Include="RevitAddin\Commands\Parameters\SanFittings.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\SlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\DiameterTag.cs" />
+    <Compile Include="RevitAddin\Commands\Parameters\Services\NestedFittings.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\FilterAndTagPipelines.cs" />
+    <Compile Include="RevitAddin\Utils\PipeUtils.cs" />
+    <Compile Include="RevitAddin\OnStartup\UIBuilder.cs" />
+    <Compile Include="RevitAddin\OnStartup\RibbonManager.cs" />
+    <Compile Include="RevitAddin\OnStartup\AddinAppLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RevitAddin\RevitContext\RevitCommandBase.cs" />
+    <Compile Include="RevitAddin\RevitContext\RevitContext.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\PipeMethods.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\HelperMethods.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\Services\TagManager.cs" />
+    <Compile Include="RevitAddin\Utils\BasicUtils.cs" />
+    <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
+    <Compile Include="UI\Core\ObservableObject.cs" />
+    <Compile Include="UI\Core\RelayCommand.cs" />
+    <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\ViewModels\LoginViewModel.cs" />
+    <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
+    <Compile Include="UI\Views\WordExportWindow.xaml.cs">
+      <DependentUpon>WordExportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Views\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="ProjetaHDR\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="ProjetaHDR.addin">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\blueword.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="UI\Themes\InputBoxTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\WordExportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Views\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\dev.ico" />
+    <Resource Include="ProjetaHDR\Icons\projeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="UI\Resources\logo-projeta-main.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\eggprojeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\diameter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\porcentagem.png" />
+    <Resource Include="ProjetaHDR\Icons\setafluxo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\parameters.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>REM Define os caminhos corretamente
+
+SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
+
+SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
+
+
+
+REM Garante que a pasta de destino exista antes da cópia
+
+if not exist "%25LOCAL_TARGET%25" mkdir "%25LOCAL_TARGET%25"
+
+
+
+REM Garante que a pasta do Revit Addins exista antes da cópia
+if not exist "%25REVIT_ADDINS%25" mkdir "%25REVIT_ADDINS%25"
+
+
+
+REM Copia todas as DLLs geradas para a pasta dentro do projeto, sem subpastas
+
+xcopy /Y "$(TargetDir)*.dll" "%25LOCAL_TARGET%25"
+
+
+
+REM Copia a pasta BaseOffice para o diretório de Addins do Revit
+
+xcopy /Y /E /I "%25LOCAL_TARGET%25" "%25REVIT_ADDINS%25\$(ProjectName)"
+
+
+
+REM Copia o arquivo .addin para o diretório de Addins do Revit
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%25REVIT_ADDINS%25"
+
+
+
+REM Copia o arquivo .addin para a pasta do projeto
+
+copy /Y "$(ProjectDir)$(ProjectName).addin" "%25LOCAL_TARGET%25"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
