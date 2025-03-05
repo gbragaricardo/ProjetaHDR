@@ -29,7 +29,6 @@ namespace ProjetaHDR.Commands
 
             mmdWindow.ShowDialog();
 
-
             return Result.Succeeded;
 
         }

@@ -54,6 +54,10 @@ namespace ProjetaHDR
 
             var parametro = _infoParameters.LookupParameter(parametroReferencia);
             var textoNovo = parametro?.AsString() ?? parametroReferencia;
+            if (textoNovo == "")
+            {
+                textoNovo = parametroReferencia;
+            }
 
             foreach (WordInterop.Range range in _wordDoc.StoryRanges)
             {
@@ -64,7 +68,13 @@ namespace ProjetaHDR
         public void ReplaceTextInFooter(string oldText, string newText)
         {
             var parametro = _infoParameters.LookupParameter(newText);
+
+            
             var textoNovo = parametro?.AsString() ?? newText;
+            if (textoNovo == "")
+            {
+                textoNovo = newText;
+            }
 
             // Acessa o rodapé da seção principal
             WordInterop.HeaderFooter footer = _wordDoc.Sections[2].Footers[WordInterop.WdHeaderFooterIndex.wdHeaderFooterPrimary];
