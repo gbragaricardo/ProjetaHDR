@@ -103,10 +103,21 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 trans.Start();
 
-                foreach (var pushButton in RibbonManager.PushButtonsList)
+                if (Username.ToLower() == "dev")
                 {
-                    if (pushButton.Name != "Dev")
-                        pushButton.Enabled = true;
+                    foreach (var pushButton in RibbonManager.PushButtonsList)
+                    {
+                        pushButton.Visible = true;
+                            pushButton.Enabled = true;
+                    }
+                }
+                else
+                {
+                    foreach (var pushButton in RibbonManager.PushButtonsList)
+                    {
+                        if (pushButton.Name != "Dev")
+                            pushButton.Enabled = true;
+                    }
                 }
 
                 trans.Commit();

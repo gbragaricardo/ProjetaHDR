@@ -1,0 +1,66 @@
+﻿<Window x:Class="ProjetaHDR.UI.Views.WordExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ProjetaHDR.UI.Views"
+        xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
+        d:DataContext="{d:DesignInstance viewModel:WordExportViewModel}"
+        mc:Ignorable="d" 
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        Height="300"
+        Width="450"
+        Title="ProjetaHDR"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/InputBoxTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border Background="#353340"
+            Padding="15">
+
+        <StackPanel>
+
+            <TextBlock Text="ESTADO"
+                       Margin="0 0 0 2"
+                       Foreground="White"/>
+
+            <TextBox Text="{Binding InputEstado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputBox}"
+                     HorizontalAlignment="Left"/>
+
+            <TextBlock Text="CIDADE"
+                       Margin="0 10 0 2"
+                       Foreground="White"/>
+
+            <TextBox Text="{Binding InputCidade, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource InputBox}"
+                     HorizontalAlignment="Left"/>
+
+            <!--<CheckBox Content="REFORMA"
+                      Margin="0 10 0 0"
+                      Foreground="White"
+                      IsChecked="{Binding Reforma, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <CheckBox Content="DEMOLIÇÃO"
+                      Margin="0 10 0 0"
+                      Foreground="White"
+                      IsChecked="False"/>-->
+
+            <Button Content="EXPORTAR"
+                    Foreground="#353340"
+                    Background="White"
+                    Margin="100"
+                    Width="100"
+                    Command="{Binding ExportCommand}"/>
+
+
+        </StackPanel>
+    </Border>
+</Window>

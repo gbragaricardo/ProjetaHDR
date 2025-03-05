@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Microsoft.Office.Interop.Word;
 using ProjetaHDR.Utils;
 using WordInterop = Microsoft.Office.Interop.Word;
 
@@ -60,6 +61,33 @@ namespace ProjetaHDR
             }
         }
 
+        public void ReplaceTextInFooter(string oldText, string newText)
+        {
+            var parametro = _infoParameters.LookupParameter(newText);
+            var textoNovo = parametro?.AsString() ?? newText;
+
+            // Acessa o rodapé da seção principal
+            WordInterop.HeaderFooter footer = _wordDoc.Sections[2].Footers[WordInterop.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+
+            WordInterop.Range footerRange = footer.Range;
+            WordInterop.Find findObject = footerRange.Find;
+
+            findObject.ClearFormatting();
+            findObject.Text = oldText;
+            findObject.MatchCase = false;
+            findObject.MatchWholeWord = false;
+            findObject.Wrap = WdFindWrap.wdFindStop;
+
+            // Substitui a primeira ocorrência no rodapé
+            if (findObject.Execute())
+            {
+                footerRange.Text = textoNovo;
+                footerRange.HighlightColorIndex = WdColorIndex.wdBrightGreen; // Destacar em verde
+            }
+
+        }
+
+
         private void FindAndReplace(WordInterop.Range range, string oldText, string newText)
         {
             WordInterop.Find findObject = range.Find;
@@ -72,29 +100,76 @@ namespace ProjetaHDR
             // Loop para encontrar todas as ocorrências
             while (findObject.Execute())
             {
-                // Captura o texto encontrado (com seu case original)
                 string foundText = range.Text;
 
-                // Ajusta o "newText" com base no case do "foundText"
                 string adjustedNewText = AdjustNewTextCase(foundText, newText);
 
-                // Substitui manualmente o texto antigo pelo novo (com case ajustado)
                 range.Text = adjustedNewText;
 
-                // Aplica o destaque
                 range.HighlightColorIndex = WordInterop.WdColorIndex.wdBrightGreen;
 
-                // Move o range para continuar a busca
                 range.Collapse(WordInterop.WdCollapseDirection.wdCollapseEnd);
             }
         }
 
-        // Método para ajustar o case do novo texto com base no texto encontrado
+        public void DeleteTags(string nomeTag)
+        {
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.MatchCase = false;
+
+                findObject.Text = $"{nomeTag}Inicio";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.MatchCase = false;
+
+                findObject.Text = $"{nomeTag}Final";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+        }
+
+
+        public void DeleteSpecificParagraph(string nomeTag)
+        {
+            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
+            {
+                WordInterop.Find findObject = delrange.Find;
+                findObject.ClearFormatting();
+                findObject.MatchCase = false; // Ignora maiúsculas/minúsculas
+                findObject.MatchWholeWord = false;
+                findObject.Wrap = WordInterop.WdFindWrap.wdFindStop;
+                findObject.MatchWildcards = true; // Ativa wildcards
+
+                findObject.Text = $"{nomeTag}Inicio*{nomeTag}Final";
+
+                findObject.Replacement.Text = ""; // Substitui por vazio
+
+
+                object replaceAll = WordInterop.WdReplace.wdReplaceAll;
+                findObject.Execute(Replace: ref replaceAll);
+
+            }
+        }
+
         private string AdjustNewTextCase(string foundText, string newText)
         {
             if (string.IsNullOrEmpty(foundText)) return newText;
 
-            // Exemplo de lógica para ajustar o case:
             if (foundText == foundText.ToUpper())
             {
                 return newText.ToUpper(); // Se o texto antigo era UPPER, novo texto também será
@@ -109,33 +184,23 @@ namespace ProjetaHDR
             }
         }
 
-        public void DeleteSpecificParagraph()
-        {
-            foreach (WordInterop.Range delrange in _wordDoc.StoryRanges)
-            {
-                WordInterop.Find findObject = delrange.Find;
-                findObject.ClearFormatting();
-                findObject.MatchCase = false; // Ignora maiúsculas/minúsculas
-                findObject.MatchWholeWord = false;
-                findObject.Wrap = WordInterop.WdFindWrap.wdFindStop;
-                findObject.MatchWildcards = true; // Ativa wildcards
-
-                // Padrão ajustado para incluir possíveis espaços, quebras de linha ou traços
-                findObject.Text = "CSharpApagarReformaInicio*CSharpApagarReformaFinal"; // ^13 representa quebras de parágrafo
-                findObject.Replacement.Text = " "; // Substitui por vazio
-
-                object replaceAll = WordInterop.WdReplace.wdReplaceOne;
-                findObject.Execute(Replace: ref replaceAll);
-
-            }
-        }
-
-
         public void SaveAndClose()
         {
             if (_wordDoc != null)
             {
                 _wordDoc.Save();
+                _wordDoc.Close();
+                _wordApp.Quit();
+
+                Marshal.ReleaseComObject(_wordDoc);
+                Marshal.ReleaseComObject(_wordApp);
+            }
+        }
+
+        public void ExceptionClose()
+        {
+            if (_wordDoc != null)
+            {
                 _wordDoc.Close();
                 _wordApp.Quit();
 

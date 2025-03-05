@@ -101,7 +101,8 @@
                     HorizontalAlignment="Center"
                     HorizontalContentAlignment="Center"
                     Width="75"
-                    Margin="0 25"/>
+                    Margin="0 25"
+                    IsDefault="True"/>
 
             <TextBlock Text="{Binding Message}"
                        VerticalAlignment="Center"

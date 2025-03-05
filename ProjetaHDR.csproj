@@ -89,13 +89,16 @@
     <Compile Include="UI\Core\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
+    <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
+    <Compile Include="UI\Views\WordExportWindow.xaml.cs">
+      <DependentUpon>WordExportWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="UI\Themes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -105,6 +108,14 @@
     <Resource Include="ProjetaHDR\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Themes\InputBoxTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\WordExportWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Views\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

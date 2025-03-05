@@ -10,7 +10,14 @@ namespace ProjetaHDR.UI.Services
     {
         public bool Authenticate(string username, string password)
         {
-            return username == "Hidro" && password == "Pjt@2025";
+            if (username == "Hidro" &&  password == "Pjt@2025")
+                return true;
+
+            else if (username == "Dev" && password == "eddevmode")
+                return true;
+
+            else
+                return false;
         }
     }
 }

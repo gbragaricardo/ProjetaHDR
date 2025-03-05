@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ProjetaHDR.UI.ViewModels;
+using ProjetaHDR.UI.Views;
 using ProjetaHDR.Utils;
 
 namespace ProjetaHDR.Commands
@@ -19,29 +21,17 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
+            WordExportViewModel mmdViewModel = new WordExportViewModel(Context);
+            WordExportWindow mmdWindow = new WordExportWindow(mmdViewModel);
 
-            using (Transaction transacao = new Transaction(Context.Doc, "MMD HDS"))
-            {
-                transacao.Start();
+            if (mmdWindow == null)
+                return Result.Cancelled;
 
-                var exportPath = DocHandler.ObterCaminhoSalvar();
-
-
-
-                DocHandler.CarregarDocumento(exportPath);
-
-                var modifier = new WordReplacer(Context.Doc, Context.Doc.ProjectInformation, exportPath);
-
-                modifier.ProjectInfoReplaces();
-                
+            mmdWindow.ShowDialog();
 
 
+            return Result.Succeeded;
 
-                DocHandler.AbrirDocumento(exportPath);
-
-                transacao.Commit();
-                return Result.Succeeded;
-            }
         }
     }
 }
