@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Autodesk.Revit.DB;
 
 namespace ProjetaHDR.UI.ViewModels
 {
     internal class WordExportViewModel : ObservableObject
     {
+        public string ExportPath { get; set; }
 
         private string _cidade;
         public string InputCidade
@@ -38,9 +40,10 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        public Action CloseWindow { get; set; }
+
         public RelayCommand ExportCommand { get; }
         private readonly RevitContext _context;
-        private string _exportPath;
         private Document _doc;
 
         public WordExportViewModel(RevitContext context)
@@ -50,15 +53,18 @@ namespace ProjetaHDR.UI.ViewModels
 
             _context = context;
             _doc = _context.Doc;
+            ExportPath = DocHandler.GetSavePath();
 
-            _exportPath = DocHandler.GetSavePath();
-            DocHandler.LoadDocument(_exportPath);
+            if (ExportPath == null)
+                return;
+
+            DocHandler.LoadDocument(ExportPath);
 
         }
 
         private void Replace(object parameter)
         {
-            using (var handler = new WordHandler(_doc.ProjectInformation, _exportPath))
+            using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
                 
             {
                 try
@@ -79,8 +85,8 @@ namespace ProjetaHDR.UI.ViewModels
                     handler.ReplaceText("Consorcio", consorcio);
 
                     handler.SaveAndClose();
+                    DocHandler.OpenDocument(ExportPath);
 
-                    DocHandler.OpenDocument(_exportPath);
                 }
                 catch (Exception ex)
                 {
@@ -88,6 +94,9 @@ namespace ProjetaHDR.UI.ViewModels
                     handler.ExceptionClose();
                     handler.Dispose();
                 }
+
+                CloseWindow?.Invoke();
+
             }
         }
 

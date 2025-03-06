@@ -94,6 +94,14 @@ namespace ProjetaHDR.Utils
                 .ToElements();
         }
 
+        public static IList<Element> GetAllOfCategory(Document doc, BuiltInCategory category)
+        {
+            return new FilteredElementCollector(doc)
+                .OfCategory(category)
+                .WhereElementIsNotElementType()
+                .ToElements();
+        }
+
     }
 
 }

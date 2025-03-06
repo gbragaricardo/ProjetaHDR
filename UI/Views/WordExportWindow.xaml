@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Border Background="#353340"
+    <Border Background="#272537"
             Padding="15">
 
         <StackPanel>

@@ -14,14 +14,23 @@ namespace ProjetaHDR
     internal static class PipeMethods
     {
         
-        public static void SetPipeSlope(IList<Element> pipesList)
+        public static bool SetPipeSlope(IList<Element> pipesList)
         {
+            string parameterName = "PRJ HDR: Inclinacao Tag";
+
             if (pipesList == null)
-                return;
+                return true; // Apenas para que o método acabe sem acontecer nada, nada acontecerá para o usuário
+
+            if (pipesList.All(pipe => pipe.LookupParameter(parameterName) == null || pipe.LookupParameter(parameterName).IsReadOnly))
+                return false;
+            
 
             foreach (Element pipe in pipesList)
             {
-                Parameter slopeParameter = pipe.LookupParameter("PRJ HDR: Inclinacao Tag");
+                Parameter slopeParameter = pipe.LookupParameter(parameterName);
+
+                if (slopeParameter == null || slopeParameter.IsReadOnly)
+                    continue;
 
                 Parameter parameterAbreviaturaSistema = pipe.get_Parameter(BuiltInParameter.RBS_DUCT_PIPE_SYSTEM_ABBREVIATION_PARAM);
                 string abreviaturaSistema = parameterAbreviaturaSistema.AsString();
@@ -43,6 +52,7 @@ namespace ProjetaHDR
                     slopeParameter.Set("0.5%");
                 }
             }
+            return true;
         }
 
         internal static IList<string> GetRelativeViewPosition(IList<Element> pipes, ViewDirections viewDirections)

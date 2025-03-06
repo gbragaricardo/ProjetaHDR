@@ -16,29 +16,39 @@ namespace ProjetaHDR
         internal static string RootPath { get; set; } = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"Docs", "mmd.docx");
         public static string GetSavePath()
         {
-            // Abrir janela "Salvar Como"
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            try
             {
-                Filter = "Arquivos Word (*.docx)|*.docx",
-                Title = "Salvar documento como",
-                FileName = "MMD-XXXXX-EXE-HDS-0101-REV0X.docx" // Nome sugerido
+                // Abrir janela "Salvar Como"
+                var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Arquivos Word (*.docx)|*.docx",
+                    Title = "Salvar documento como",
+                    FileName = "MMD-XXXXX-EXE-HDS-0101-REV0X.docx",
+                };
 
-            };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                        NewPath = saveFileDialog.FileName;
+                        return NewPath;
+                }
+                else
+                {
+                    return null;
+                }
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                NewPath = saveFileDialog.FileName;
             }
-            else
+            catch (Exception ex) 
             {
-                TaskDialog.Show("Aviso", "Operação Cancelada");
+                Console.WriteLine(ex.Message);
+                return null;
             }
-
-            return NewPath;
         }
 
         public static void LoadDocument(string exportPath)
         {
+            if (exportPath == null)
+                return;
+
             if (!File.Exists(RootPath))
                 TaskDialog.Show("Aviso", "Arquivo Base Nao Encontrado");
 
@@ -48,15 +58,22 @@ namespace ProjetaHDR
 
         public static void OpenDocument(string exportPath)
         {
-            if (File.Exists(exportPath))
+            try
             {
-                Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
+                if (File.Exists(exportPath))
+                {
+                    Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
+                }
+                else
+                {
+                    TaskDialog.Show("Aviso", "Não foi possível abrir o arquivo");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                TaskDialog.Show("Aviso", "Não foi possível abrir o arquivo");
+                Console.WriteLine(ex.Message); 
+                return;
             }
         }
-
     }
 }

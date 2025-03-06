@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,33 @@ namespace ProjetaHDR
     {
         public static ElementId GetTagId(Document doc, string tagMode)
         {
-            return new FilteredElementCollector(doc)
-                .OfCategory(BuiltInCategory.OST_PipeTags)
-                .WhereElementIsElementType()
-                .ToElements()
-                .FirstOrDefault(e => e.Name == tagMode).Id;
+            var tag = new FilteredElementCollector(doc)
+                     .OfCategory(BuiltInCategory.OST_PipeTags)
+                     .WhereElementIsElementType()
+                     .ToElements()
+                     .FirstOrDefault(e => e.Name == tagMode);
+
+            if (tag == null)
+                return null;
+
+            else
+                return tag.Id; 
         }
 
         public static void CreateTags(Document doc, IList<Element> elementsList, ElementId tagId, IList<XYZ> insertionPoint, View activeView = null)
         {
             if (activeView == null)
                 activeView = doc.ActiveView;
+
+            if (activeView.ViewType == ViewType.ThreeD)
+            {
+                var active3DView = activeView as View3D;
+                if (active3DView.IsLocked == false)
+                { 
+                    TaskDialog.Show("Aviso", "Trave a vista 3D para usar as tags");
+                    return;
+                }
+            }
 
             for (int i = 0; i < elementsList.Count; i++)
             {
@@ -38,6 +55,16 @@ namespace ProjetaHDR
         {
             if (activeView == null)
                 activeView = doc.ActiveView;
+
+            if (activeView.ViewType == ViewType.ThreeD)
+            {
+                var active3DView = activeView as View3D;
+                if (active3DView.IsLocked == false)
+                {
+                    TaskDialog.Show("Aviso", "Trave a vista 3D para usar as tags");
+                    return;
+                }
+            }
 
             for (int i = 0; i < elementsList.Count; i++)
             {
