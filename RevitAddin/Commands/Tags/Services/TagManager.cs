@@ -108,6 +108,7 @@ namespace ProjetaHDR
                     }
                 }
             }
+
             // Remove todas as tags identificadas de uma vez
             if (tagsToDelete.Count > 0)
             {

@@ -64,40 +64,47 @@ namespace ProjetaHDR.UI.ViewModels
 
         private void Replace(object parameter)
         {
-            using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
-                
-            {
-                try
-                {
-                    string titleBlock = Sheets.GetTitleBlockName(_doc);
-                    var consorcio = Sheets.ValidateTitleBlock(titleBlock);
 
-                    handler.OpenWordDocument();
+            var test = new Services.SaveImageNamesToFile();
+            test.ExecuteTESTE(@"C:\Users\Usuario\Desktop\LIXO\MMD-XXXXX-EXE-HDS-0101-REV0X.docx", @"C:\Users\Usuario\Desktop\resultado.txt");
+
+            //using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
+            //{
+            //    try
+            //    {
+            //        string titleBlock = Sheets.GetTitleBlockName(_doc);
+            //        var consorcio = Sheets.ValidateTitleBlock(titleBlock);
+
+            //        handler.OpenWordDocument();
 
 
-                    handler.ReplaceText("ProjectName", "Nome do projeto");
-                    handler.ReplaceText("Contratante", "Nome do Contratante");
-                    handler.ReplaceText("Date", "Data do Projeto");
-                    handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
-                    handler.ReplaceTextInFooter("Consorcio", consorcio);
-                    handler.ReplaceText("City", InputCidade);
-                    handler.ReplaceText("State", InputEstado);
-                    handler.ReplaceText("Consorcio", consorcio);
+            //        handler.ReplaceText("ProjectName", "Nome do projeto");
+            //        handler.ReplaceText("Contratante", "Nome do Contratante");
+            //        handler.ReplaceText("Date", "Data do Projeto");
+            //        handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
+            //        handler.ReplaceText("City", InputCidade);
+            //        handler.ReplaceText("State", InputEstado);
+            //        if (consorcio != null)
+            //        {
+            //            handler.ReplaceTextInFooter("Consorcio", consorcio);
+            //            handler.ReplaceText("Consorcio", consorcio);
+            //        }
+                    
 
-                    handler.SaveAndClose();
-                    DocHandler.OpenDocument(ExportPath);
+            //        handler.SaveAndClose();
+            //        DocHandler.OpenDocument(ExportPath);
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    handler.ExceptionClose();
-                    handler.Dispose();
-                }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Console.WriteLine(ex.ToString());
+            //        handler.ExceptionClose();
+            //        handler.Dispose();
+            //    }
 
-                CloseWindow?.Invoke();
+            //    CloseWindow?.Invoke();
 
-            }
+            //}
         }
 
     }

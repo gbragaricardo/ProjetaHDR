@@ -35,6 +35,9 @@
       <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
@@ -89,6 +92,7 @@
     <Compile Include="UI\Core\ObservableObject.cs" />
     <Compile Include="UI\Core\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\Services\SaveImageNamesToFile.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
     <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
     <Compile Include="UI\Views\WordExportWindow.xaml.cs">
