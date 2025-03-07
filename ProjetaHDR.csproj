@@ -67,7 +67,6 @@
     <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\Services\WordReplacer.cs" />
     <Compile Include="RevitAddin\Commands\Parameters\Seduc.cs" />
     <Compile Include="RevitAddin\Commands\Tags\FlowTag.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\MemoHDS.cs" />
@@ -150,6 +149,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\etapaseduc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Resources\diamante.png" />
+    <Resource Include="ProjetaHDR\Resources\minas.png" />
+    <Resource Include="ProjetaHDR\Resources\objetiva.png" />
+    <Resource Include="ProjetaHDR\Resources\vitoria.png" />
+    <Resource Include="ProjetaHDR\Resources\metaverso.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Resources\pitagoras.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

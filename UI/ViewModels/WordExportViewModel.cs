@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +14,7 @@ namespace ProjetaHDR.UI.ViewModels
     {
         public string ExportPath { get; set; }
 
-        private string _cidade;
+        private string _cidade = "Belo Horizonte";
         public string InputCidade
         {
             get => _cidade;
@@ -26,7 +28,7 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        private string _estado;
+        private string _estado = "Minas Gerais";
         public string InputEstado
         {
             get => _estado;
@@ -64,47 +66,52 @@ namespace ProjetaHDR.UI.ViewModels
 
         private void Replace(object parameter)
         {
+            using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
+            {
+                try
+                {
+                    var sheet = new Sheets();
+                    string titleBlock = sheet.GetTitleBlockName(_doc);
+                    var consorcioFullName = sheet.ValidateTitleBlock(titleBlock);
 
-            var test = new Services.SaveImageNamesToFile();
-            test.ExecuteTESTE(@"C:\Users\Usuario\Desktop\LIXO\MMD-XXXXX-EXE-HDS-0101-REV0X.docx", @"C:\Users\Usuario\Desktop\resultado.txt");
-
-            //using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
-            //{
-            //    try
-            //    {
-            //        string titleBlock = Sheets.GetTitleBlockName(_doc);
-            //        var consorcio = Sheets.ValidateTitleBlock(titleBlock);
-
-            //        handler.OpenWordDocument();
+                    handler.OpenWordDocument();
 
 
-            //        handler.ReplaceText("ProjectName", "Nome do projeto");
-            //        handler.ReplaceText("Contratante", "Nome do Contratante");
-            //        handler.ReplaceText("Date", "Data do Projeto");
-            //        handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
-            //        handler.ReplaceText("City", InputCidade);
-            //        handler.ReplaceText("State", InputEstado);
-            //        if (consorcio != null)
-            //        {
-            //            handler.ReplaceTextInFooter("Consorcio", consorcio);
-            //            handler.ReplaceText("Consorcio", consorcio);
-            //        }
-                    
+                    handler.ReplaceText("ProjectName", "Nome do projeto");
+                    handler.ReplaceText("Contratante", "Nome do Contratante");
+                    handler.ReplaceText("Date", "Data do Projeto");
+                    handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
+                    handler.ReplaceText("City", InputCidade);
+                    handler.ReplaceText("State", InputEstado);
+                    if (consorcioFullName != null)
+                    {
+                        handler.ReplaceTextInFooter("Consorcio", consorcioFullName);
+                        handler.ReplaceText("Consorcio", consorcioFullName);
 
-            //        handler.SaveAndClose();
-            //        DocHandler.OpenDocument(ExportPath);
+                        var consorcioImagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", $"{sheet.Consorcio}.png");
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.WriteLine(ex.ToString());
-            //        handler.ExceptionClose();
-            //        handler.Dispose();
-            //    }
+                        if (File.Exists(consorcioImagePath))
+                        {
+                            handler.ReplaceImage("consorcio capa", consorcioImagePath);
+                            handler.ReplaceFooterImage("consorcio rodape", consorcioImagePath);
+                            handler.ReplaceTableImage("consorcio resumo", consorcioImagePath);
+                        }
+                    }
 
-            //    CloseWindow?.Invoke();
+                    handler.SaveAndClose();
+                    DocHandler.OpenDocument(ExportPath);
 
-            //}
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    handler.ExceptionClose();
+                    handler.Dispose();
+                }
+
+                CloseWindow?.Invoke();
+
+            }
         }
 
     }

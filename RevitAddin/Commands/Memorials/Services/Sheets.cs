@@ -7,9 +7,11 @@ using Autodesk.Revit.DB;
 
 namespace ProjetaHDR
 {
-    internal static class Sheets
+    internal class Sheets
     {
-        public static string GetTitleBlockName(Document doc)
+        public string Consorcio { get; private set; }
+
+        public string GetTitleBlockName(Document doc)
         {
             // Filtrar todas as folhas (ViewSheet) no documento
             FilteredElementCollector sheetCollector = new FilteredElementCollector(doc)
@@ -32,16 +34,14 @@ namespace ProjetaHDR
             FamilyInstance titleBlock = titleBlockCollector.Cast<FamilyInstance>().FirstOrDefault();
 
             if (titleBlock == null)
-            {
                 return null;
-            }
 
             // Retornar o nome da família do bloco de margem e carimbo
-            return titleBlock.Symbol.FamilyName;
+            return titleBlock.Symbol.FamilyName.Replace("á","a").Replace("Á","a");
         }
 
 
-        public static string ValidateTitleBlock(string titleBlockName)
+        public string ValidateTitleBlock(string titleBlockName)
         {
             // Define as validações no dicionário
             var titleBlockMappings = new Dictionary<string, string>
@@ -50,7 +50,7 @@ namespace ProjetaHDR
                 { "Metaverso", "Metaverso Consórcios" },
                 { "Minas", "Consórcio Minas Projetos" },
                 { "Objetiva", "Objetiva Projetos e Serviços" },
-                { "Pitágoras", "Consórcio Pitágoras" },
+                { "Pitagoras", "Consórcio Pitágoras" },
                 { "Projeta", "Projeta Consultoria e Serviços" },
                 { "Vitoria", "Vitória Consórcio"}
             };
@@ -60,6 +60,7 @@ namespace ProjetaHDR
             {
                 if (titleBlockName.ToLower().Contains(mapping.Key.ToLower()))
                 {
+                    Consorcio = mapping.Key.ToLower();
                     return mapping.Value; // Retorna o valor correspondente à chave encontrada
                 }
             }

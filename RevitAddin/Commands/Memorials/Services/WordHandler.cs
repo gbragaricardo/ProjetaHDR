@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using ProjetaHDR.Utils;
 using WordInterop = Microsoft.Office.Interop.Word;
@@ -153,6 +155,160 @@ namespace ProjetaHDR
             }
         }
 
+        public void ReplaceImage(string imageAltText, string newImagePath)
+        {
+            foreach (WordInterop.Shape shape in _wordDoc.Shapes)
+            {
+                if (!string.IsNullOrEmpty(shape.AlternativeText) && shape.AlternativeText == imageAltText)
+                {
+                    // Obtém a posição e tamanho do shape original
+                    float left = shape.Left;
+                    float top = shape.Top;
+                    float width = shape.Width;
+                    float height = shape.Height;
+                    Range anchor = shape.Anchor;
+                    var lockAnchor = shape.LockAnchor;
+                    var wrapFormat = shape.WrapFormat.Type;
+                    
+                    WdRelativeHorizontalPosition horizontalPos = shape.RelativeHorizontalPosition;
+                    WdRelativeVerticalPosition verticalPos = shape.RelativeVerticalPosition;
+
+                    // Remove o shape original
+                    shape.Delete();
+
+                    // Adiciona a nova imagem **respeitando a ancoragem**
+                    WordInterop.Shape newShape = _wordDoc.Shapes.AddPicture(
+                                                 newImagePath,
+                                                 LinkToFile: MsoTriState.msoFalse,
+                                                 SaveWithDocument: MsoTriState.msoTrue,
+                                                 Anchor: anchor);
+
+                    // Mantém a relação com o texto
+                    newShape.RelativeHorizontalPosition = horizontalPos;
+                    newShape.RelativeVerticalPosition = verticalPos;
+
+                    // Mantém posição e tamanho
+                    newShape.Left = left;
+                    newShape.Top = top;
+                    newShape.Width = width;
+                    newShape.Height = height;
+
+                    // Evita deslocamento automático do Word
+                    newShape.LockAnchor = lockAnchor;
+                    newShape.WrapFormat.Type = wrapFormat;
+
+                    // Mantém a posição na ordem Z
+                    newShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                    newShape.AlternativeText = imageAltText; // Mantém a identificação original
+
+                    break; // Sai do loop após encontrar e substituir
+                }
+            }
+        }
+
+        public void ReplaceFooterImage(string imageAltText, string newImagePath)
+        {
+            WordInterop.HeaderFooter footer = _wordDoc.Sections[2].Footers[WordInterop.WdHeaderFooterIndex.wdHeaderFooterPrimary];
+
+            foreach (WordInterop.Shape shape in footer.Range.ShapeRange)
+            {
+                if (!string.IsNullOrEmpty(shape.AlternativeText) && shape.AlternativeText == imageAltText)
+                    {
+                    // Obtém a posição e tamanho do shape original
+                    float left = shape.Left;
+                    float top = shape.Top;
+                    float width = shape.Width;
+                    float height = shape.Height;
+                    Range anchor = shape.Anchor;
+                    var lockAnchor = shape.LockAnchor;
+                    var wrapFormat = shape.WrapFormat.Type;
+
+                    WdRelativeHorizontalPosition horizontalPos = shape.RelativeHorizontalPosition;
+                    WdRelativeVerticalPosition verticalPos = shape.RelativeVerticalPosition;
+
+                    // Remove a imagem original
+                    shape.Delete();
+
+                    // Adiciona a nova imagem **dentro do rodapé**
+                    WordInterop.Shape newShape = _wordDoc.Shapes.AddPicture(
+                                                    newImagePath,
+                                                    LinkToFile: MsoTriState.msoFalse,
+                                                    SaveWithDocument: MsoTriState.msoTrue,
+                                                    Anchor: anchor);
+
+                    // Mantém a posição em relação à página
+                    newShape.RelativeHorizontalPosition = horizontalPos;
+                    newShape.RelativeVerticalPosition = verticalPos;
+
+                    // Mantém posição e tamanho
+                    newShape.Left = left;
+                    newShape.Top = top;
+                    newShape.Width = width;
+                    newShape.Height = height;
+
+                    // Evita deslocamento automático
+                    newShape.LockAnchor = lockAnchor;
+                    newShape.WrapFormat.Type = wrapFormat;
+
+                    // Mantém a posição na ordem Z
+                    newShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                    newShape.AlternativeText = imageAltText; // Mantém a identificação original
+
+                    break; // Sai do loop após encontrar e substituir
+                }
+                
+            }
+        }
+
+        public void ReplaceTableImage(string imageAltText, string newImagePath)
+        {
+            foreach (WordInterop.Shape shape in _wordDoc.Shapes)
+            {
+                if (!string.IsNullOrEmpty(shape.AlternativeText) && shape.AlternativeText == imageAltText)
+                {
+                    // Obtém a posição e tamanho do shape original
+                    float width = shape.Width;
+                    float height = shape.Height;
+                    Range anchor = shape.Anchor;
+                    var lockAnchor = shape.LockAnchor;
+                    var wrapFormat = shape.WrapFormat.Type;
+                    WdRelativeHorizontalPosition horizontalPos = shape.RelativeHorizontalPosition;
+                    WdRelativeVerticalPosition verticalPos = shape.RelativeVerticalPosition;
+
+                    // Remove o shape original
+                    shape.Delete();
+
+                    // Adiciona a nova imagem **respeitando a ancoragem**
+                    WordInterop.Shape newShape = _wordDoc.Shapes.AddPicture(
+                                                 newImagePath,
+                                                 LinkToFile: MsoTriState.msoFalse,
+                                                 SaveWithDocument: MsoTriState.msoTrue,
+                                                 Anchor: anchor);
+
+                    // Mantém a relação com a página
+                    newShape.RelativeHorizontalPosition = WdRelativeHorizontalPosition.wdRelativeHorizontalPositionPage;
+                    newShape.RelativeVerticalPosition = WdRelativeVerticalPosition.wdRelativeVerticalPositionPage;
+
+                    // Mantém tamanho original
+                    newShape.Width = width;
+                    newShape.Height = height;
+
+                    // Define posição exata conforme identificado manualmente
+                    newShape.Left = (float)(10.01 * 28.3465); // Converte cm para pontos
+                    newShape.Top = (float)(0.39 * 28.3465);   // Converte cm para pontos
+
+                    // Evita deslocamento automático do Word
+                    newShape.LockAnchor = lockAnchor;
+                    newShape.WrapFormat.Type = WdWrapType.wdWrapNone;
+
+                    // Mantém a posição na ordem Z
+                    newShape.ZOrder(MsoZOrderCmd.msoBringForward);
+                    newShape.AlternativeText = imageAltText; // Mantém o identificador original
+
+                    break; // Sai do loop após encontrar e substituir
+                }
+            }
+        }
 
         public void DeleteSpecificParagraph(string nomeTag)
         {

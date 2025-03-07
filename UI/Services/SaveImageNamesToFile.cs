@@ -34,14 +34,14 @@ namespace ProjetaHDR.UI.Services
                 // Percorre todas as imagens do documento
                 foreach (InlineShape inlineShape in doc.InlineShapes)
                 {
-                    imageNames.Add(string.IsNullOrWhiteSpace(inlineShape.AlternativeText) ? "Imagem sem nome" : inlineShape.AlternativeText);
+                    imageNames.Add(string.IsNullOrWhiteSpace(inlineShape.AlternativeText) ? "Imagem sem nome - Inline" : $"{inlineShape.AnchorID} - {inlineShape.AlternativeText} - Inline Shape");
                 }
 
                 foreach (Microsoft.Office.Interop.Word.Shape shape in doc.Shapes)
                 {
                     if (shape.Type == MsoShapeType.msoPicture)
                     {
-                        imageNames.Add(string.IsNullOrWhiteSpace(shape.AlternativeText) ? "Imagem sem nome" : shape.AlternativeText);
+                        imageNames.Add(string.IsNullOrWhiteSpace(shape.AlternativeText) ? "Imagem sem nome - Shape" : $"{shape.ID} - {shape.AlternativeText} - Shape");
                     }
                 }
 
