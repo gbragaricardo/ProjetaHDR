@@ -27,6 +27,9 @@ namespace ProjetaHDR.Commands
                 transacao.Start();
 
                 var unfilteredPipes = PipeUtils.GetPipesOnView(Context.Doc);
+                if (unfilteredPipes.Count == 0 || unfilteredPipes == null)
+                    return Result.Cancelled;
+
                 var IsHydraulic = PipeUtils.HasPvcMarromPipes(Context.Doc, unfilteredPipes);
 
                 if(IsHydraulic == true)

@@ -24,10 +24,12 @@ namespace ProjetaHDR.Commands
             WordExportViewModel mmdViewModel = new WordExportViewModel(Context);
             WordExportWindow mmdWindow = new WordExportWindow(mmdViewModel);
 
-            if (mmdWindow == null)
+            if (mmdWindow == null || mmdViewModel.ExportPath == null)
                 return Result.Cancelled;
 
+
             mmdWindow.ShowDialog();
+
 
             return Result.Succeeded;
 

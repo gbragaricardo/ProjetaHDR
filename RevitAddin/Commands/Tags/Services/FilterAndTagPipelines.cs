@@ -43,16 +43,29 @@ namespace ProjetaHDR
         {
             Pipes = PipeUtils.FilterByLength(unfilteredPipes, LengthOption);
             Pipes = PipeUtils.RemoveSanitaryVerticals(Pipes);
-
-            if(TagMode == "Inclinacao") PipeMethods.SetPipeSlope(Pipes);
         }
 
         internal void PipelineCreate()
         {
+            if (TagMode == "Inclinacao")
+            {
+                if (PipeMethods.SetPipeSlope(Pipes) == false)
+                {
+                    TaskDialog.Show("Erro", "Parâmetro \"PRJ HDR: Inclinacao Tag\" não encontrado");
+                    return;
+                }
+            }
+
             RelativePosition = PipeMethods.GetRelativeViewPosition(Pipes, ViewDirections);
             InsertPoints = PipeMethods.GetTaginsertPoint(Pipes, TagMode, ViewDirections, RelativePosition);
 
             TagId = TagManager.GetTagId(Doc, TagMode);
+            if (TagId == null)
+            {
+                TaskDialog.Show("Erro", "Tag correspondente não encontrada");
+                return;
+            }
+
             TagManager.DeleteExistingTags(Doc, Pipes, TagId);
             TagManager.CreateTags(Doc, Pipes, TagId, InsertPoints);
         }
@@ -66,6 +79,13 @@ namespace ProjetaHDR
             foreach (var direction in FlowDirections)
             {
                 TagId = TagManager.GetTagId(Doc, direction);
+
+                if (TagId == null)
+                {
+                    TaskDialog.Show("Erro", "Tag correspondente não encontrada");
+                    return;
+                }
+
                 TagsIds.Add(TagId);
                 TagManager.DeleteExistingTags(Doc, Pipes, TagId);
             }

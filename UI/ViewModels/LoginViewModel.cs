@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System;
 using System.Drawing;
+using System.Windows;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -57,6 +58,8 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        public Action CloseWindow { get; set; }
+
         public BitmapImage ImagesPath { get; set; }
 
         private readonly RevitContext _context;
@@ -70,7 +73,7 @@ namespace ProjetaHDR.UI.ViewModels
             _context = context;
 
 
-            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "UIResources", "logo-projeta-main.png");
+            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", "logo-projeta-main.png");
 
             if (File.Exists(imagePath))
             {
@@ -121,6 +124,7 @@ namespace ProjetaHDR.UI.ViewModels
                 }
 
                 trans.Commit();
+                CloseWindow?.Invoke();
             }
         }
     }

@@ -69,6 +69,14 @@ namespace ProjetaHDR.Startup
             "parameters.png",
             false);
 
+            var etapasSeduc = RibbonManager.CriarPushButton
+            ("etapas seduc", "⠀Etapa⠀\n⠀Seduc⠀",
+            "ProjetaHDR.Commands.Seduc",
+            Tabelas,
+            "Passa o valor do parametro compartilhado \"Etapa Seduc\" das familias mães para as familias aninhadas (ex: Luva de correr dentro de um joelho)",
+            "etapaseduc.png",
+            false);
+
             var MemoHDS = RibbonManager.CriarPushButton
             ("Memorial descritivo HDS", "⠀⠀HDS - Memorial⠀⠀\n⠀⠀Descritivo (Beta)⠀⠀",
             "ProjetaHDR.Commands.MemoHDS",

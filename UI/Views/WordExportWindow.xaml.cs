@@ -12,6 +12,9 @@ namespace ProjetaHDR.UI.Views
         {
             InitializeComponent();
             DataContext = viewModel;
+
+            viewModel.CloseWindow = () => this.Close();
+
         }
     }
 }

@@ -35,6 +35,9 @@
       <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RevitAPI">
@@ -64,7 +67,7 @@
     <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\Services\WordReplacer.cs" />
+    <Compile Include="RevitAddin\Commands\Parameters\Seduc.cs" />
     <Compile Include="RevitAddin\Commands\Tags\FlowTag.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\MemoHDS.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\DocHandler.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="UI\Core\ObservableObject.cs" />
     <Compile Include="UI\Core\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\Services\SaveImageNamesToFile.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
     <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
     <Compile Include="UI\Views\WordExportWindow.xaml.cs">
@@ -128,7 +132,7 @@
     <Resource Include="ProjetaHDR\Icons\projeta.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="UI\Resources\logo-projeta-main.png" />
+    <Resource Include="ProjetaHDR\Resources\logo-projeta-main.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\eggprojeta.png" />
@@ -142,6 +146,22 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ProjetaHDR\Icons\parameters.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Icons\etapaseduc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Resources\diamante.png" />
+    <Resource Include="ProjetaHDR\Resources\minas.png" />
+    <Resource Include="ProjetaHDR\Resources\objetiva.png" />
+    <Resource Include="ProjetaHDR\Resources\vitoria.png" />
+    <Resource Include="ProjetaHDR\Resources\metaverso.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Resources\pitagoras.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProjetaHDR\Resources\projeta.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

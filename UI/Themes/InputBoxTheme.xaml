@@ -25,11 +25,12 @@
                                      x:Name="InputBox"/>
                             
                             <TextBlock IsHitTestVisible="False"
+                                       Text=""
+                                       Foreground="LightGray"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
                                        Margin="10 0 0 0"
-                                       FontFamily="11"
-                                       Foreground="#222222">
+                                       FontFamily="11">
 
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">

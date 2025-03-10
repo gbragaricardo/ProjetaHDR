@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Autodesk.Revit.DB;
 
 namespace ProjetaHDR.UI.ViewModels
 {
     internal class WordExportViewModel : ObservableObject
     {
+        public string ExportPath { get; set; }
 
         private string _cidade;
         public string InputCidade
@@ -24,7 +29,7 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        private string _estado;
+        private string _estado = "MG";
         public string InputEstado
         {
             get => _estado;
@@ -38,9 +43,10 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        public Action CloseWindow { get; set; }
+
         public RelayCommand ExportCommand { get; }
         private readonly RevitContext _context;
-        private string _exportPath;
         private Document _doc;
 
         public WordExportViewModel(RevitContext context)
@@ -50,21 +56,27 @@ namespace ProjetaHDR.UI.ViewModels
 
             _context = context;
             _doc = _context.Doc;
+            ExportPath = DocHandler.GetSavePath();
 
-            _exportPath = DocHandler.GetSavePath();
-            DocHandler.LoadDocument(_exportPath);
+            if (ExportPath == null)
+                return;
+
+            DocHandler.LoadDocument(ExportPath);
 
         }
 
         private void Replace(object parameter)
         {
-            using (var handler = new WordHandler(_doc.ProjectInformation, _exportPath))
-                
+            if (string.IsNullOrWhiteSpace(InputCidade) || string.IsNullOrWhiteSpace(InputEstado))
+                return;
+
+            using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
             {
                 try
                 {
-                    string titleBlock = Sheets.GetTitleBlockName(_doc);
-                    var consorcio = Sheets.ValidateTitleBlock(titleBlock);
+                    var sheet = new Sheets();
+                    string titleBlock = sheet.GetTitleBlockName(_doc);
+                    var consorcioFullName = sheet.ValidateTitleBlock(titleBlock);
 
                     handler.OpenWordDocument();
 
@@ -72,15 +84,30 @@ namespace ProjetaHDR.UI.ViewModels
                     handler.ReplaceText("ProjectName", "Nome do projeto");
                     handler.ReplaceText("Contratante", "Nome do Contratante");
                     handler.ReplaceText("Date", "Data do Projeto");
+
                     handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
-                    handler.ReplaceTextInFooter("Consorcio", consorcio);
+
                     handler.ReplaceText("City", InputCidade);
                     handler.ReplaceText("State", InputEstado);
-                    handler.ReplaceText("Consorcio", consorcio);
+
+                    if (consorcioFullName != null)
+                    {
+                        handler.ReplaceTextInFooter("Consorcio", consorcioFullName.ToUpper());
+                        handler.ReplaceText("Consorcio", consorcioFullName);
+
+                        var consorcioImagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", $"{sheet.Consorcio}.png");
+
+                        if (File.Exists(consorcioImagePath))
+                        {
+                            handler.ReplaceImage("consorcio capa", consorcioImagePath);
+                            handler.ReplaceFooterImage("consorcio rodape", consorcioImagePath);
+                            handler.ReplaceTableImage("consorcio resumo", consorcioImagePath);
+                        }
+                    }
 
                     handler.SaveAndClose();
+                    DocHandler.OpenDocument(ExportPath);
 
-                    DocHandler.OpenDocument(_exportPath);
                 }
                 catch (Exception ex)
                 {
@@ -88,6 +115,9 @@ namespace ProjetaHDR.UI.ViewModels
                     handler.ExceptionClose();
                     handler.Dispose();
                 }
+
+                CloseWindow?.Invoke();
+
             }
         }
 
