@@ -160,6 +160,9 @@
   <ItemGroup>
     <Resource Include="ProjetaHDR\Resources\pitagoras.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProjetaHDR\Resources\projeta.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM Define os caminhos corretamente

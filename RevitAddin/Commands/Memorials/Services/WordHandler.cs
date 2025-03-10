@@ -190,6 +190,8 @@ namespace ProjetaHDR
                     // Mantém posição e tamanho
                     newShape.Left = left;
                     newShape.Top = top;
+
+
                     newShape.Width = width;
                     newShape.Height = height;
 

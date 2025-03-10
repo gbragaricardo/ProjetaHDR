@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,7 +15,7 @@ namespace ProjetaHDR.UI.ViewModels
     {
         public string ExportPath { get; set; }
 
-        private string _cidade = "Belo Horizonte";
+        private string _cidade;
         public string InputCidade
         {
             get => _cidade;
@@ -28,7 +29,7 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        private string _estado = "Minas Gerais";
+        private string _estado = "MG";
         public string InputEstado
         {
             get => _estado;
@@ -66,6 +67,9 @@ namespace ProjetaHDR.UI.ViewModels
 
         private void Replace(object parameter)
         {
+            if (string.IsNullOrWhiteSpace(InputCidade) || string.IsNullOrWhiteSpace(InputEstado))
+                return;
+
             using (var handler = new WordHandler(_doc.ProjectInformation, ExportPath))
             {
                 try
@@ -80,12 +84,15 @@ namespace ProjetaHDR.UI.ViewModels
                     handler.ReplaceText("ProjectName", "Nome do projeto");
                     handler.ReplaceText("Contratante", "Nome do Contratante");
                     handler.ReplaceText("Date", "Data do Projeto");
+
                     handler.ReplaceTextInFooter("TITLE", "Título do Arquivo");
+
                     handler.ReplaceText("City", InputCidade);
                     handler.ReplaceText("State", InputEstado);
+
                     if (consorcioFullName != null)
                     {
-                        handler.ReplaceTextInFooter("Consorcio", consorcioFullName);
+                        handler.ReplaceTextInFooter("Consorcio", consorcioFullName.ToUpper());
                         handler.ReplaceText("Consorcio", consorcioFullName);
 
                         var consorcioImagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", $"{sheet.Consorcio}.png");
