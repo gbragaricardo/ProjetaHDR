@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 namespace ProjetaHDR
@@ -14,6 +15,10 @@ namespace ProjetaHDR
         protected void InitializeContext(ExternalCommandData commandData)
         {
             Context = new RevitContext(commandData.Application);
+        }
+        protected void InitializeContextEvent(UIApplication UIApp)
+        {
+            Context = new RevitContext(UIApp);
         }
     }
 }

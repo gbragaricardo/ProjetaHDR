@@ -78,6 +78,8 @@
     <Compile Include="UI\MVVMCore\ObservableObject.cs" />
     <Compile Include="UI\MVVMCore\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
+    <Compile Include="UI\Services\Events\DownloadFamilyEvent.cs" />
+    <Compile Include="UI\Services\OverLoadOption.cs" />
     <Compile Include="UI\ViewModels\FamiliesViewModel.cs" />
     <Compile Include="UI\ViewModels\ExportMMDViewModel.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
@@ -150,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ProjetaHDR\Icons\dev.png" />
+    <Resource Include="ProjetaHDR\UIResources\download.png" />
     <Resource Include="ProjetaHDR\Icons\projeta.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

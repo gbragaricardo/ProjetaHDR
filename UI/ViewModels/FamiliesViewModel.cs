@@ -6,6 +6,9 @@ using System.IO;
 using System.Windows.Input;
 using System;
 using System.Reflection;
+using ProjetaHDR.UI.Events;
+using Autodesk.Revit.UI;
+using System.Windows.Media.Imaging;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -15,6 +18,8 @@ namespace ProjetaHDR.UI.ViewModels
         //private readonly string familiesDirectory = @"P:\QUALIDADE\11 - ARQUIVOS BASE DAS DISCIPLINAS\SETOR DE BIM\ARQ\002. Bibliotecas\004. Guarda-corpo\001. BALAÚSTRE";  // Caminho das famílias
         private readonly string familiesDirectory = @"C:\Families";
         private readonly string thumbsDirectory; // Caminho das thumbnails
+        private readonly DownloadFamilyEvent _downloadHandler;
+        private readonly ExternalEvent _externalEvent;
 
 
         private string _search;
@@ -32,17 +37,31 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+
+
         public ObservableCollection<FamilyItem> Families { get; set; }
 
-        public ICommand RefreshCommand { get; }
+        public RelayCommand RefreshCommand { get; }
+        public RelayCommand DownloadCommand { get; }
+        public BitmapImage ImagePath { get; set; }
+
+
 
         public FamiliesViewModel()
         {
-            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "UIResources", "logo-projeta-main.png");
+            _downloadHandler = new DownloadFamilyEvent();
+            _externalEvent = ExternalEvent.Create(_downloadHandler);
+
+            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "UIResources", "download.png");
+            if (File.Exists(imagePath))
+            {
+                ImagePath = new BitmapImage(new Uri(imagePath));
+            }
 
             thumbsDirectory = Path.Combine(familiesDirectory, "Thumbs");
             Families = new ObservableCollection<FamilyItem>();
             RefreshCommand = new RelayCommand(_ => LoadFamilies());
+            DownloadCommand = new RelayCommand(param => DownloadFamily(param));
             LoadFamilies();
         }
 
@@ -58,6 +77,14 @@ namespace ProjetaHDR.UI.ViewModels
             foreach (var file in files)
             {
                 Families.Add(new FamilyItem(file, thumbsDirectory));
+            }
+
+
+
+            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "UIResources", "download.png");
+            if (File.Exists(imagePath))
+            {
+                ImagePath = new BitmapImage(new Uri(imagePath));
             }
         }
         private void LoadFamilies(string search)
@@ -76,6 +103,15 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 Families.Add(new FamilyItem(file, thumbsDirectory));
             }
+        }
+
+        private void DownloadFamily(object parameter)
+        {            
+            FamilyItem selectedFamily = parameter as FamilyItem;
+            string familyPath = selectedFamily.FilePath;
+
+            _downloadHandler.SetFamilyPath(selectedFamily.Name ,familyPath);
+            _externalEvent.Raise();
         }
 
     }
