@@ -1,0 +1,55 @@
+﻿<Window x:Class="ProjetaHDR.UI.Views.DrenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ProjetaHDR.UI.Views"
+        xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
+        d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
+        mc:Ignorable="d" 
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        Height="600"
+        Width="900"
+        Background="Transparent"
+        Title="ProjetaHDR"
+        WindowStartupLocation="CenterScreen">
+
+    <Border Background="#E7E7E7"
+            Padding="15">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding QuantidadePecas}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding DataContext.NomesPecas,
+                                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                              
+                                              SelectedIndex="{Binding QuantidadePecas.,
+                                                              Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <Button Command="{Binding DataContext.AddComboBoxCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            Margin="0 5 0 0"
+                                            Height="25"
+                                            Width="25"/>
+                                    
+                                    
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            
+            
+        </Grid>
+    </Border>
+</Window>

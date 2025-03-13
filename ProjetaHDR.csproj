@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\DrenCalc\FixtureFamilyItem.cs" />
     <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
@@ -92,8 +93,12 @@
     <Compile Include="UI\Core\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />
     <Compile Include="UI\Services\SaveImageNamesToFile.cs" />
+    <Compile Include="UI\ViewModels\DrenViewModel.cs" />
     <Compile Include="UI\ViewModels\LoginViewModel.cs" />
     <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
+    <Compile Include="UI\Views\DrenWindow.xaml.cs">
+      <DependentUpon>DrenWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Views\WordExportWindow.xaml.cs">
       <DependentUpon>WordExportWindow.xaml</DependentUpon>
     </Compile>
@@ -115,6 +120,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\Themes\InputBoxTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Views\DrenWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
