@@ -30,6 +30,8 @@ namespace ProjetaHDR.Commands
             if (ViewModel == null)
                 ViewModel = new DrenViewModel(Context);
 
+            ViewModel.Context = Context;
+
             if (Window == null || !Window.IsVisible)
             {
                 Window = new DrenWindow(ViewModel);

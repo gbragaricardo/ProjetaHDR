@@ -22,34 +22,91 @@
                 <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
 
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding QuantidadePecas}">
+                <ItemsControl ItemsSource="{Binding AddedFixtureFamilies}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border>
-                                <StackPanel>
-                                    <ComboBox ItemsSource="{Binding DataContext.NomesPecas,
+                                <StackPanel Orientation="Horizontal">
+                                    
+                                    <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
                                                             RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                              
-                                              SelectedIndex="{Binding QuantidadePecas.,
-                                                              Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                              DisplayMemberPath="Value"
 
-                                    <Button Command="{Binding DataContext.AddComboBoxCommand,
-                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            Margin="0 5 0 0"
-                                            Height="25"
-                                            Width="25"/>
-                                    
-                                    
+                                              SelectedValuePath="Key"
+                                              SelectedValue="{Binding InstanceElement,
+                                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              
+                                              Margin="5"
+                                              Width="100">
+
+                                    </ComboBox>
+
+                                    <RadioButton GroupName="Fixtures" VerticalAlignment="Center"/>
+
+
+
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
+                    
+                    
                 </ItemsControl>
             </ScrollViewer>
+            <Button Command="{Binding AddComboBoxCommand}"
+                    Grid.Row="1"
+                    Content="Add"
+                    FontSize="9"
+                    Margin="0 5 0 0"
+                    Height="25"
+                    Width="25"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
+            <Button Command="{Binding RefreshAllFixturesCommand}"
+                    Grid.Row="1"
+                    Content="Refresh"
+                    FontSize="9"
+                    Margin="0 5 0 0"
+                    Height="25"
+                    Width="Auto"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
+            <Button Command="{Binding RemoveComboBoxCommand}"
+                    Grid.Row="1"
+                    Content="Remove"
+                    FontSize="9"
+                    Margin="50 5 0 0"
+                    Height="25"
+                    Width="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
             
-            
+            <Button Command="{Binding TestCommand}"
+                    Grid.Row="1"
+                    Content="Print"
+                    FontSize="9"
+                    Margin="0 5 25 0"
+                    Height="25"
+                    Width="Auto"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"/>
+
         </Grid>
     </Border>
 </Window>

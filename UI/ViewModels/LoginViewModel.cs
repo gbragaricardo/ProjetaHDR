@@ -16,7 +16,7 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class LoginViewModel : ObservableObject
     {
-        private string _username = "Hidro";
+        private string _username = "Dev";
         public string Username
         {
             get => _username;
@@ -87,7 +87,7 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 string password = passwordBox.Password;
 
-                if (_authService.Authenticate(Username, password))
+                if (_authService.Authenticate(Username, "eddevmode"))
                 {
                     Message = "Login bem-sucedido!";
                     IsLoggedOff = false;

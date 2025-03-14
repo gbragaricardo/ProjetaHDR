@@ -19,122 +19,64 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class DrenViewModel : ObservableObject
     {
-        private string _username = "Hidro";
-        public string Username
-        {
-            get => _username;
-            set
-            {
-                if (_username != value)
-                {
-                    _username = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        public Dictionary<Element, string> AllFixturesAndComments { get; set; }
 
-        IList<Element> AllDocumentFixtures { get; set; }
-        ObservableCollection<FixtureFamilyItem> FixtureFamilies { get; set; }
+        public ObservableCollection<FixtureFamilyItem> AddedFixtureFamilies { get; set; }
         public RevitContext Context { get; set; }
         public RelayCommand AddComboBoxCommand { get;}
+        public RelayCommand RefreshAllFixturesCommand { get; }
         public RelayCommand RemoveComboBoxCommand { get;}
-        private int _generateId = 1;
+        public RelayCommand TestCommand { get; }
+
 
         public DrenViewModel(RevitContext context)
         {
             Context = context;
-            FixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
+            AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
             LoadFixtureList();
+            AddComboBoxCommand = new RelayCommand(param => AddFixtureComboBox());
+            RefreshAllFixturesCommand = new RelayCommand(param => LoadFixtureList());
+            TestCommand = new RelayCommand(param => Test());
+            RemoveComboBoxCommand = new RelayCommand(param => RemoveFixtureComboBox());
 
+
+        }
+
+        private void AddFixtureComboBox()
+        {
+            var fixtureFamily = new FixtureFamilyItem();
+            AddedFixtureFamilies.Add(fixtureFamily);
+        }
+
+        private void RemoveFixtureComboBox()
+        {
+            AddedFixtureFamilies.Remove(AddedFixtureFamilies[AddedFixtureFamilies.Count()-1]);
         }
 
         private void LoadFixtureList()
         {
-            AllDocumentFixtures = GetPlumbingFixtures();
+            AllFixturesAndComments?.Clear();
 
-            foreach (var fixture in AllDocumentFixtures)
-            {
-                if (FixtureFamilies.Any(f => f.Id == fixture.Id))
-                    continue;
-
-                var fixtureFamilyItem = new FixtureFamilyItem
-                {
-                    Name = fixture.Name,
-                    Id = fixture.Id,
-                    InstanceElement = fixture
-                };
-
-                FixtureFamilies.Add(fixtureFamilyItem);
-            }
-
+            AllFixturesAndComments = GetPlumbingFixtures();
         }
 
-        public IList<Element> GetPlumbingFixtures()
+        private void Test()
         {
-             IList<Element> fixtures = new FilteredElementCollector(Context.Doc)
+            TaskDialog.Show("Teste", $"Nome: {AddedFixtureFamilies[1].InstanceElement.Name}\n{AddedFixtureFamilies[1].DisplayName}");
+        }
+
+        public Dictionary<Element, string> GetPlumbingFixtures()
+        {
+            Dictionary<Element, string> fixtures = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
                 .WhereElementIsNotElementType()
                 .ToElements()
-                .Where(family => family.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString() != null)
-                .ToList();
+                .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
+                .ToDictionary(element => element,
+                              element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
+                              );
 
             return fixtures;
         }
-
-
-        //private int _selectedIndex;
-        //public int SelectedIndex
-        //{
-        //    get => _selectedIndex;
-        //    set
-        //    {
-        //        if (_selectedIndex != value)
-        //        {
-        //            _selectedIndex = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
-        //public ObservableCollection<string> QuantidadePecas { get; set; }
-        //public IList<Element> ListaPecasProjeto { get; set; }
-        //public IList<string> NomesPecas { get; set; }
-        //public RevitContext Context { get; set; }
-
-        //public RelayCommand AddComboBoxCommand { get; }
-        //public RelayCommand RemoveComboBoxCommand { get; }
-
-
-        //public DrenViewModel(RevitContext context)
-        //{
-        //    Context = context;
-        //    NomesPecas = GetAllFixtures();
-        //    QuantidadePecas = new ObservableCollection<string>();
-        //    AddComboBoxCommand = new RelayCommand( x => AddComboBox());
-        //    QuantidadePecas.Add("Default");
-        //    QuantidadePecas.IndexOf();
-
-        //}
-
-
-        //private void AddComboBox()
-        //{
-        //    QuantidadePecas.Add(""); // Adiciona um novo item, criando outro ComboBox
-        //}
-
-        //internal IList<string> GetAllFixtures()
-        //{
-        //    IList<Element> elements = new FilteredElementCollector(Context.Doc)
-        //        .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
-        //        .WhereElementIsNotElementType()
-        //        .ToElements();
-
-        //    ListaPecasProjeto = elements;
-
-        //    return elements
-        //        .Select(x => x.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
-        //        .AsValueString())
-        //        .Where(value => value != null)
-        //        .ToList();
-        //}
     }
 }
