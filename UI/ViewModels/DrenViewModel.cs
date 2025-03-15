@@ -1,25 +1,18 @@
 ﻿using Autodesk.Revit.UI;
-using ProjetaHDR.Commands;
-using ProjetaHDR.UI.Services;
-using System.Windows.Input;
-using System.Windows.Controls;
 using Autodesk.Revit.DB;
-using ProjetaHDR.Startup;
-using System.Reflection;
-using System.IO;
-using System.Windows.Media.Imaging;
 using System;
-using System.Drawing;
-using System.Windows;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
+using ProjetaHDR.Commands.Services;
+using ProjetaHDR.RevitAddin.Commands.Services;
 
 namespace ProjetaHDR.UI.ViewModels
 {
     internal class DrenViewModel : ObservableObject
     {
-        public Dictionary<Element, string> AllFixturesAndComments { get; set; }
+
+        public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
 
         public ObservableCollection<FixtureFamilyItem> AddedFixtureFamilies { get; set; }
         public RevitContext Context { get; set; }
@@ -32,13 +25,14 @@ namespace ProjetaHDR.UI.ViewModels
         public DrenViewModel(RevitContext context)
         {
             Context = context;
-            AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
-            LoadFixtureList();
             AddComboBoxCommand = new RelayCommand(param => AddFixtureComboBox());
             RefreshAllFixturesCommand = new RelayCommand(param => LoadFixtureList());
-            TestCommand = new RelayCommand(param => Test());
             RemoveComboBoxCommand = new RelayCommand(param => RemoveFixtureComboBox());
+            TestCommand = new RelayCommand(param => Test());
 
+            AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
+            LoadFixturesFromRevit();
+            LoadFixtureList();
 
         }
 
@@ -53,26 +47,51 @@ namespace ProjetaHDR.UI.ViewModels
             AddedFixtureFamilies.Remove(AddedFixtureFamilies[AddedFixtureFamilies.Count()-1]);
         }
 
-        private void LoadFixtureList()
+        internal void LoadFixtureList()
         {
             AllFixturesAndComments?.Clear();
 
             AllFixturesAndComments = GetPlumbingFixtures();
         }
 
-        private void Test()
+        public void ValidateFixtureItems()
         {
-            TaskDialog.Show("Teste", $"Nome: {AddedFixtureFamilies[1].InstanceElement.Name}\n{AddedFixtureFamilies[1].DisplayName}");
+            foreach (var item in AddedFixtureFamilies)
+            {
+                if (item.InstanceElementId != null && !AllFixturesAndComments.ContainsKey(item.InstanceElementId))
+                {
+                    item.InstanceElementId = ElementId.InvalidElementId;
+                }
+            }
         }
 
-        public Dictionary<Element, string> GetPlumbingFixtures()
+        private void Test()
         {
-            Dictionary<Element, string> fixtures = new FilteredElementCollector(Context.Doc)
+            TaskDialog.Show("Teste", $"Nome: {AddedFixtureFamilies[0].InstanceElementId}\n{AddedFixtureFamilies[0].Comment}");
+        }
+
+        public void SaveDataStorage()
+        {
+            FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
+        }
+
+        public void LoadFixturesFromRevit()
+        {
+            AddedFixtureFamilies.Clear();
+            var loadedFixtures = FixtureStorageManager.LoadDataFromRevit(Context.Doc);
+
+            foreach (var fixture in loadedFixtures)
+                AddedFixtureFamilies.Add(fixture);
+        }
+
+        public Dictionary<ElementId, string> GetPlumbingFixtures()
+        {
+            Dictionary<ElementId, string> fixtures = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
                 .WhereElementIsNotElementType()
                 .ToElements()
                 .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
-                .ToDictionary(element => element,
+                .ToDictionary(element => element.Id,
                               element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
                               );
 

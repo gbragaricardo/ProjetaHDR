@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ProjetaHDR.UI.Views"
+        xmlns:converters="clr-namespace:ProjetaHDR.UI.Converters"
         xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
         d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
         mc:Ignorable="d" 
@@ -14,6 +15,14 @@
         Background="Transparent"
         Title="ProjetaHDR"
         WindowStartupLocation="CenterScreen">
+
+
+    <Window.Resources>
+        <converters:NullToValueConverter x:Key="NullToValueConverter"/>
+    </Window.Resources>
+
+    
+
 
     <Border Background="#E7E7E7"
             Padding="15">
@@ -33,18 +42,16 @@
                         <DataTemplate>
                             <Border>
                                 <StackPanel Orientation="Horizontal">
-                                    
+
                                     <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
                                                             RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                               DisplayMemberPath="Value"
-
                                               SelectedValuePath="Key"
-                                              SelectedValue="{Binding InstanceElement,
-                                                             Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              
+                                              SelectedValue="{Binding InstanceElementId,
+                                                              Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Margin="5"
                                               Width="100">
-
+                                        
                                     </ComboBox>
 
                                     <RadioButton GroupName="Fixtures" VerticalAlignment="Center"/>

@@ -64,7 +64,8 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
-    <Compile Include="RevitAddin\Commands\DrenCalc\FixtureFamilyItem.cs" />
+    <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureFamilyItem.cs" />
+    <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureStorageManager.cs" />
     <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="RevitAddin\Commands\Tags\Services\TagManager.cs" />
     <Compile Include="RevitAddin\Utils\BasicUtils.cs" />
     <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
+    <Compile Include="UI\Converters\NullToValueConverter.cs" />
     <Compile Include="UI\Core\ObservableObject.cs" />
     <Compile Include="UI\Core\RelayCommand.cs" />
     <Compile Include="UI\Services\AuthService.cs" />

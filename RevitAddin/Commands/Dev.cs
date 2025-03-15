@@ -27,10 +27,26 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
+            if (ViewModel != null)
+            {
+                if (!ViewModel.Context.Doc.IsValidObject)
+                {
+                    ViewModel = null;
+                    Window = null;
+                }
+                else if (ViewModel.Context.Doc.CreationGUID != Context.Doc.CreationGUID)
+                {
+                    ViewModel = null;
+                    Window = null;
+                }
+            }
+
             if (ViewModel == null)
                 ViewModel = new DrenViewModel(Context);
 
             ViewModel.Context = Context;
+            ViewModel.LoadFixtureList();
+            ViewModel.ValidateFixtureItems();
 
             if (Window == null || !Window.IsVisible)
             {
@@ -41,6 +57,8 @@ namespace ProjetaHDR.Commands
             {
                 Window.Focus();
             }
+
+            ViewModel.SaveDataStorage();
 
             return Result.Succeeded;
         }
