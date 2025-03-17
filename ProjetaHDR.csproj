@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
-    <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureFamilyItem.cs" />
+    <Compile Include="UI\ViewModels\FixtureFamilyItem.cs" />
     <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureStorageManager.cs" />
     <Compile Include="RevitAddin\Commands\Login.cs" />
     <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
@@ -89,7 +89,10 @@
     <Compile Include="RevitAddin\Commands\Tags\Services\HelperMethods.cs" />
     <Compile Include="RevitAddin\Commands\Tags\Services\TagManager.cs" />
     <Compile Include="RevitAddin\Utils\BasicUtils.cs" />
+    <Compile Include="RevitAddin\Utils\ResourceAssembly.cs" />
+    <Compile Include="RevitAddin\Utils\ResourceImage.cs" />
     <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
+    <Compile Include="UI\Converters\BitmapImageConverter.cs" />
     <Compile Include="UI\Converters\NullToValueConverter.cs" />
     <Compile Include="UI\Core\ObservableObject.cs" />
     <Compile Include="UI\Core\RelayCommand.cs" />
@@ -118,7 +121,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\blueword.ico" />
+    <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\Themes\InputBoxTheme.xaml">
@@ -139,40 +142,56 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\dev.ico" />
-    <Resource Include="ProjetaHDR\Icons\projeta.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\dev.ico" />
+    <EmbeddedResource Include="RevitAddin\Icons\projeta.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Resources\logo-projeta-main.png" />
+    <EmbeddedResource Include="RevitAddin\Resources\logo-projeta-main.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\eggprojeta.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\eggprojeta.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\diameter.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\diameter.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\porcentagem.png" />
-    <Resource Include="ProjetaHDR\Icons\setafluxo.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\porcentagem.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\setafluxo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\parameters.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\parameters.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Icons\etapaseduc.png" />
+    <EmbeddedResource Include="RevitAddin\Icons\etapaseduc.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Resources\diamante.png" />
-    <Resource Include="ProjetaHDR\Resources\minas.png" />
-    <Resource Include="ProjetaHDR\Resources\objetiva.png" />
-    <Resource Include="ProjetaHDR\Resources\vitoria.png" />
-    <Resource Include="ProjetaHDR\Resources\metaverso.png" />
+    <Resource Include="ProjetaHDR\Images\diamante.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ProjetaHDR\Resources\pitagoras.png" />
+    <Resource Include="ProjetaHDR\Images\metaverso.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ProjetaHDR\Resources\projeta.png" />
+    <Resource Include="ProjetaHDR\Images\minas.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Images\objetiva.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Images\pitagoras.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Images\projeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProjetaHDR\Images\vitoria.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RevitAddin\Resources\add.png" />
+    <EmbeddedResource Include="RevitAddin\Resources\arrowdown.png" />
+    <EmbeddedResource Include="RevitAddin\Resources\arrowup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RevitAddin\Resources\remove.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

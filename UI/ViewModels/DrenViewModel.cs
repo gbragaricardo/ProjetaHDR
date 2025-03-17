@@ -4,8 +4,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
-using ProjetaHDR.Commands.Services;
 using ProjetaHDR.RevitAddin.Commands.Services;
+using ProjetaHDR.Utils;
+using Microsoft.Office.Interop.Word;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -16,7 +17,9 @@ namespace ProjetaHDR.UI.ViewModels
 
         public ObservableCollection<FixtureFamilyItem> AddedFixtureFamilies { get; set; }
         public RevitContext Context { get; set; }
-        public RelayCommand AddComboBoxCommand { get;}
+        public RelayCommand AddComboBoxCommand { get; }
+        public RelayCommand MoveUpCommand { get; }
+        public RelayCommand MoveDownCommand { get; }
         public RelayCommand RefreshAllFixturesCommand { get; }
         public RelayCommand RemoveComboBoxCommand { get;}
         public RelayCommand TestCommand { get; }
@@ -28,6 +31,9 @@ namespace ProjetaHDR.UI.ViewModels
             AddComboBoxCommand = new RelayCommand(param => AddFixtureComboBox());
             RefreshAllFixturesCommand = new RelayCommand(param => LoadFixtureList());
             RemoveComboBoxCommand = new RelayCommand(param => RemoveFixtureComboBox());
+            MoveUpCommand = new RelayCommand(param => MoveSelectedItem(- 1));
+            MoveDownCommand = new RelayCommand(param => MoveSelectedItem(+ 1));
+
             TestCommand = new RelayCommand(param => Test());
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
@@ -36,15 +42,41 @@ namespace ProjetaHDR.UI.ViewModels
 
         }
 
+        private void MoveSelectedItem(int direction)
+        {
+            var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
+
+            if (selectedItem == null)
+                return;
+
+            int index = AddedFixtureFamilies.IndexOf(selectedItem);
+            int newIndex = index + direction;
+
+            if (newIndex < 0 || newIndex >= AddedFixtureFamilies.Count)
+                return;
+
+            AddedFixtureFamilies.Move(index, newIndex);
+        }
+
         private void AddFixtureComboBox()
         {
             var fixtureFamily = new FixtureFamilyItem();
-            AddedFixtureFamilies.Add(fixtureFamily);
+            var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
+
+            if (selectedItem == null)
+                AddedFixtureFamilies.Add(fixtureFamily);
+            else
+                AddedFixtureFamilies.Insert(AddedFixtureFamilies.IndexOf(selectedItem) + 1, fixtureFamily);
         }
 
         private void RemoveFixtureComboBox()
         {
-            AddedFixtureFamilies.Remove(AddedFixtureFamilies[AddedFixtureFamilies.Count()-1]);
+            var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
+
+            if (selectedItem == null)
+                return;
+            else
+                AddedFixtureFamilies.RemoveAt(AddedFixtureFamilies.IndexOf(selectedItem));
         }
 
         internal void LoadFixtureList()

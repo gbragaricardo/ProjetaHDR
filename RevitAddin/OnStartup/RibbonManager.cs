@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.UI;
+using ProjetaHDR.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,11 +56,11 @@ namespace ProjetaHDR.Startup
             pushButton.ToolTip = dica;
 
             // Define o caminho para o ícone do botão
-            string iconPath = Path.Combine(Path.GetDirectoryName(ThisAssemblyPath), "Icons", nomeImagem);
+            //string iconPath = Path.Combine(Path.GetDirectoryName(ThisAssemblyPath), "Icons", nomeImagem);
 
             // Cria a imagem do ícone
-            Uri uri = new Uri(iconPath);
-            BitmapImage bitmap = new BitmapImage(uri);
+            //Uri uri = new Uri(iconPath);
+            BitmapImage bitmap = ResourceImage.GetIcon(nomeImagem);
 
             // Define a imagem como o ícone do botão
             pushButton.LargeImage = bitmap;

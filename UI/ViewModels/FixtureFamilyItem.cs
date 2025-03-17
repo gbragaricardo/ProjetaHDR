@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using Autodesk.Revit.DB;
 using ProjetaHDR.UI;
 
-namespace ProjetaHDR.Commands.Services
+namespace ProjetaHDR.UI.ViewModels
 {
     internal class FixtureFamilyItem : ObservableObject
     {
@@ -57,26 +57,17 @@ namespace ProjetaHDR.Commands.Services
             }
         }
 
-        //private Element _instanceElement;
-        //public Element InstanceElement
-        //{
-        //    get => _instanceElement;
-        //    set
-        //    {
-        //        if (_instanceElement != value)
-        //        {
-        //            _instanceElement = value;
-        //            OnPropertyChanged();
-        //            Name = _instanceElement.Name;
-        //            Comment= _instanceElement?.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString() ?? "Sem Nome";
-        //        }
-        //    }
-        //}
+        private bool _isSelected;
 
-
-
-
-
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
 
     }
 }

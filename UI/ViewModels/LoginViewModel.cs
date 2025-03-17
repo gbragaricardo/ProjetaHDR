@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System;
 using System.Drawing;
 using System.Windows;
+using ProjetaHDR.Utils;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -71,14 +72,14 @@ namespace ProjetaHDR.UI.ViewModels
             _authService = new AuthService();
             LoginCommand = new RelayCommand(ExecuteLogin);
             _context = context;
+            ImagesPath = ResourceImage.GetResource("logo-projeta-main.png");
 
+            //string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", "logo-projeta-main.png");
 
-            string imagePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Resources", "logo-projeta-main.png");
-
-            if (File.Exists(imagePath))
-            {
-                ImagesPath = new BitmapImage(new Uri(imagePath));
-            }
+            //if (File.Exists(imagePath))
+            //{
+            //    ImagesPath = new BitmapImage(new Uri(imagePath));
+            //}
         }
 
         private void ExecuteLogin(object parameter)
