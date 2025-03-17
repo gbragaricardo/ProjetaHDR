@@ -18,8 +18,16 @@
 
 
     <Window.Resources>
-        <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/RadioComboTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
+        </ResourceDictionary>
+        
     </Window.Resources>
+    
 
     
 
@@ -44,20 +52,25 @@
                             <Border>
                                 <StackPanel Orientation="Horizontal">
 
-                                    <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
-                                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                              DisplayMemberPath="Value"
-                                              SelectedValuePath="Key"
-                                              SelectedValue="{Binding InstanceElementId,
-                                                              Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              Margin="5"
-                                              Width="100">
-                                        
-                                    </ComboBox>
+                                    
 
-                                    <RadioButton GroupName="Fixtures" VerticalAlignment="Center"
+                                    <RadioButton GroupName="Fixtures"
                                                  IsChecked="{Binding IsSelected, Mode=TwoWay,
-                                                                     UpdateSourceTrigger=PropertyChanged}"/>
+                                                                     UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource RadioComboTheme}">
+
+
+                                        <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
+                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                  DisplayMemberPath="Value"
+                                                  SelectedValuePath="Key"
+                                                  SelectedValue="{Binding InstanceElementId,
+                                                                  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Margin="5"
+                                                  Width="100">
+
+                                        </ComboBox>
+                                    </RadioButton>
 
 
 
@@ -142,21 +155,6 @@
                       ConverterParameter='arrowdown.png'}"/>
                 </Button>
 
-                
-
-                <Button Command="{Binding TestCommand}"
-                    FontSize="9"
-                    Margin="0 0 5 0"
-                    Height="25"
-                    Width="25"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center">
-
-                    <Image/>
-                </Button>
-                
             </StackPanel>
         </Grid>
     </Border>

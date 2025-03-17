@@ -62,21 +62,33 @@ namespace ProjetaHDR.UI.ViewModels
         {
             var fixtureFamily = new FixtureFamilyItem();
             var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
+            var selectedIndex = AddedFixtureFamilies.IndexOf(selectedItem);
 
             if (selectedItem == null)
                 AddedFixtureFamilies.Add(fixtureFamily);
             else
-                AddedFixtureFamilies.Insert(AddedFixtureFamilies.IndexOf(selectedItem) + 1, fixtureFamily);
+                AddedFixtureFamilies.Insert(selectedIndex + 1, fixtureFamily);
         }
 
         private void RemoveFixtureComboBox()
         {
             var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
+            var selectedIndex = AddedFixtureFamilies.IndexOf(selectedItem);
 
             if (selectedItem == null)
                 return;
             else
-                AddedFixtureFamilies.RemoveAt(AddedFixtureFamilies.IndexOf(selectedItem));
+                AddedFixtureFamilies.RemoveAt(selectedIndex);
+
+            if (AddedFixtureFamilies.Count == 0) return;
+
+            if (selectedIndex == 0)
+                AddedFixtureFamilies.ElementAtOrDefault(0).IsSelected = true;
+
+            else
+                AddedFixtureFamilies.ElementAtOrDefault(selectedIndex - 1).IsSelected = true;
+
+
         }
 
         internal void LoadFixtureList()
