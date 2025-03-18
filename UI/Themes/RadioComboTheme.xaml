@@ -13,28 +13,29 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
                         
-                        <Grid 
-                              VerticalAlignment="Center"
+                        <Grid VerticalAlignment="Center"
                               HorizontalAlignment="Center"
-                              Width="300"
-                              Height="25"
+                              Width="250"
+                              Height="30"
                               Background="{TemplateBinding Background}"
                               Margin="0 0 0 10">
 
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
 
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFF0F0F0"/>
+            <Setter Property="BorderBrush" Value="#FFACACAC"/>
+            <Setter Property="BorderThickness" Value="1"/>
 
 
         </Style.Setters>
 
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#22202f"/>
+                <Setter Property="Background" Value="#0784bc"/>
             </Trigger>
         </Style.Triggers>
 

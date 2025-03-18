@@ -17,7 +17,7 @@
 
 
     <Window.Resources>
-        <converters:NullToValueConverter x:Key="BitmapImageConverter"/>
+        <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
     </Window.Resources>
     
     <Border Background="#E7E7E7"
@@ -25,7 +25,9 @@
 
         <StackPanel>
 
-            <Image Source="{Binding ImagesPath}"
+            <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                    ConverterParameter='logo-projeta-main.png'}"
+                   RenderOptions.BitmapScalingMode="HighQuality"
                    Stretch="Uniform"
                    HorizontalAlignment="Center"
                    Width="150"

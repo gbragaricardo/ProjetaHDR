@@ -13,6 +13,20 @@ namespace ProjetaHDR.UI.ViewModels
     internal class DrenViewModel : ObservableObject
     {
 
+        //private string _name;
+        //public string Name
+        //{
+        //    get => _name;
+        //    set
+        //    {
+        //        if (_name != value)
+        //        {
+        //            _name = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
+
         public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
 
         public ObservableCollection<FixtureFamilyItem> AddedFixtureFamilies { get; set; }

@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="RevitAPI">
       <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
       <Private>False</Private>
@@ -64,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="UI\Converters\ListToIndexConverter.cs" />
     <Compile Include="UI\ViewModels\FixtureFamilyItem.cs" />
     <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureStorageManager.cs" />
     <Compile Include="RevitAddin\Commands\Login.cs" />
@@ -124,6 +126,10 @@
     <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Themes\TransparentComboTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Themes\RadioComboTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

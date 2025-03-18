@@ -21,6 +21,8 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Themes/RadioComboTheme.xaml"/>
+                <ResourceDictionary Source="../Themes/TransparentComboTheme.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
             
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
@@ -52,27 +54,36 @@
                             <Border>
                                 <StackPanel Orientation="Horizontal">
 
-                                    
+
 
                                     <RadioButton GroupName="Fixtures"
                                                  IsChecked="{Binding IsSelected, Mode=TwoWay,
                                                                      UpdateSourceTrigger=PropertyChanged}"
                                                  Style="{StaticResource RadioComboTheme}">
 
-
-                                        <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
+                                        <Grid>
+                                            <TextBlock Text="{Binding DataContext.AddedFixtureFamilies, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay,
+                                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10 0 0 0"
+                                                       />
+                                            
+                                            <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
                                                                 RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                   DisplayMemberPath="Value"
                                                   SelectedValuePath="Key"
-                                                  SelectedValue="{Binding InstanceElementId,
-                                                                  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  Margin="5"
-                                                  Width="100">
+                                                  SelectedValue="{Binding InstanceElementId, Mode=TwoWay,
+                                                                          UpdateSourceTrigger=PropertyChanged}"
+                                                  Margin="0"
+                                                  MinWidth="125"
+                                                  Style="{StaticResource TransparentCombo}"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalContentAlignment="Center">
+                                            
+                                            </ComboBox>
 
-                                        </ComboBox>
+                                        </Grid>
                                     </RadioButton>
-
-
 
                                 </StackPanel>
                             </Border>
@@ -82,7 +93,7 @@
                     
                 </ItemsControl>
             </ScrollViewer>
-            
+
             <StackPanel Orientation="Horizontal"
                         Grid.Row="1">
                 
@@ -99,8 +110,9 @@
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center">
 
-                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
-                                                ConverterParameter='add.png'}"/>
+                    <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                            ConverterParameter='add.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
                 <Button Command="{Binding RemoveComboBoxCommand}"
@@ -116,7 +128,8 @@
                         VerticalContentAlignment="Center">
 
                     <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
-                            ConverterParameter='remove.png'}"/>
+                                            ConverterParameter='remove.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
                 <Button Command="{Binding MoveUpCommand}"
@@ -134,7 +147,8 @@
                         VerticalContentAlignment="Center">
 
                     <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
-                                          ConverterParameter='arrowup.png'}"/>
+                                            ConverterParameter='arrowup.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
                 <Button Command="{Binding MoveDownCommand}"
@@ -152,10 +166,12 @@
                         VerticalContentAlignment="Center">
 
                     <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
-                      ConverterParameter='arrowdown.png'}"/>
+                                            ConverterParameter='arrowdown.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
             </StackPanel>
+
         </Grid>
     </Border>
 </Window>
