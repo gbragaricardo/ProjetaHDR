@@ -5,29 +5,28 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using ProjetaHDR.RevitAddin.Commands.Services;
-using ProjetaHDR.Utils;
-using Microsoft.Office.Interop.Word;
 
 namespace ProjetaHDR.UI.ViewModels
 {
     internal class DrenViewModel : ObservableObject
     {
 
-        //private string _name;
-        //public string Name
-        //{
-        //    get => _name;
-        //    set
-        //    {
-        //        if (_name != value)
-        //        {
-        //            _name = value;
-        //            OnPropertyChanged();
-        //        }
-        //    }
-        //}
+        private FixtureFamilyItem _selectedFixtureFamily;
+        public FixtureFamilyItem SelectedFixtureFamily
+        {
+            get => _selectedFixtureFamily;
+            set
+            {
+                if (_selectedFixtureFamily != value)
+                {
+                    _selectedFixtureFamily = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
+        public Dictionary<ElementId, string> AllDocumentAreas { get; set; }
 
         public ObservableCollection<FixtureFamilyItem> AddedFixtureFamilies { get; set; }
         public RevitContext Context { get; set; }
@@ -36,6 +35,7 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand MoveDownCommand { get; }
         public RelayCommand RefreshAllFixturesCommand { get; }
         public RelayCommand RemoveComboBoxCommand { get;}
+        public RelayCommand AddAreaCommand { get; }
         public RelayCommand TestCommand { get; }
 
 
@@ -47,13 +47,30 @@ namespace ProjetaHDR.UI.ViewModels
             RemoveComboBoxCommand = new RelayCommand(param => RemoveFixtureComboBox());
             MoveUpCommand = new RelayCommand(param => MoveSelectedItem(- 1));
             MoveDownCommand = new RelayCommand(param => MoveSelectedItem(+ 1));
+            AddAreaCommand = new RelayCommand(param => AddInputArea(param));
 
             TestCommand = new RelayCommand(param => Test());
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
+
             LoadFixturesFromRevit();
             LoadFixtureList();
 
+        }
+
+        private void AddInputArea(object param)
+        {
+            if (SelectedFixtureFamily == null)
+                return;
+
+            if (SelectedFixtureFamily.InputAreasIds.Count == 0)
+                SelectedFixtureFamily.InputAreasIds = new ObservableCollection<ElementId> { ElementId.InvalidElementId };
+            
+            if ( param is ElementId areaId)
+            {
+                var areaIdIndex = SelectedFixtureFamily.InputAreasIds.IndexOf(areaId);
+                SelectedFixtureFamily.InputAreasIds.Insert(areaIdIndex + 1, ElementId.InvalidElementId);
+            }
         }
 
         private void MoveSelectedItem(int direction)
@@ -108,11 +125,13 @@ namespace ProjetaHDR.UI.ViewModels
         internal void LoadFixtureList()
         {
             AllFixturesAndComments?.Clear();
-
             AllFixturesAndComments = GetPlumbingFixtures();
+
+            AllDocumentAreas?.Clear();
+            AllDocumentAreas = GetAllAreas();
         }
 
-        public void ValidateFixtureItems()
+        internal void ValidateFixtureItems()
         {
             foreach (var item in AddedFixtureFamilies)
             {
@@ -121,6 +140,15 @@ namespace ProjetaHDR.UI.ViewModels
                     item.InstanceElementId = ElementId.InvalidElementId;
                 }
             }
+        }
+
+        internal void LoadAndValidate()
+        {
+            LoadFixtureList();
+            OnPropertyChanged(nameof(AllFixturesAndComments));
+
+            ValidateFixtureItems();
+            OnPropertyChanged(nameof(AddedFixtureFamilies));
         }
 
         private void Test()
@@ -154,6 +182,20 @@ namespace ProjetaHDR.UI.ViewModels
                               );
 
             return fixtures;
+        }
+
+        public Dictionary<ElementId, string> GetAllAreas()
+        {
+            Dictionary<ElementId, string> areas = new FilteredElementCollector(Context.Doc)
+                .OfCategory(BuiltInCategory.OST_Areas)
+                .WhereElementIsNotElementType()
+                .ToElements()
+                .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
+                .ToDictionary(element => element.Id,
+                              element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
+                              );
+
+            return areas;
         }
     }
 }

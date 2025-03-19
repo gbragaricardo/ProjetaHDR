@@ -27,5 +27,15 @@ namespace ProjetaHDR.UI.Views
             InitializeComponent();
             DataContext = viewModel;
         }
+
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+            if (DataContext is DrenViewModel viewModel)
+            {
+                viewModel.LoadAndValidate();
+            }
+        }
+
     }
 }

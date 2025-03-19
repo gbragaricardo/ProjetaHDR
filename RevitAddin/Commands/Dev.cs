@@ -14,6 +14,7 @@ using Autodesk.Revit.DB.Plumbing;
 using System.Xml.Linq;
 using ProjetaHDR.UI.ViewModels;
 using ProjetaHDR.UI.Views;
+using System.Windows.Interop;
 
 
 namespace ProjetaHDR.Commands
@@ -26,6 +27,8 @@ namespace ProjetaHDR.Commands
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
+
+            IntPtr revitHandle = Context.UiApp.MainWindowHandle;
 
             if (ViewModel != null)
             {
@@ -41,14 +44,10 @@ namespace ProjetaHDR.Commands
                 }
             }
 
-
-
-            ////PARA TESTE
+            //PARA TESTE
             //ViewModel = null;
             //Window = null;
-            ////PARA TESTE
-
-
+            //PARA TESTE
 
             if (ViewModel == null)
                 ViewModel = new DrenViewModel(Context);
@@ -60,11 +59,15 @@ namespace ProjetaHDR.Commands
             if (Window == null || !Window.IsVisible)
             {
                 Window = new DrenWindow(ViewModel);
-                Window.ShowDialog();
+
+                WindowInteropHelper helper = new WindowInteropHelper(Window);
+                helper.Owner = revitHandle;
+
+                Window.Show();
             }
             else
             {
-                Window.Focus();
+                Window.Close();
             }
 
             ViewModel.SaveDataStorage();

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Autodesk.Revit.DB;
+using ProjetaHDR.Commands;
 using ProjetaHDR.UI;
 
 namespace ProjetaHDR.UI.ViewModels
@@ -66,8 +68,18 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 _isSelected = value;
                 OnPropertyChanged();
+
+                if (_isSelected && Dev.ViewModel != null)
+                {
+                    Dev.ViewModel.SelectedFixtureFamily = this;
+                    OnPropertyChanged(nameof(InputAreasIds));
+                }
             }
         }
+
+        public ObservableCollection<ElementId> InputAreasIds { get; set; } = new ObservableCollection<ElementId>();
+        internal ObservableCollection<ElementId> InputFixtureElementIds { get; set; }
+
 
     }
 }
