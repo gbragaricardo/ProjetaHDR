@@ -44,10 +44,10 @@ namespace ProjetaHDR.Commands
                 }
             }
 
-            //PARA TESTE
+            ////PARA TESTE
             //ViewModel = null;
             //Window = null;
-            //PARA TESTE
+            ////PARA TESTE
 
             if (ViewModel == null)
                 ViewModel = new DrenViewModel(Context);

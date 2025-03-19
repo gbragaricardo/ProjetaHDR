@@ -69,7 +69,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                     entity = storage.GetEntity(schema);
                 }
 
-                List<Entity> fixtureEntities = new List<Entity>();
+                IList<Entity> fixtureEntities = new List<Entity>();
                 
                 foreach (FixtureFamilyItem fixture in fixtures)
                 {
@@ -77,8 +77,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
 
                     fixtureEntity.Set("Id", fixture.Id);
                     fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId);
-                    fixtureEntity.Set("InputAreasIds", fixture.InputAreas.Select(a => a.InstanceElementId).ToList());
-                    fixtureEntity.Set("InputFixturesIds", fixture.InputFixtureItems.Select(f => f.InstanceElementId).ToList());
+                    fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
+                    fixtureEntity.Set("InputFixturesIds", (IList<ElementId>)fixture.InputFixtureItems.Select(f => f.InstanceElementId ?? ElementId.InvalidElementId).ToList());
 
                     fixtureEntities.Add(fixtureEntity);
                 }
