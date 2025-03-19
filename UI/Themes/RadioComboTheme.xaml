@@ -15,7 +15,7 @@
                         
                         <Grid VerticalAlignment="Center"
                               HorizontalAlignment="Center"
-                              Width="250"
+                              Width="{TemplateBinding Width}"
                               Height="30"
                               Background="{TemplateBinding Background}"
                               Margin="0 0 0 10">

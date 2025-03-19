@@ -22,9 +22,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Themes/RadioComboTheme.xaml"/>
                 <ResourceDictionary Source="../Themes/TransparentComboTheme.xaml"/>
-
             </ResourceDictionary.MergedDictionaries>
-            
+
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
         </ResourceDictionary>
         
@@ -39,7 +38,6 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -59,7 +57,8 @@
                                     <RadioButton GroupName="Fixtures"
                                                  IsChecked="{Binding IsSelected, Mode=TwoWay,
                                                                      UpdateSourceTrigger=PropertyChanged}"
-                                                 Style="{StaticResource RadioComboTheme}">
+                                                 Style="{StaticResource RadioComboTheme}"
+                                                 Width="250">
 
                                         <Grid>
                                             <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
@@ -168,26 +167,22 @@
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
-                <Button Command="{Binding TestCommand}"
-                        CommandParameter="{Binding DataContext.SelectedFixture, 
-                                           RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                        FontSize="9"
-                        Margin="0 0 15 0"
-                        Height="25"
-                        Width="25"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center">
-                </Button>
-
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="0">
-
-                <StackPanel Orientation="Horizontal">
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch">
                     
                 
                     <TextBlock Text="AREAS"
@@ -195,8 +190,6 @@
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Button Command="{Binding AddAreaCommand}"
-                            CommandParameter="{Binding DataContext.SelectedFixtureFamily.InputAreasIds[(ItemsControl.AlternationIndex)], 
-                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             Margin="0 0 10 0"
                             Height="25"
                             Width="25"
@@ -211,72 +204,167 @@
                                 ConverterParameter='add.png'}"
                                RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
-                    
-                    
+                    <Button Command="{Binding RemoveAreaCommand}"
+                            Margin="0 0 10 0"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                        ConverterParameter='remove.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+
+
                 </StackPanel>
 
-                <ScrollViewer Margin="25"
-                              VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                <ScrollViewer Grid.Column="0" Grid.Row="0"
+                              Margin="25"
+                              HorizontalAlignment="Stretch"
                               Height="200">
 
-                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreasIds , Mode=TwoWay,
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
                                                 AlternationCount="200">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border>
+                                <Border Padding="5">
                                     <StackPanel Orientation="Horizontal">
-                                        
-                                        <RadioButton x:Name="AreaRadio"
-                                                     GroupName="Areas"
-                                                     IsChecked="{Binding (RadioButton.IsChecked), Mode=TwoWay,
-                                                                          UpdateSourceTrigger=PropertyChanged}"
-                                                     Tag="{Binding}"/>
 
-                                        <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
-                                                          RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                        <RadioButton GroupName="Areas"
+                                                     IsChecked="{Binding IsSelected,
+                                                                         Mode=TwoWay,
+                                                                         UpdateSourceTrigger=PropertyChanged}"
+                                                     
+                                                     Style="{StaticResource RadioComboTheme}"
+                                                     Width="150">
+
+                                            <Grid>
+                                                <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
+                                                                           RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                           
+                                                           VerticalAlignment="Center"
+                                                           Margin="10 0 0 0"/>
+
+                                                <ComboBox ItemsSource="{Binding DataContext.AllDocumentAreas,
+                                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          DisplayMemberPath="Value"
+                                                          SelectedValuePath="Key"
+                                                          SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          
+                                                          Margin="0"
+                                                          MinWidth="125"
+                                                          Style="{StaticResource TransparentCombo}"
+                                                          HorizontalAlignment="Right"
+                                                          VerticalContentAlignment="Center">
+
+                                                </ComboBox>
+                                            </Grid>
+                                        </RadioButton>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-            </StackPanel>
 
 
 
-            <StackPanel Grid.Column="2" Grid.Row="0">
-                
-            
-                <TextBlock Text="PEÇAS"
-                           Grid.Column="2"
-                           Margin="0 15 0 0"
-                           HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                
-            
-                <ScrollViewer Grid.Column="2" Grid.Row="0"
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top">
+
+
+                    <TextBlock Text="PECAS"
+                               Margin="93.95 0 10 0"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Button Command="{Binding AddAreaCommand}"
+                            Margin="0 0 10 0"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                ConverterParameter='add.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+
+                    <Button Command="{Binding RemoveAreaCommand}"
+                            Margin="0 0 10 0"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                        ConverterParameter='remove.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                </StackPanel>
+
+                <ScrollViewer Grid.Column="1" Grid.Row="0"
                               Margin="25"
-                              VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                              HorizontalAlignment="Stretch"
                               Height="200">
 
-                    <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
-                                 UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
+                                AlternationCount="200">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border>
+                                <Border Padding="5">
                                     <StackPanel Orientation="Horizontal">
-                                        <ComboBox Width="200">
-                                        
-                                        </ComboBox>
+
+                                        <RadioButton GroupName="Pecas"
+                                                     Style="{StaticResource RadioComboTheme}"
+                                                     Width="150">
+
+                                            <Grid>
+                                                <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
+                                                                  RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10 0 0 0"/>
+
+                                                <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies,
+                                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          DisplayMemberPath="Id"
+                                                          SelectedValuePath="Key"
+                                                          SelectedValue="{Binding DataContext.InputAreaIds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          Margin="0"
+                                                          MinWidth="125"
+                                                          Style="{StaticResource TransparentCombo}"
+                                                          HorizontalAlignment="Right"
+                                                          VerticalContentAlignment="Center">
+
+                                                </ComboBox>
+                                            </Grid>
+                                        </RadioButton>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-            </StackPanel>
+            </Grid>
 
         </Grid>
     </Border>

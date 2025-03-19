@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Autodesk.Revit.DB;
 using ProjetaHDR.Commands;
-using ProjetaHDR.UI;
 
 namespace ProjetaHDR.UI.ViewModels
 {
-    internal class FixtureFamilyItem : ObservableObject
+    internal class AreaFamilyItem : ObservableObject
     {
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
@@ -28,6 +25,7 @@ namespace ProjetaHDR.UI.ViewModels
                 }
             }
         }
+
 
         private ElementId _instanceElementId;
         public ElementId InstanceElementId
@@ -46,7 +44,6 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         private bool _isSelected;
-
         public bool IsSelected
         {
             get => _isSelected;
@@ -57,14 +54,9 @@ namespace ProjetaHDR.UI.ViewModels
 
                 if (_isSelected && Dev.ViewModel != null)
                 {
-                    Dev.ViewModel.SelectedFixtureFamily = this;
+                    Dev.ViewModel.SelectedAreaItem = this;
                 }
             }
         }
-
-        public ObservableCollection<AreaFamilyItem> InputAreas { get; set; } = new ObservableCollection<AreaFamilyItem>();
-        public ObservableCollection<FixtureFamilyItem> InputFixtureItems{ get; set; } = new ObservableCollection<FixtureFamilyItem>();
-
-
     }
 }

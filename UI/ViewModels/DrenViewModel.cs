@@ -25,6 +25,20 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        private AreaFamilyItem _selectedAreaItem;
+        public AreaFamilyItem SelectedAreaItem
+        {
+            get => _selectedAreaItem;
+            set
+            {
+                if (_selectedAreaItem != value)
+                {
+                    _selectedAreaItem = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
         public Dictionary<ElementId, string> AllDocumentAreas { get; set; }
 
@@ -36,8 +50,7 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand RefreshAllFixturesCommand { get; }
         public RelayCommand RemoveComboBoxCommand { get;}
         public RelayCommand AddAreaCommand { get; }
-        public RelayCommand TestCommand { get; }
-
+        public RelayCommand RemoveAreaCommand { get; }
 
         public DrenViewModel(RevitContext context)
         {
@@ -48,8 +61,7 @@ namespace ProjetaHDR.UI.ViewModels
             MoveUpCommand = new RelayCommand(param => MoveSelectedItem(- 1));
             MoveDownCommand = new RelayCommand(param => MoveSelectedItem(+ 1));
             AddAreaCommand = new RelayCommand(param => AddInputArea(param));
-
-            TestCommand = new RelayCommand(param => Test());
+            RemoveAreaCommand = new RelayCommand(param => RemoveInputArea(param));
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
 
@@ -58,18 +70,33 @@ namespace ProjetaHDR.UI.ViewModels
 
         }
 
+        private void RemoveInputArea(object param)
+        {
+            var selectedArea = SelectedFixtureFamily.InputAreas.FirstOrDefault(area => area.IsSelected);
+            var selectedAreaIndex = SelectedFixtureFamily.InputAreas.IndexOf(selectedArea);
+
+            if (selectedArea == null)
+                return;
+            else
+                SelectedFixtureFamily.InputAreas.RemoveAt(selectedAreaIndex);
+
+        }
+
         private void AddInputArea(object param)
         {
             if (SelectedFixtureFamily == null)
                 return;
 
-            if (SelectedFixtureFamily.InputAreasIds.Count == 0)
-                SelectedFixtureFamily.InputAreasIds = new ObservableCollection<ElementId> { ElementId.InvalidElementId };
-            
             if ( param is ElementId areaId)
             {
-                var areaIdIndex = SelectedFixtureFamily.InputAreasIds.IndexOf(areaId);
-                SelectedFixtureFamily.InputAreasIds.Insert(areaIdIndex + 1, ElementId.InvalidElementId);
+                var selectedArea = SelectedFixtureFamily.InputAreas.FirstOrDefault(area => area.IsSelected);
+                var selectedAreaIndex = SelectedFixtureFamily.InputAreas.IndexOf(selectedArea);
+
+                SelectedFixtureFamily.InputAreas.Insert(selectedAreaIndex + 1, new AreaFamilyItem());
+            }
+            else
+            {
+                SelectedFixtureFamily.InputAreas.Add(new AreaFamilyItem());
             }
         }
 
@@ -151,11 +178,6 @@ namespace ProjetaHDR.UI.ViewModels
             OnPropertyChanged(nameof(AddedFixtureFamilies));
         }
 
-        private void Test()
-        {
-            TaskDialog.Show("Teste", $"Nome: {AddedFixtureFamilies[0].InstanceElementId}\n{AddedFixtureFamilies[0].Comment}");
-        }
-
         public void SaveDataStorage()
         {
             FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
@@ -192,7 +214,7 @@ namespace ProjetaHDR.UI.ViewModels
                 .ToElements()
                 .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
                 .ToDictionary(element => element.Id,
-                              element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
+                              element => element.get_Parameter(BuiltInParameter.ROOM_NAME).AsValueString()
                               );
 
             return areas;

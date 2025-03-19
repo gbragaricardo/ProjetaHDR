@@ -13,6 +13,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
     internal class FixtureStorageManager
     {
         private static readonly Guid SchemaGuid = new Guid("80F7E558-4204-4A45-95E1-43EBD580CE2E");
+        private static readonly Guid SubSchemaGuid = new Guid("F184919C-0EB0-43C9-94EE-CF7C9B330330");
 
         public static Schema GetOrCreateSchema()
         {
@@ -22,8 +23,19 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
             SchemaBuilder schemaBuilder = new SchemaBuilder(SchemaGuid);
             schemaBuilder.SetSchemaName("DrenCalcStorage");
 
-            schemaBuilder.AddArrayField("Ids", typeof(string));
-            schemaBuilder.AddArrayField("InstanceElementIds", typeof(ElementId));
+            FieldBuilder fieldFixtureItems = schemaBuilder.AddArrayField("FixtureItems", typeof(Entity));
+
+
+            SchemaBuilder fixtureSchemaBuilder = new SchemaBuilder(SubSchemaGuid);
+            fixtureSchemaBuilder.SetSchemaName("FixtureItemSchema");
+
+            fixtureSchemaBuilder.AddSimpleField("Id", typeof(string));
+            fixtureSchemaBuilder.AddSimpleField("InstanceElementId", typeof(ElementId));
+            fixtureSchemaBuilder.AddArrayField("InputAreasIds", typeof(ElementId));
+            fixtureSchemaBuilder.AddArrayField("InputFixturesIds", typeof(ElementId));
+
+            Schema fixtureSchema = fixtureSchemaBuilder.Finish();
+            fieldFixtureItems.SetSubSchemaGUID(SubSchemaGuid);
 
             return schemaBuilder.Finish();
         }
@@ -31,6 +43,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
         public static void SaveDataToRevit(Document doc, ObservableCollection<FixtureFamilyItem> fixtures)
         {
             Schema schema = GetOrCreateSchema();
+            Schema fixtureSchema = schema.GetField("FixtureItems").SubSchema;
 
             using (Transaction transaction = new Transaction(doc, "Salvar Tabela"))
             {
@@ -56,15 +69,20 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                     entity = storage.GetEntity(schema);
                 }
 
-                // Convertendo os dados da lista para Arrays (IList<T>)
-                IList<string> ids = fixtures.Select(f => f.Id).ToList();
-                IList<ElementId> elementIds = fixtures.Select(f => f.InstanceElementId ?? ElementId.InvalidElementId).ToList();
+                List<Entity> fixtureEntities = new List<Entity>();
+                
+                foreach (FixtureFamilyItem fixture in fixtures)
+                {
+                    Entity fixtureEntity = new Entity(fixtureSchema);
 
-                // Armazena os Arrays dentro do Entity
-                entity.Set("Ids", ids);
-                entity.Set("InstanceElementIds", elementIds);
+                    fixtureEntity.Set("Id", fixture.Id);
+                    fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId);
+                    fixtureEntity.Set("InputAreasIds", fixture.InputAreas.Select(a => a.InstanceElementId).ToList());
+                    fixtureEntity.Set("InputFixturesIds", fixture.InputFixtureItems.Select(f => f.InstanceElementId).ToList());
 
-                // Salva a entidade dentro do DataStorage
+                    fixtureEntities.Add(fixtureEntity);
+                }
+                entity.Set("FixtureItems", fixtureEntities);
                 storage.SetEntity(entity);
 
                 transaction.Commit();
@@ -87,16 +105,32 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                 Entity entity = storage.GetEntity(schema);
                 if (entity.IsValid())
                 {
-                    IList<string> ids = entity.Get<IList<string>>("Ids");
-                    IList<ElementId> elementIds = entity.Get<IList<ElementId>>("InstanceElementIds");
 
-                    for (int i = 0; i < ids.Count; i++)
+                    IList<Entity> fixtureEntities = entity.Get<IList<Entity>>("FixtureItems");
+
+                    foreach (Entity fixtureEntity in fixtureEntities)
                     {
-                        loadedFixtures.Add(new FixtureFamilyItem
+                        string id = fixtureEntity.Get<string>("Id");
+                        ElementId instanceElementId = fixtureEntity.Get<ElementId>("InstanceElementId");
+                        IList<ElementId> inputAreasIds = fixtureEntity.Get<IList<ElementId>>("InputAreasIds");
+                        IList<ElementId> inputFixturesIds = fixtureEntity.Get<IList<ElementId>>("InputFixturesIds");
+
+                        FixtureFamilyItem fixtureFamilyItem = new FixtureFamilyItem
                         {
-                            Id = ids[i],
-                            InstanceElementId = elementIds[i]
-                        });
+                            Id = id,
+                            InstanceElementId = instanceElementId,
+                            InputAreas = new ObservableCollection<AreaFamilyItem>(inputAreasIds.Select(areaId => new AreaFamilyItem 
+                            {
+                                InstanceElementId = areaId 
+                            }).ToList()),
+
+                            InputFixtureItems = new ObservableCollection<FixtureFamilyItem>(inputFixturesIds.Select(fixId => new FixtureFamilyItem
+                            {
+                                InstanceElementId = fixId
+                            }).ToList())
+                        };
+
+                        loadedFixtures.Add(fixtureFamilyItem);
                     }
                 }
             }
