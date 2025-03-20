@@ -76,7 +76,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                     Entity fixtureEntity = new Entity(fixtureSchema);
 
                     fixtureEntity.Set("Id", fixture.Id);
-                    fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId);
+                    fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId ?? ElementId.InvalidElementId);
                     fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
                     fixtureEntity.Set("InputFixturesIds", (IList<ElementId>)fixture.InputFixtureItems.Select(f => f.InstanceElementId ?? ElementId.InvalidElementId).ToList());
 

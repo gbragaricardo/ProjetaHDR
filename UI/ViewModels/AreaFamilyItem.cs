@@ -33,12 +33,23 @@ namespace ProjetaHDR.UI.ViewModels
             get => _instanceElementId;
             set
             {
-                if (value == null) _instanceElementId = ElementId.InvalidElementId;
+                if (value == null)
+                {
+                    _instanceElementId = ElementId.InvalidElementId;
+                    OnPropertyChanged();
 
-                if (_instanceElementId != value)
+                    Description = null;
+                }
+                else if (_instanceElementId != value)
                 {
                     _instanceElementId = value;
                     OnPropertyChanged();
+
+                    if (Dev.HelperContext != null)
+                        Description = Dev.HelperContext.Doc.GetElement(_instanceElementId)?.get_Parameter(BuiltInParameter.ROOM_NAME).AsValueString();
+
+                    else
+                        Description = null;
                 }
             }
         }

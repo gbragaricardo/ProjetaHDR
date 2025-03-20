@@ -24,9 +24,12 @@ namespace ProjetaHDR.Commands
     {
         internal static DrenViewModel ViewModel { get; private set; }
         internal static DrenWindow Window { get; private set; }
+        public static RevitContext HelperContext { get; set; }
+
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
+            HelperContext = Context;
 
             IntPtr revitHandle = Context.UiApp.MainWindowHandle;
 
@@ -44,10 +47,10 @@ namespace ProjetaHDR.Commands
                 }
             }
 
-            ////PARA TESTE
+            ////////PARA TESTE
             //ViewModel = null;
             //Window = null;
-            ////PARA TESTE
+            ////////PARA TESTE
 
             if (ViewModel == null)
                 ViewModel = new DrenViewModel(Context);

@@ -39,6 +39,20 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        private FixtureFamilyItem _selectedInputFixture;
+        public FixtureFamilyItem SelectedInputFixture
+        {
+            get => _selectedInputFixture;
+            set
+            {
+                if (_selectedInputFixture != value)
+                {
+                    _selectedInputFixture = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
         public Dictionary<ElementId, string> AllDocumentAreas { get; set; }
 
@@ -51,6 +65,10 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand RemoveComboBoxCommand { get;}
         public RelayCommand AddAreaCommand { get; }
         public RelayCommand RemoveAreaCommand { get; }
+        public RelayCommand AddInputFixtureCommand { get; }
+        public RelayCommand RemoveInputFixtureCommand { get; }
+
+
 
         public DrenViewModel(RevitContext context)
         {
@@ -62,12 +80,53 @@ namespace ProjetaHDR.UI.ViewModels
             MoveDownCommand = new RelayCommand(param => MoveSelectedItem(+ 1));
             AddAreaCommand = new RelayCommand(param => AddInputArea(param));
             RemoveAreaCommand = new RelayCommand(param => RemoveInputArea(param));
+            AddInputFixtureCommand = new RelayCommand(param => AddInputFixture(param));
+            RemoveInputFixtureCommand = new RelayCommand(param => RemoveInputFixture(param));
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
 
             LoadFixturesFromRevit();
             LoadFixtureList();
 
+        }
+
+        private void RemoveInputFixture(object param)
+        {
+            var selectedInputxFixture = SelectedFixtureFamily.InputFixtureItems.FirstOrDefault(fixture => fixture.InputFixtureSelected);
+            var selectedInputFixtureIndex = SelectedFixtureFamily.InputFixtureItems.IndexOf(selectedInputxFixture);
+
+            if (selectedInputxFixture == null)
+                return;
+            else
+                SelectedFixtureFamily.InputFixtureItems.RemoveAt(selectedInputFixtureIndex);
+
+
+            if (SelectedFixtureFamily.InputFixtureItems.Count == 0) return;
+
+
+            if (selectedInputFixtureIndex == 0)
+                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(0).InputFixtureSelected = true;
+
+            else
+                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex - 1).InputFixtureSelected = true;
+        }
+
+        private void AddInputFixture(object param)
+        {
+            if (SelectedFixtureFamily == null)
+                return;
+
+            if (param is ElementId areaId)
+            {
+                var selectedFixture = SelectedFixtureFamily.InputFixtureItems.FirstOrDefault(fixture => fixture.IsSelected);
+                var selectedFixtureIndex = SelectedFixtureFamily.InputFixtureItems.IndexOf(selectedFixture);
+
+                SelectedFixtureFamily.InputFixtureItems.Insert(selectedFixtureIndex + 1, new FixtureFamilyItem());
+            }
+            else
+            {
+                SelectedFixtureFamily.InputFixtureItems.Add(new FixtureFamilyItem());
+            }
         }
 
         private void RemoveInputArea(object param)
@@ -79,6 +138,16 @@ namespace ProjetaHDR.UI.ViewModels
                 return;
             else
                 SelectedFixtureFamily.InputAreas.RemoveAt(selectedAreaIndex);
+
+
+            if (SelectedFixtureFamily.InputAreas.Count == 0) return;
+
+
+            if (selectedAreaIndex == 0)
+                SelectedFixtureFamily.InputAreas.ElementAtOrDefault(0).IsSelected = true;
+
+            else
+                SelectedFixtureFamily.InputAreas.ElementAtOrDefault(selectedAreaIndex - 1).IsSelected = true;
 
         }
 
@@ -166,6 +235,22 @@ namespace ProjetaHDR.UI.ViewModels
                 {
                     item.InstanceElementId = ElementId.InvalidElementId;
                 }
+
+                foreach (var inputItem in item.InputFixtureItems)
+                {
+                    if (inputItem.InstanceElementId != null && !AddedFixtureFamilies.Any(addedFix => addedFix.InstanceElementId == inputItem.InstanceElementId))
+                    {
+                        inputItem.InstanceElementId = ElementId.InvalidElementId;
+                    }
+                }
+
+                foreach (var inputArea in item.InputAreas)
+                {
+                    if (inputArea.InstanceElementId != null && !AllDocumentAreas.ContainsKey(inputArea.InstanceElementId))
+                    {
+                        inputArea.InstanceElementId = ElementId.InvalidElementId;
+                    }
+                }
             }
         }
 
@@ -173,6 +258,8 @@ namespace ProjetaHDR.UI.ViewModels
         {
             LoadFixtureList();
             OnPropertyChanged(nameof(AllFixturesAndComments));
+            OnPropertyChanged(nameof(AllDocumentAreas));
+
 
             ValidateFixtureItems();
             OnPropertyChanged(nameof(AddedFixtureFamilies));
@@ -194,25 +281,31 @@ namespace ProjetaHDR.UI.ViewModels
 
         public Dictionary<ElementId, string> GetPlumbingFixtures()
         {
-            Dictionary<ElementId, string> fixtures = new FilteredElementCollector(Context.Doc)
+            var orderedElementsList = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
                 .WhereElementIsNotElementType()
                 .ToElements()
                 .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
+                .OrderBy(f => f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString());
+
+            Dictionary<ElementId, string> fixturesDictionary = orderedElementsList
                 .ToDictionary(element => element.Id,
                               element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
                               );
 
-            return fixtures;
+            return fixturesDictionary;
         }
 
         public Dictionary<ElementId, string> GetAllAreas()
         {
-            Dictionary<ElementId, string> areas = new FilteredElementCollector(Context.Doc)
+            var orderedAreasList = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_Areas)
                 .WhereElementIsNotElementType()
                 .ToElements()
-                .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
+                .Where(a => !String.IsNullOrEmpty(a.get_Parameter(BuiltInParameter.ROOM_NAME).AsValueString()))
+                .OrderBy(a => a.get_Parameter(BuiltInParameter.ROOM_NAME).AsValueString());
+
+            Dictionary<ElementId, string> areas = orderedAreasList
                 .ToDictionary(element => element.Id,
                               element => element.get_Parameter(BuiltInParameter.ROOM_NAME).AsValueString()
                               );

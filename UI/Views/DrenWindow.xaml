@@ -8,7 +8,7 @@
         xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
         d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
         mc:Ignorable="d" 
-        WindowStyle="ToolWindow"
+        WindowStyle="ThreeDBorderWindow"
         ResizeMode="NoResize"
         Height="600"
         Width="900"
@@ -33,7 +33,7 @@
     
 
 
-    <Border Background="#E7E7E7"
+    <Border Background="#F7F7F7"
             Padding="15">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -41,11 +41,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer>
+            <ScrollViewer Grid.Row="1"
+                          Grid.Column="0">
                 <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                               AlternationCount="200">
@@ -92,7 +94,8 @@
             </ScrollViewer>
 
             <StackPanel Orientation="Horizontal"
-                        Grid.Row="1">
+                        Grid.Column="0"
+                        Grid.Row="2">
 
                 <Button Command="{Binding AddComboBoxCommand}"
                         Grid.Row="1"
@@ -169,13 +172,13 @@
 
             </StackPanel>
 
-            <Grid Grid.Column="1" Grid.Row="0">
+            <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="300"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
@@ -224,8 +227,9 @@
                 </StackPanel>
 
                 <ScrollViewer Grid.Column="0" Grid.Row="0"
-                              Margin="25"
+                              Margin="15"
                               HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
                               Height="200">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
@@ -235,7 +239,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Padding="5">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
 
                                         <RadioButton GroupName="Areas"
                                                      IsChecked="{Binding IsSelected,
@@ -243,7 +248,7 @@
                                                                          UpdateSourceTrigger=PropertyChanged}"
                                                      
                                                      Style="{StaticResource RadioComboTheme}"
-                                                     Width="150">
+                                                     Width="175">
 
                                             <Grid>
                                                 <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
@@ -257,9 +262,9 @@
                                                           DisplayMemberPath="Value"
                                                           SelectedValuePath="Key"
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          
                                                           Margin="0"
-                                                          MinWidth="125"
+                                                          MinWidth="80"
+                                                          MaxWidth="150"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Right"
                                                           VerticalContentAlignment="Center">
@@ -286,7 +291,7 @@
                                Margin="93.95 0 10 0"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                    <Button Command="{Binding AddAreaCommand}"
+                    <Button Command="{Binding AddInputFixtureCommand}"
                             Margin="0 0 10 0"
                             Height="25"
                             Width="25"
@@ -302,7 +307,7 @@
                                RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
 
-                    <Button Command="{Binding RemoveAreaCommand}"
+                    <Button Command="{Binding RemoveInputFixtureCommand}"
                             Margin="0 0 10 0"
                             Height="25"
                             Width="25"
@@ -320,22 +325,28 @@
                 </StackPanel>
 
                 <ScrollViewer Grid.Column="1" Grid.Row="0"
-                              Margin="25"
+                              Margin="15"
                               HorizontalAlignment="Stretch"
+                              VerticalAlignment="Center"
                               Height="200">
 
-                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputFixtureItems , Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}"
                                 AlternationCount="200">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border Padding="5">
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
 
                                         <RadioButton GroupName="Pecas"
+                                                     IsChecked="{Binding InputFixtureSelected,
+                                                                 Mode=TwoWay,
+                                                                 UpdateSourceTrigger=PropertyChanged}"
+                                                     
                                                      Style="{StaticResource RadioComboTheme}"
-                                                     Width="150">
+                                                     Width="175">
 
                                             <Grid>
                                                 <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
@@ -343,14 +354,14 @@
                                                            VerticalAlignment="Center"
                                                            Margin="10 0 0 0"/>
 
-                                                <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies,
+                                                <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies, Mode=TwoWay,
                                                                         RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                          DisplayMemberPath="Id"
-                                                          SelectedValuePath="Key"
-                                                          SelectedValue="{Binding DataContext.InputAreaIds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
-                                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          DisplayMemberPath="Description"
+                                                          SelectedValuePath="InstanceElementId"
+                                                          SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0"
-                                                          MinWidth="125"
+                                                          MinWidth="80"
+                                                          MaxWidth="150"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Right"
                                                           VerticalContentAlignment="Center">

@@ -35,12 +35,24 @@ namespace ProjetaHDR.UI.ViewModels
             get => _instanceElementId;
             set
             {
-                if (value == null) _instanceElementId = ElementId.InvalidElementId;
+                if (value == null)
+                {
+                    _instanceElementId = ElementId.InvalidElementId;
+                    OnPropertyChanged();
 
-                if (_instanceElementId != value)
+                    Description = null;
+
+                }
+                else if (_instanceElementId != value)
                 {
                     _instanceElementId = value;
                     OnPropertyChanged();
+
+                    if (Dev.HelperContext != null)
+                        Description = Dev.HelperContext.Doc.GetElement(_instanceElementId)?.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString();
+
+                    else
+                        Description = null;
                 }
             }
         }
@@ -58,6 +70,23 @@ namespace ProjetaHDR.UI.ViewModels
                 if (_isSelected && Dev.ViewModel != null)
                 {
                     Dev.ViewModel.SelectedFixtureFamily = this;
+                }
+            }
+        }
+
+        private bool _InputFixtureSelected;
+
+        public bool InputFixtureSelected
+        {
+            get => _InputFixtureSelected;
+            set
+            {
+                _InputFixtureSelected = value;
+                OnPropertyChanged();
+
+                if (_InputFixtureSelected && Dev.ViewModel != null)
+                {
+                    Dev.ViewModel.SelectedInputFixture = this;
                 }
             }
         }
