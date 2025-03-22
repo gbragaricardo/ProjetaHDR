@@ -46,56 +46,9 @@
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Row="1"
-                          Grid.Column="0">
-                <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
-                                            UpdateSourceTrigger=PropertyChanged}"
-                              AlternationCount="200">
-                    
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border>
-                                <StackPanel Orientation="Horizontal">
-                                    <RadioButton GroupName="Fixtures"
-                                                 IsChecked="{Binding IsSelected, Mode=TwoWay,
-                                                                     UpdateSourceTrigger=PropertyChanged}"
-                                                 Style="{StaticResource RadioComboTheme}"
-                                                 Width="250">
-
-                                        <Grid>
-                                            <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
-                                                              RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                       VerticalAlignment="Center"
-                                                       Margin="10 0 0 0"
-                                                       />
-
-                                            <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
-                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                      DisplayMemberPath="Value"
-                                                      SelectedValuePath="Key"
-                                                      SelectedValue="{Binding InstanceElementId, Mode=TwoWay,
-                                                                              UpdateSourceTrigger=PropertyChanged}"
-                                                      Margin="0"
-                                                      MinWidth="125"
-                                                      Style="{StaticResource TransparentCombo}"
-                                                      HorizontalAlignment="Right"
-                                                      VerticalContentAlignment="Center">
-
-                                            </ComboBox>
-                                        </Grid>
-                                    </RadioButton>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    
-                    
-                </ItemsControl>
-            </ScrollViewer>
-
             <StackPanel Orientation="Horizontal"
-                        Grid.Column="0"
-                        Grid.Row="2">
+                        Grid.Column="0" Grid.Row="1"
+                        VerticalAlignment="Top" HorizontalAlignment="Center">
 
                 <Button Command="{Binding AddComboBoxCommand}"
                         Grid.Row="1"
@@ -170,7 +123,54 @@
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
-            </StackPanel>
+            </StackPanel>            
+            
+            <ScrollViewer Grid.Row="1"
+                          Grid.Column="0" Margin="0,50,0,0">
+                <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                              AlternationCount="200">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton GroupName="Fixtures"
+                                                 IsChecked="{Binding IsSelected, Mode=TwoWay,
+                                                                     UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource RadioComboTheme}"
+                                                 Width="250">
+
+                                        <Grid>
+                                            <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
+                                                              RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10 0 0 0"
+                                                       />
+
+                                            <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
+                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      DisplayMemberPath="Value"
+                                                      SelectedValuePath="Key"
+                                                      SelectedValue="{Binding InstanceElementId, Mode=TwoWay,
+                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                      Margin="0"
+                                                      MinWidth="125"
+                                                      Style="{StaticResource TransparentCombo}"
+                                                      HorizontalAlignment="Right"
+                                                      VerticalContentAlignment="Center">
+
+                                            </ComboBox>
+                                        </Grid>
+                                    </RadioButton>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+
+                </ItemsControl>
+            </ScrollViewer>
 
             <Grid Grid.Column="1" Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -179,6 +179,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="300"/>
+                    <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
@@ -375,6 +376,51 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                
+                <Border Grid.ColumnSpan="2" Grid.Row="0"
+                        Margin="50 10"
+                        Width="Auto" Height="2"
+                        CornerRadius="1"
+                        VerticalAlignment="Bottom"
+                        Background="#0784bc"/>
+                
+                <StackPanel Grid.ColumnSpan="2" Grid.Row="1"
+                            Height="25"
+                            VerticalAlignment="Top">
+                    <TextBlock Margin="0"
+                               HorizontalAlignment="Center"
+                               FontSize="16"
+                               Text="SAÍDA" Foreground="Black"/>
+                </StackPanel>
+                
+                
+                <StackPanel Grid.Column="0" Grid.Row="2">
+
+                    <Button Command="{Binding SelectPipesCommand}"
+                            Margin="15"
+                            Width="100" Height="20"
+                            Content="TUBOS"/>
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.OutputPipes,
+                                                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBlock Text="{Binding Diameter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                   
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                
+                
+                <StackPanel Grid.Column="1" Grid.Row="2">
+
+                </StackPanel>
             </Grid>
 
         </Grid>

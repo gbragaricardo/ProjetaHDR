@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Plumbing;
 using ProjetaHDR.Commands;
 using ProjetaHDR.UI;
 
@@ -93,6 +94,8 @@ namespace ProjetaHDR.UI.ViewModels
 
         public ObservableCollection<AreaFamilyItem> InputAreas { get; set; } = new ObservableCollection<AreaFamilyItem>();
         public ObservableCollection<FixtureFamilyItem> InputFixtureItems{ get; set; } = new ObservableCollection<FixtureFamilyItem>();
+        public ObservableCollection<Pipe> OutputPipes { get; set; } = new ObservableCollection<Pipe>();
+
 
 
     }

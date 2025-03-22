@@ -1,10 +1,13 @@
 ﻿using Autodesk.Revit.UI;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.UI.Selection;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using ProjetaHDR.RevitAddin.Commands.Services;
+using ProjetaHDR.UI.Services;
+using Autodesk.Revit.DB.Plumbing;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -67,6 +70,8 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand RemoveAreaCommand { get; }
         public RelayCommand AddInputFixtureCommand { get; }
         public RelayCommand RemoveInputFixtureCommand { get; }
+        public RelayCommand SelectPipesCommand { get; }
+
 
 
 
@@ -82,12 +87,40 @@ namespace ProjetaHDR.UI.ViewModels
             RemoveAreaCommand = new RelayCommand(param => RemoveInputArea(param));
             AddInputFixtureCommand = new RelayCommand(param => AddInputFixture(param));
             RemoveInputFixtureCommand = new RelayCommand(param => RemoveInputFixture(param));
+            SelectPipesCommand = new RelayCommand(param => SelectOutputPipes(param));
+
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
 
             LoadFixturesFromRevit();
             LoadFixtureList();
 
+        }
+
+        private void SelectOutputPipes(object param)
+        {
+            Selection selection = Context.UiDoc.Selection;
+            ISelectionFilter selectFilter = new SelectionOptions(BuiltInCategory.OST_PipeCurves);
+            IList<Reference> pipesReferences = new List<Reference>();
+
+            try
+            {
+                pipesReferences = selection.PickObjects(ObjectType.Element, selectFilter);
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException)
+            { }
+
+            if (pipesReferences.Count == 0)
+                return;
+
+            SelectedFixtureFamily.OutputPipes?.Clear();
+
+            foreach (var pipeRef  in pipesReferences)
+            {
+                Element pipeElement = Context.Doc.GetElement(pipeRef);
+                Pipe pipe = pipeElement as Pipe;
+                SelectedFixtureFamily.OutputPipes.Add(pipe);
+            }
         }
 
         private void RemoveInputFixture(object param)

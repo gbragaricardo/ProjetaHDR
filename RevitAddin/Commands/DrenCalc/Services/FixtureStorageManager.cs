@@ -12,7 +12,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
 {
     internal class FixtureStorageManager
     {
-        private static readonly Guid SchemaGuid = new Guid("80F7E558-4204-4A45-95E1-43EBD580CE2E");
+        private static readonly Guid SchemaGuid = new Guid("9844BBEC-3E7B-4C05-AA40-E0A7B342B1FC");
         private static readonly Guid SubSchemaGuid = new Guid("F184919C-0EB0-43C9-94EE-CF7C9B330330");
 
         public static Schema GetOrCreateSchema()
