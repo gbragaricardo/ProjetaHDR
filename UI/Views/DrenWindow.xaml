@@ -8,13 +8,12 @@
         xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
         d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
         mc:Ignorable="d" 
-        WindowStyle="ThreeDBorderWindow"
-        ResizeMode="NoResize"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanMinimize"
         Height="600"
         Width="900"
         Background="Transparent"
-        Title="ProjetaHDR"
-        WindowStartupLocation="CenterScreen">
+        Title="ProjetaHDR">
 
 
     <Window.Resources>
@@ -25,6 +24,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
+            <converters:OutputPipesConverter x:Key="OutputPipesConverter"/>
+
         </ResourceDictionary>
         
     </Window.Resources>
@@ -33,7 +34,7 @@
     
 
 
-    <Border Background="#F7F7F7"
+    <Border Background="White"
             Padding="15">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -45,6 +46,18 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="50"/>
             </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Text="PEÇAS PLUVIAIS"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="16" FontWeight="Bold"
+                       Foreground="#0784bc"/>
+
+            <TextBlock Grid.Column="1" Grid.Row="0"
+                       Text="ENTRADAS"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="16" FontWeight="Bold"
+                       Foreground="#0784bc"/>
 
             <StackPanel Orientation="Horizontal"
                         Grid.Column="0" Grid.Row="1"
@@ -123,10 +136,10 @@
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                 </Button>
 
-            </StackPanel>            
-            
+            </StackPanel>
+
             <ScrollViewer Grid.Row="1"
-                          Grid.Column="0" Margin="0,50,0,0">
+                          Grid.Column="0" Margin="0 50 0 0">
                 <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                               AlternationCount="200">
@@ -172,13 +185,14 @@
                 </ItemsControl>
             </ScrollViewer>
 
-            <Grid Grid.Column="1" Grid.Row="1">
+            <Grid Grid.Column="1" Grid.Row="1"
+                  Visibility="{Binding SelectedFixtureFamily}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="300"/>
+                    <RowDefinition Height="250"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -231,7 +245,7 @@
                               Margin="15"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Center"
-                              Height="200">
+                              Height="150">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
@@ -239,7 +253,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Padding="5">
+                                <Border>
                                     <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Center">
 
@@ -329,7 +343,7 @@
                               Margin="15"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Center"
-                              Height="200">
+                              Height="150">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputFixtureItems , Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}"
@@ -337,7 +351,7 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Padding="5">
+                                <Border>
                                     <StackPanel Orientation="Horizontal"
                                                 HorizontalAlignment="Center">
 
@@ -389,26 +403,34 @@
                             VerticalAlignment="Top">
                     <TextBlock Margin="0"
                                HorizontalAlignment="Center"
-                               FontSize="16"
-                               Text="SAÍDA" Foreground="Black"/>
+                               FontSize="16" FontWeight="Bold"
+                               Text="SAÍDA" Foreground="#0784bc"/>
                 </StackPanel>
                 
                 
-                <StackPanel Grid.Column="0" Grid.Row="2">
+                <StackPanel Grid.Column="0" Grid.Row="2"
+                            HorizontalAlignment="Stretch">
 
                     <Button Command="{Binding SelectPipesCommand}"
-                            Margin="15"
-                            Width="100" Height="20"
-                            Content="TUBOS"/>
-                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.OutputPipes,
-                                                Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            Margin="0 0 0 10"
+                            Width="150" Height="20"
+                            Content="SELECIONAR TUBOS"/>
+
+
+                    <ItemsControl ItemsSource="{Binding ClassifiedOutputPipes,
+                                                Mode=OneWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                  
+                                  AlternationCount="200">
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <TextBlock Text="{Binding Diameter, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Margin="0 0 10 0"
+                                                   Text="{Binding ., 
+                                                          Mode=OneWay, 
+                                                          UpdateSourceTrigger=PropertyChanged}"/>
                                     </StackPanel>
                                    
                                 </Border>

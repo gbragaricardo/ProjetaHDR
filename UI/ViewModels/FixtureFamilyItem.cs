@@ -96,7 +96,5 @@ namespace ProjetaHDR.UI.ViewModels
         public ObservableCollection<FixtureFamilyItem> InputFixtureItems{ get; set; } = new ObservableCollection<FixtureFamilyItem>();
         public ObservableCollection<Pipe> OutputPipes { get; set; } = new ObservableCollection<Pipe>();
 
-
-
     }
 }

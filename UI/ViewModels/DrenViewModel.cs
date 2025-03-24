@@ -56,6 +56,25 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        public IList<string> ClassifiedOutputPipes
+        {
+            get
+            {
+                if (SelectedFixtureFamily?.OutputPipes == null)
+                    return new List<string>();
+
+                return SelectedFixtureFamily.OutputPipes
+                    .GroupBy(group => group.Name)
+                    .Select(group =>
+                    {
+                        string name = group.Key.Replace("PVC", "").Trim();
+                        string diameter = $"{group.First().Diameter * 304.8}";
+                        return $"{group.Count()}x {name} - {diameter}mm";
+                    })
+                    .ToList();
+            }
+        }
+
         public Dictionary<ElementId, string> AllFixturesAndComments { get; set; }
         public Dictionary<ElementId, string> AllDocumentAreas { get; set; }
 
@@ -109,6 +128,10 @@ namespace ProjetaHDR.UI.ViewModels
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException)
             { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
             if (pipesReferences.Count == 0)
                 return;
@@ -265,24 +288,24 @@ namespace ProjetaHDR.UI.ViewModels
             foreach (var item in AddedFixtureFamilies)
             {
                 if (item.InstanceElementId != null && !AllFixturesAndComments.ContainsKey(item.InstanceElementId))
-                {
                     item.InstanceElementId = ElementId.InvalidElementId;
-                }
 
                 foreach (var inputItem in item.InputFixtureItems)
                 {
                     if (inputItem.InstanceElementId != null && !AddedFixtureFamilies.Any(addedFix => addedFix.InstanceElementId == inputItem.InstanceElementId))
-                    {
                         inputItem.InstanceElementId = ElementId.InvalidElementId;
-                    }
                 }
 
                 foreach (var inputArea in item.InputAreas)
                 {
                     if (inputArea.InstanceElementId != null && !AllDocumentAreas.ContainsKey(inputArea.InstanceElementId))
-                    {
                         inputArea.InstanceElementId = ElementId.InvalidElementId;
-                    }
+                }
+
+                var toRemove = item.OutputPipes.Where(p => p == null || !p.IsValidObject).ToList();
+                foreach (var pipe in toRemove)
+                {
+                    item.OutputPipes.Remove(pipe);
                 }
             }
         }

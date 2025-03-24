@@ -1,9 +1,11 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.ExtensibleStorage;
+using Autodesk.Revit.DB.Plumbing;
 using ProjetaHDR.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +14,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
 {
     internal class FixtureStorageManager
     {
-        private static readonly Guid SchemaGuid = new Guid("9844BBEC-3E7B-4C05-AA40-E0A7B342B1FC");
-        private static readonly Guid SubSchemaGuid = new Guid("F184919C-0EB0-43C9-94EE-CF7C9B330330");
+        private static readonly Guid SchemaGuid = new Guid("C3A94677-EE54-43A0-9031-C746B935D3ED");
+        private static readonly Guid SubSchemaGuid = new Guid("ADE44AE6-24BB-4B90-98AD-E64BF9B995F0");
 
         public static Schema GetOrCreateSchema()
         {
@@ -33,6 +35,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
             fixtureSchemaBuilder.AddSimpleField("InstanceElementId", typeof(ElementId));
             fixtureSchemaBuilder.AddArrayField("InputAreasIds", typeof(ElementId));
             fixtureSchemaBuilder.AddArrayField("InputFixturesIds", typeof(ElementId));
+            fixtureSchemaBuilder.AddArrayField("OutputPipesIds", typeof(ElementId));
 
             Schema fixtureSchema = fixtureSchemaBuilder.Finish();
             fieldFixtureItems.SetSubSchemaGUID(SubSchemaGuid);
@@ -79,6 +82,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                     fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId ?? ElementId.InvalidElementId);
                     fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
                     fixtureEntity.Set("InputFixturesIds", (IList<ElementId>)fixture.InputFixtureItems.Select(f => f.InstanceElementId ?? ElementId.InvalidElementId).ToList());
+                    fixtureEntity.Set("OutputPipesIds", (IList<ElementId>)fixture.OutputPipes.Select(p => p.IsValidObject ? p.Id : null).ToList());
+
 
                     fixtureEntities.Add(fixtureEntity);
                 }
@@ -114,6 +119,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                         ElementId instanceElementId = fixtureEntity.Get<ElementId>("InstanceElementId");
                         IList<ElementId> inputAreasIds = fixtureEntity.Get<IList<ElementId>>("InputAreasIds");
                         IList<ElementId> inputFixturesIds = fixtureEntity.Get<IList<ElementId>>("InputFixturesIds");
+                        IList<ElementId> outputPipesIds = fixtureEntity.Get<IList<ElementId>>("OutputPipesIds");
+
 
                         FixtureFamilyItem fixtureFamilyItem = new FixtureFamilyItem
                         {
@@ -127,7 +134,12 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                             InputFixtureItems = new ObservableCollection<FixtureFamilyItem>(inputFixturesIds.Select(fixId => new FixtureFamilyItem
                             {
                                 InstanceElementId = fixId
-                            }).ToList())
+                            }).ToList()),
+
+                            OutputPipes = new ObservableCollection<Pipe>(outputPipesIds
+                            .Where(pId => pId != null)
+                            .Select(pId => doc.GetElement(pId) as Pipe)
+                            .ToList())
                         };
 
                         loadedFixtures.Add(fixtureFamilyItem);
