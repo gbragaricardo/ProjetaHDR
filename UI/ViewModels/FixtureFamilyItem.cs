@@ -14,6 +14,8 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class FixtureFamilyItem : ObservableObject
     {
+
+
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
         private string _description;
@@ -88,6 +90,20 @@ namespace ProjetaHDR.UI.ViewModels
                 if (_InputFixtureSelected && Dev.ViewModel != null)
                 {
                     Dev.ViewModel.SelectedInputFixture = this;
+                }
+            }
+        }
+
+        private double _flowRate;
+        public double FlowRate
+        {
+            get => _flowRate;
+            set
+            {
+                if (_flowRate != value)
+                {
+                    _flowRate = value;
+                    OnPropertyChanged();
                 }
             }
         }

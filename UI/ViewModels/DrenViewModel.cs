@@ -24,6 +24,7 @@ namespace ProjetaHDR.UI.ViewModels
                 {
                     _selectedFixtureFamily = value;
                     OnPropertyChanged();
+                    UpdateClassifiedOutputPipes();
                 }
             }
         }
@@ -56,22 +57,17 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        public IList<string> ClassifiedOutputPipes
+        private ObservableCollection<string> _classifiedOutputPipes = new ObservableCollection<string>();
+        public ObservableCollection<string> ClassifiedOutputPipes
         {
-            get
+            get => _classifiedOutputPipes;
+            set
             {
-                if (SelectedFixtureFamily?.OutputPipes == null)
-                    return new List<string>();
-
-                return SelectedFixtureFamily.OutputPipes
-                    .GroupBy(group => group.Name)
-                    .Select(group =>
-                    {
-                        string name = group.Key.Replace("PVC", "").Trim();
-                        string diameter = $"{group.First().Diameter * 304.8}";
-                        return $"{group.Count()}x {name} - {diameter}mm";
-                    })
-                    .ToList();
+                if (_classifiedOutputPipes != value)
+                {
+                    _classifiedOutputPipes = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -90,6 +86,8 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand AddInputFixtureCommand { get; }
         public RelayCommand RemoveInputFixtureCommand { get; }
         public RelayCommand SelectPipesCommand { get; }
+        public RelayCommand CalculateFlowRateCommand { get; }
+
 
 
 
@@ -107,6 +105,8 @@ namespace ProjetaHDR.UI.ViewModels
             AddInputFixtureCommand = new RelayCommand(param => AddInputFixture(param));
             RemoveInputFixtureCommand = new RelayCommand(param => RemoveInputFixture(param));
             SelectPipesCommand = new RelayCommand(param => SelectOutputPipes(param));
+            CalculateFlowRateCommand = new RelayCommand(param => CalculateFlowRate());
+
 
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
@@ -114,6 +114,55 @@ namespace ProjetaHDR.UI.ViewModels
             LoadFixturesFromRevit();
             LoadFixtureList();
 
+        }
+
+        private void CalculateFlowRate()
+        {
+            foreach (var addedFix in AddedFixtureFamilies)
+            {
+                addedFix.FlowRate = 0;
+
+                foreach (var area in addedFix.InputAreas)
+                {
+                    if (area.InstanceElementId == null || area.InstanceElementId == ElementId.InvalidElementId)
+                        continue;
+
+                    Element areaElement = Context.Doc.GetElement(area.InstanceElementId);
+                    if (areaElement == null)
+                        continue;
+
+                    var areaValue = areaElement.get_Parameter(BuiltInParameter.ROOM_AREA).AsDouble();
+                    areaValue = UnitUtils.ConvertFromInternalUnits(areaValue, UnitTypeId.SquareMeters);
+
+                    Guid intensityParamGuid = new Guid("1669925a-e4f7-4013-9f2f-9c16192fb53a");
+                    var rainIntensity = areaElement.get_Parameter(intensityParamGuid).AsDouble();
+
+                    double areaFlowRate = ((rainIntensity * areaValue) / 60);
+
+                    addedFix.FlowRate += areaFlowRate;
+                }
+
+                foreach (var fixture in addedFix.InputFixtureItems)
+                {
+                    if (fixture.InstanceElementId == null || fixture.InstanceElementId == ElementId.InvalidElementId)
+                        continue;
+
+                    var correspondentFixture = AddedFixtureFamilies.FirstOrDefault(x => x.InstanceElementId == fixture.InstanceElementId);
+
+                    //Element fixtureElement = Context.Doc.GetElement(fixture.InstanceElementId);
+                    //if (fixtureElement == null)
+                    //    continue;
+
+                    //Guid flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
+                    //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
+
+
+                    addedFix.FlowRate += correspondentFixture.FlowRate;
+                }
+
+                //if (addedFix.IsSelected == true)
+                //    return;
+            }
         }
 
         private void SelectOutputPipes(object param)
@@ -143,6 +192,29 @@ namespace ProjetaHDR.UI.ViewModels
                 Element pipeElement = Context.Doc.GetElement(pipeRef);
                 Pipe pipe = pipeElement as Pipe;
                 SelectedFixtureFamily.OutputPipes.Add(pipe);
+            }
+            UpdateClassifiedOutputPipes();
+        }
+
+        public void UpdateClassifiedOutputPipes()
+        {
+            ClassifiedOutputPipes?.Clear();
+
+            if (SelectedFixtureFamily?.OutputPipes != null)
+            {
+                var result = SelectedFixtureFamily.OutputPipes
+                    .GroupBy(group => group.Name)
+                    .Select(group =>
+                    {
+                        string name = group.Key.Replace("PVC", "").Trim();
+                        string diameter = $"{group.First().Diameter * 304.8}";
+                        return $"{group.Count()}x {name} - {diameter}mm";
+                    });
+
+                foreach (var item in result)
+                {
+                    ClassifiedOutputPipes.Add(item);
+                }
             }
         }
 

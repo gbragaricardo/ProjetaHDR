@@ -34,6 +34,7 @@ namespace ProjetaHDR.UI.Views
             if (DataContext is DrenViewModel viewModel)
             {
                 viewModel.LoadAndValidate();
+                viewModel.UpdateClassifiedOutputPipes();
             }
         }
 
