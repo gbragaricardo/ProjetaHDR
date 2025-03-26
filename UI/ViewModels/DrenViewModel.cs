@@ -91,7 +91,6 @@ namespace ProjetaHDR.UI.ViewModels
 
 
 
-
         public DrenViewModel(RevitContext context)
         {
             Context = context;
@@ -118,8 +117,13 @@ namespace ProjetaHDR.UI.ViewModels
 
         private void CalculateFlowRate()
         {
+            Guid flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
+
             foreach (var addedFix in AddedFixtureFamilies)
             {
+                if (addedFix.InstanceElementId == null || addedFix.InstanceElementId == ElementId.InvalidElementId)
+                    continue;
+
                 addedFix.FlowRate = 0;
 
                 foreach (var area in addedFix.InputAreas)
@@ -153,11 +157,22 @@ namespace ProjetaHDR.UI.ViewModels
                     //if (fixtureElement == null)
                     //    continue;
 
-                    //Guid flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
+
                     //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
 
 
                     addedFix.FlowRate += correspondentFixture.FlowRate;
+
+                }
+
+                addedFix.FlowRate = Math.Round(addedFix.FlowRate, 2);
+
+                Element addedFixElement = Context.Doc.GetElement(addedFix.InstanceElementId);
+                addedFixElement.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);
+
+                foreach (var pipe in addedFix.OutputPipes)
+                {
+                    pipe.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);
                 }
 
                 //if (addedFix.IsSelected == true)

@@ -65,7 +65,7 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
-    <Compile Include="UI\Converters\OutputPipesConverter.cs" />
+    <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="UI\Services\SelectionOptions.cs" />
     <Compile Include="UI\ViewModels\AreaFamilyItem.cs" />
     <Compile Include="UI\ViewModels\FixtureFamilyItem.cs" />

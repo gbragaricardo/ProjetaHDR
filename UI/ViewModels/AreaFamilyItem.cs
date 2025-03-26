@@ -54,6 +54,20 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
+        private double _flowRate;
+        public double FlowRate
+        {
+            get => _flowRate;
+            set
+            {
+                if (_flowRate != value)
+                {
+                    _flowRate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _isSelected;
         public bool IsSelected
         {

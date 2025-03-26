@@ -24,7 +24,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
-            <converters:OutputPipesConverter x:Key="OutputPipesConverter"/>
 
         </ResourceDictionary>
         
@@ -456,8 +455,18 @@
                                HorizontalAlignment="Center"/>
 
                 </StackPanel>
-            </Grid>
 
+                
+            </Grid>
+            
+            <!--<StackPanel Grid.Column="2" 
+                        Grid.ColumnSpan="2" Grid.Row="2"
+                        HorizontalAlignment="Center">
+
+                <Button Content="AREAS TESTE"
+                        Command="{Binding SetAreasGPCommand}"/>
+
+            </StackPanel>-->
         </Grid>
     </Border>
 </Window>

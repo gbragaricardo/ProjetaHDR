@@ -85,6 +85,14 @@ namespace ProjetaHDR.Startup
             "blueword.ico",
             false);
 
+            var setAreasGP = RibbonManager.CriarPushButton
+            ("SetAreasGP", "⠀⠀SetAreas⠀⠀",
+            "ProjetaHDR.Commands.SetAreasGP",
+            Documents,
+            "SetAreas",
+            "dev.ico",
+            false);
+
             //var nomeBotao = RibbonManager.CriarPushButton
             //("NomeInterno", "NomeExibido",
             //"NameSpace.Classe",
