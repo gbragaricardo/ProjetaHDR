@@ -1,11 +1,4 @@
 ﻿using Autodesk.Revit.UI;
-using ProjetaHDR.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ProjetaHDR.Startup
 {
@@ -17,10 +10,12 @@ namespace ProjetaHDR.Startup
             var PanelMain = RibbonManager.CriarRibbonPanel(application, "Main");
             var Tabelas = RibbonManager.CriarRibbonPanel(application, "⠀⠀Tabelas⠀⠀");
             var Documents = RibbonManager.CriarRibbonPanel(application, "⠀⠀Docs⠀⠀");
+            var _drenPanel = RibbonManager.CriarRibbonPanel(application, "⠀⠀Drenagem⠀⠀");
 
 
 
-            var LoginPushButton = RibbonManager.CriarPushButton
+
+            var LoginPushButton = RibbonManager.CreateAndAddPushButton
             ("GrupoProjeta", "⠀⠀Grupo Projeta⠀⠀",
             "ProjetaHDR.Commands.Login",
             panelProjeta,
@@ -28,7 +23,7 @@ namespace ProjetaHDR.Startup
             "eggprojeta.png",
             true);
 
-            var DevPushButton = RibbonManager.CriarPushButton
+            var DevPushButton = RibbonManager.CreateAndAddPushButton
             ("Dev", "⠀⠀Dev⠀⠀",
             "ProjetaHDR.Commands.Dev",
             PanelMain,
@@ -37,7 +32,7 @@ namespace ProjetaHDR.Startup
             false);
             DevPushButton.Visible = false;
 
-            var DiameterTagPushButton = RibbonManager.CriarPushButton
+            var DiameterTagPushButton = RibbonManager.CreateAndAddPushButton
             ("DiameterTag", "⠀⠀Tag⠀⠀\n⠀⠀Diâmetro⠀⠀",
             "ProjetaHDR.Commands.DiameterTag",
             PanelMain,
@@ -45,7 +40,7 @@ namespace ProjetaHDR.Startup
             "diameter.png",
             false);
 
-            var SlopeTagPushButton = RibbonManager.CriarPushButton
+            var SlopeTagPushButton = RibbonManager.CreateAndAddPushButton
             ("SlopeTag", "⠀⠀Tag⠀⠀\n⠀⠀Inclinacao⠀⠀",
             "ProjetaHDR.Commands.SlopeTag",
             PanelMain,
@@ -53,7 +48,7 @@ namespace ProjetaHDR.Startup
             "porcentagem.png",
             false);
 
-            var FlowTagPushButton = RibbonManager.CriarPushButton
+            var FlowTagPushButton = RibbonManager.CreateAndAddPushButton
             ("Flow Tag", "⠀⠀Tag⠀⠀\n⠀⠀Fluxo⠀⠀",
             "ProjetaHDR.Commands.FlowTag",
             PanelMain,
@@ -61,7 +56,7 @@ namespace ProjetaHDR.Startup
             "setafluxo.png",
             false);
 
-            var NestedPipeFittingsPushButton = RibbonManager.CriarPushButton
+            var NestedPipeFittingsPushButton = RibbonManager.CreateAndAddPushButton
             ("NestedPF", "⠀Parametros⠀\n⠀Aninhados⠀",
             "ProjetaHDR.Commands.SanFittings",
             Tabelas,
@@ -69,7 +64,7 @@ namespace ProjetaHDR.Startup
             "parameters.png",
             false);
 
-            var etapasSeduc = RibbonManager.CriarPushButton
+            var etapasSeduc = RibbonManager.CreateAndAddPushButton
             ("etapas seduc", "⠀Etapa⠀\n⠀Seduc⠀",
             "ProjetaHDR.Commands.Seduc",
             Tabelas,
@@ -77,7 +72,7 @@ namespace ProjetaHDR.Startup
             "etapaseduc.png",
             false);
 
-            var MemoHDS = RibbonManager.CriarPushButton
+            var MemoHDS = RibbonManager.CreateAndAddPushButton
             ("Memorial descritivo HDS", "⠀⠀HDS - Memorial⠀⠀\n⠀⠀Descritivo (Beta)⠀⠀",
             "ProjetaHDR.Commands.MemoHDS",
             Documents,
@@ -85,21 +80,18 @@ namespace ProjetaHDR.Startup
             "blueword.ico",
             false);
 
-            var setAreasGP = RibbonManager.CriarPushButton
-            ("SetAreasGP", "⠀⠀SetAreas⠀⠀",
-            "ProjetaHDR.Commands.SetAreasGP",
-            Documents,
-            "SetAreas",
-            "dev.ico",
+            var drenWindow = RibbonManager.CreateAndAddPushButton
+            ("drenwindow", "⠀⠀DrenWindow⠀⠀",
+            "ProjetaHDR.Commands.Dev",
+            _drenPanel,
+            "drenWindow",
+            "drenwindow.png",
             false);
 
-            //var nomeBotao = RibbonManager.CriarPushButton
-            //("NomeInterno", "NomeExibido",
-            //"NameSpace.Classe",
-            //RibbonPanel,
-            //"Dica de uso",
-            //"imagem.ico",
-            //Enable = false);
+            var setAreasGP = RibbonManager.CreatePushButtonData("SetAreasGP", "Set Intensidade Pluviometrica", "ProjetaHDR.Commands.SetAreasGP", "globalparam.png", "Botao Teste");
+            var setAreasTR = RibbonManager.CreatePushButtonData("SetAreasTR", "Set Tempo Retorno", "ProjetaHDR.Commands.SetAreasGP", "tr.png", "Botao Teste");
+
+            var drenButtons = RibbonManager.AddStackedPushButtons(_drenPanel, setAreasGP, setAreasTR);
         }
     }
 }

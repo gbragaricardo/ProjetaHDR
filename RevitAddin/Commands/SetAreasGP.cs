@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using ProjetaHDR.Utils;
 
 namespace ProjetaHDR.Commands
 {
@@ -22,7 +19,7 @@ namespace ProjetaHDR.Commands
             {
                 transacao.Start();
 
-                SetAreasTeste();
+                SetAreasGlobalParameters();
 
                 transacao.Commit();
 
@@ -30,9 +27,7 @@ namespace ProjetaHDR.Commands
             }
         }
 
-
-
-        private void SetAreasTeste()
+        private void SetAreasGlobalParameters()
         {
             var areasList = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_Areas)

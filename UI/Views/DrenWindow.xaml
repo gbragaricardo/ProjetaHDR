@@ -265,25 +265,22 @@
                                                      Width="175">
 
                                             <Grid>
-                                                <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
-                                                                           RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                           
-                                                           VerticalAlignment="Center"
-                                                           Margin="10 0 0 0"/>
 
                                                 <ComboBox ItemsSource="{Binding DataContext.AllDocumentAreas,
                                                                         RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                           DisplayMemberPath="Value"
                                                           SelectedValuePath="Key"
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Margin="0"
-                                                          MinWidth="80"
-                                                          MaxWidth="150"
+                                                          MinWidth="100"
+                                                          MaxWidth="140"
+                                                          HorizontalContentAlignment="Center"
                                                           Style="{StaticResource TransparentCombo}"
-                                                          HorizontalAlignment="Right"
-                                                          VerticalContentAlignment="Center">
+                                                          HorizontalAlignment="Left"
+                                                          VerticalContentAlignment="Center"/>
 
-                                                </ComboBox>
+                                                <TextBlock Text="{Binding FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           Margin="0 0 15 0"/>
                                             </Grid>
                                         </RadioButton>
                                     </StackPanel>
@@ -363,10 +360,6 @@
                                                      Width="175">
 
                                             <Grid>
-                                                <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
-                                                                  RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10 0 0 0"/>
 
                                                 <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies, Mode=TwoWay,
                                                                         RelativeSource={RelativeSource AncestorType=ItemsControl}}"
@@ -374,13 +367,12 @@
                                                           SelectedValuePath="InstanceElementId"
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0"
-                                                          MinWidth="80"
-                                                          MaxWidth="150"
+                                                          MinWidth="100"
+                                                          MaxWidth="140"
                                                           Style="{StaticResource TransparentCombo}"
-                                                          HorizontalAlignment="Right"
-                                                          VerticalContentAlignment="Center">
-
-                                                </ComboBox>
+                                                          HorizontalAlignment="Left"
+                                                          HorizontalContentAlignment="Center"
+                                                          VerticalContentAlignment="Center"/>
                                             </Grid>
                                         </RadioButton>
                                     </StackPanel>
