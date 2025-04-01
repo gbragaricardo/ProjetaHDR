@@ -65,7 +65,6 @@
                 <Button Command="{Binding AddComboBoxCommand}"
                         Grid.Row="1"
                         FontSize="9"
-                        Margin="0 0 15 0"
                         Height="25"
                         Width="25"
                         Background="Transparent"
@@ -82,7 +81,7 @@
 
                 <Button Command="{Binding RemoveComboBoxCommand}"
                         FontSize="9"
-                        Margin="0 0 15 0"
+                        Margin="15 0 7.5 0"
                         Height="25"
                         Width="25"
                         Background="Transparent"
@@ -101,7 +100,7 @@
                         CommandParameter="{Binding DataContext.SelectedFixture,
                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                         FontSize="9"
-                        Margin="0 0 15 0"
+                        Margin="7.5 0 15 0"
                         Height="25"
                         Width="25"
                         Background="Transparent"
@@ -120,7 +119,6 @@
                         CommandParameter="{Binding DataContext.SelectedFixture, 
                                            RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                         FontSize="9"
-                        Margin="0 0 15 0"
                         Height="25"
                         Width="25"
                         Background="Transparent"
@@ -141,7 +139,8 @@
                           Grid.Column="0" Margin="0 50 0 0">
                 <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
-                              AlternationCount="200">
+                              AlternationCount="200"
+                              HorizontalAlignment="Center">
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -195,7 +194,9 @@
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
+
+                <!--SCROLL INPUT AREAS-->
                 <StackPanel Grid.Column="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Top"
@@ -289,10 +290,10 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <!--FIM SCROLL INPUT AREAS-->
 
 
-
-
+                <!--SCROLL INPUT PECAS-->
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             VerticalAlignment="Top">
@@ -373,6 +374,10 @@
                                                           HorizontalAlignment="Left"
                                                           HorizontalContentAlignment="Center"
                                                           VerticalContentAlignment="Center"/>
+
+                                                <TextBlock Text="{Binding FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           Margin="0 0 15 0"/>
                                             </Grid>
                                         </RadioButton>
                                     </StackPanel>
@@ -381,6 +386,9 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
+                <!--FIM SCROLL INPUT PECAS-->
+                
+                
                 
                 <Border Grid.ColumnSpan="2" Grid.Row="0"
                         Margin="50 10"

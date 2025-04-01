@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Xml.Linq;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.DB.Plumbing;
@@ -14,7 +15,7 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class FixtureFamilyItem : ObservableObject
     {
-
+        Guid _flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
 
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
@@ -44,6 +45,7 @@ namespace ProjetaHDR.UI.ViewModels
                     OnPropertyChanged();
 
                     Description = null;
+                    FlowRate = 0;
 
                 }
                 else if (_instanceElementId != value)
@@ -51,11 +53,22 @@ namespace ProjetaHDR.UI.ViewModels
                     _instanceElementId = value;
                     OnPropertyChanged();
 
-                    if (Dev.HelperContext != null)
-                        Description = Dev.HelperContext.Doc.GetElement(_instanceElementId)?.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString();
+                    FlowRate = 0;
 
+                    if (Dev.HelperContext != null)
+                    {
+                        Description = Dev.HelperContext.Doc
+                            .GetElement(_instanceElementId)?
+                            .get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
+                            .AsValueString();
+
+                        UpdateFlowRate();
+                    }
                     else
+                    {
                         Description = null;
+                        FlowRate = 0;
+                    }
                 }
             }
         }
@@ -112,5 +125,16 @@ namespace ProjetaHDR.UI.ViewModels
         public ObservableCollection<FixtureFamilyItem> InputFixtureItems{ get; set; } = new ObservableCollection<FixtureFamilyItem>();
         public ObservableCollection<Pipe> OutputPipes { get; set; } = new ObservableCollection<Pipe>();
 
+
+        private void UpdateFlowRate()
+        {
+            foreach (var area in InputAreas)
+                FlowRate += area.FlowRate;
+
+            foreach (var inputFixture in InputFixtureItems)
+                FlowRate += inputFixture.FlowRate;
+
+            FlowRate = Math.Round(FlowRate, 2);
+        }
     }
 }

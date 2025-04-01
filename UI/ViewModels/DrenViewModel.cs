@@ -154,16 +154,14 @@ namespace ProjetaHDR.UI.ViewModels
 
                     var correspondentFixture = AddedFixtureFamilies.FirstOrDefault(x => x.InstanceElementId == fixture.InstanceElementId);
 
+                    if (correspondentFixture != null)
+                        addedFix.FlowRate += correspondentFixture.FlowRate;
+
                     //Element fixtureElement = Context.Doc.GetElement(fixture.InstanceElementId);
                     //if (fixtureElement == null)
                     //    continue;
 
-
                     //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
-
-
-                    addedFix.FlowRate += correspondentFixture.FlowRate;
-
                 }
 
                 addedFix.FlowRate = Math.Round(addedFix.FlowRate, 2);
