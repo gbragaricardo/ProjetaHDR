@@ -408,9 +408,8 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         public void SaveDataStorage()
-        {
-            FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
-        }
+            => FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
+        
 
         public void LoadFixturesFromRevit()
         {
