@@ -137,7 +137,7 @@
             </StackPanel>
 
             <ScrollViewer Grid.Row="1"
-                          Grid.Column="0" Margin="0 50 0 0">
+                          Grid.Column="0" Margin="0 50 10 0">
                 <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                               AlternationCount="200"
@@ -204,16 +204,15 @@
                 <StackPanel Grid.Column="0"
                             Orientation="Horizontal"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Center">
                     
                 
                     <TextBlock Text="AREAS"
                                Foreground="#0784bc" FontWeight="Bold"
-                               Margin="93.95 0 10 0"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Button Command="{Binding AddAreaCommand}"
-                            Margin="0 0 10 0"
+                            Margin="10 0 10 0"
                             Height="25"
                             Width="25"
                             Background="Transparent"
@@ -228,7 +227,6 @@
                                RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
                     <Button Command="{Binding RemoveAreaCommand}"
-                            Margin="0 0 10 0"
                             Height="25"
                             Width="25"
                             Background="Transparent"
@@ -248,9 +246,11 @@
 
                 <ScrollViewer Grid.Column="0" Grid.Row="0"
                               Margin="15"
-                              HorizontalAlignment="Stretch"
+                              Padding="0 0 5 0"
+                              HorizontalAlignment="Center"
                               VerticalAlignment="Center"
-                              Height="150">
+                              Height="150"
+                              Width="220">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
                                                 UpdateSourceTrigger=PropertyChanged}"
@@ -277,8 +277,7 @@
                                                           DisplayMemberPath="Value"
                                                           SelectedValuePath="Key"
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          MinWidth="100"
-                                                          MaxWidth="140"
+                                                          Width="87.5"
                                                           HorizontalContentAlignment="Center"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Left"
@@ -301,16 +300,16 @@
                 <!--SCROLL INPUT PECAS-->
                 <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Top">
 
 
                     <TextBlock Text="PECAS"
                                Foreground="#0784bc" FontWeight="Bold"
-                               Margin="93.95 0 10 0"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Button Command="{Binding AddInputFixtureCommand}"
-                            Margin="0 0 10 0"
+                            Margin="10 0 10 0"
                             Height="25"
                             Width="25"
                             Background="Transparent"
@@ -326,7 +325,6 @@
                     </Button>
 
                     <Button Command="{Binding RemoveInputFixtureCommand}"
-                            Margin="0 0 10 0"
                             Height="25"
                             Width="25"
                             Background="Transparent"
@@ -344,9 +342,11 @@
 
                 <ScrollViewer Grid.Column="1" Grid.Row="0"
                               Margin="15"
-                              HorizontalAlignment="Stretch"
+                              HorizontalAlignment="Center"
+                              Padding="0 0 5 0"
                               VerticalAlignment="Center"
-                              Height="150">
+                              Height="150"
+                              Width="220">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputFixtureItems , Mode=TwoWay,
                                 UpdateSourceTrigger=PropertyChanged}"
@@ -371,11 +371,10 @@
                                                 <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies, Mode=TwoWay,
                                                                         RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                           DisplayMemberPath="Description"
-                                                          SelectedValuePath="InstanceElementId"
-                                                          SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValuePath="Id"
+                                                          SelectedValue="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0"
-                                                          MinWidth="100"
-                                                          MaxWidth="140"
+                                                          Width="87.5"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Left"
                                                           HorizontalContentAlignment="Center"
@@ -398,7 +397,7 @@
 
                 <!--LINHA AZUL-->
                 <Border Grid.ColumnSpan="2" Grid.Row="0"
-                        Margin="50 10"
+                        Margin="25 10"
                         Width="Auto" Height="2"
                         CornerRadius="1"
                         VerticalAlignment="Bottom"

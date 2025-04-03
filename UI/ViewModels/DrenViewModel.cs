@@ -43,8 +43,8 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        private FixtureFamilyItem _selectedInputFixture;
-        public FixtureFamilyItem SelectedInputFixture
+        private InputFixtureItem _selectedInputFixture;
+        public InputFixtureItem SelectedInputFixture
         {
             get => _selectedInputFixture;
             set
@@ -147,22 +147,22 @@ namespace ProjetaHDR.UI.ViewModels
                     addedFix.FlowRate += areaFlowRate;
                 }
 
-                foreach (var fixture in addedFix.InputFixtureItems)
-                {
-                    if (fixture.InstanceElementId == null || fixture.InstanceElementId == ElementId.InvalidElementId)
-                        continue;
+                //foreach (var fixture in addedFix.InputFixtureItems)
+                //{
+                //    if (fixture.InstanceElementId == null || fixture.InstanceElementId == ElementId.InvalidElementId)
+                //        continue;
 
-                    var correspondentFixture = AddedFixtureFamilies.FirstOrDefault(x => x.InstanceElementId == fixture.InstanceElementId);
+                //    var correspondentFixture = AddedFixtureFamilies.FirstOrDefault(x => x.InstanceElementId == fixture.InstanceElementId);
 
-                    if (correspondentFixture != null)
-                        addedFix.FlowRate += correspondentFixture.FlowRate;
+                //    if (correspondentFixture != null)
+                //        addedFix.FlowRate += correspondentFixture.FlowRate;
 
-                    //Element fixtureElement = Context.Doc.GetElement(fixture.InstanceElementId);
-                    //if (fixtureElement == null)
-                    //    continue;
+                //    //Element fixtureElement = Context.Doc.GetElement(fixture.InstanceElementId);
+                //    //if (fixtureElement == null)
+                //    //    continue;
 
-                    //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
-                }
+                //    //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
+                //}
 
                 addedFix.FlowRate = Math.Round(addedFix.FlowRate, 2);
 
@@ -234,7 +234,7 @@ namespace ProjetaHDR.UI.ViewModels
 
         private void RemoveInputFixture(object param)
         {
-            var selectedInputxFixture = SelectedFixtureFamily.InputFixtureItems.FirstOrDefault(fixture => fixture.InputFixtureSelected);
+            var selectedInputxFixture = SelectedFixtureFamily.InputFixtureItems.FirstOrDefault(fixture => fixture.IsSelected);
             var selectedInputFixtureIndex = SelectedFixtureFamily.InputFixtureItems.IndexOf(selectedInputxFixture);
 
             if (selectedInputxFixture == null)
@@ -247,10 +247,10 @@ namespace ProjetaHDR.UI.ViewModels
 
 
             if (selectedInputFixtureIndex == 0)
-                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(0).InputFixtureSelected = true;
+                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(0).IsSelected = true;
 
             else
-                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex - 1).InputFixtureSelected = true;
+                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex - 1).IsSelected = true;
         }
 
         private void AddInputFixture(object param)
@@ -263,11 +263,11 @@ namespace ProjetaHDR.UI.ViewModels
                 var selectedFixture = SelectedFixtureFamily.InputFixtureItems.FirstOrDefault(fixture => fixture.IsSelected);
                 var selectedFixtureIndex = SelectedFixtureFamily.InputFixtureItems.IndexOf(selectedFixture);
 
-                SelectedFixtureFamily.InputFixtureItems.Insert(selectedFixtureIndex + 1, new FixtureFamilyItem());
+                SelectedFixtureFamily.InputFixtureItems.Insert(selectedFixtureIndex + 1, new InputFixtureItem());
             }
             else
             {
-                SelectedFixtureFamily.InputFixtureItems.Add(new FixtureFamilyItem());
+                SelectedFixtureFamily.InputFixtureItems.Add(new InputFixtureItem());
             }
         }
 
@@ -378,8 +378,8 @@ namespace ProjetaHDR.UI.ViewModels
 
                 foreach (var inputItem in item.InputFixtureItems)
                 {
-                    if (inputItem.InstanceElementId != null && !AddedFixtureFamilies.Any(addedFix => addedFix.InstanceElementId == inputItem.InstanceElementId))
-                        inputItem.InstanceElementId = ElementId.InvalidElementId;
+                    if (!AddedFixtureFamilies.Any(x => x.Id == inputItem.Id))
+                        inputItem.Id = null;
                 }
 
                 foreach (var inputArea in item.InputAreas)

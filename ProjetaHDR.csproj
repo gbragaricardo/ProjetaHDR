@@ -69,6 +69,7 @@
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="UI\Services\SelectionOptions.cs" />
     <Compile Include="UI\ViewModels\AreaFamilyItem.cs" />
+    <Compile Include="UI\ViewModels\InputFixtureItem.cs" />
     <Compile Include="UI\ViewModels\FixtureFamilyItem.cs" />
     <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureStorageManager.cs" />
     <Compile Include="RevitAddin\Commands\Login.cs" />

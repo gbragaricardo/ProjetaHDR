@@ -90,23 +90,6 @@ namespace ProjetaHDR.UI.ViewModels
             }
         }
 
-        private bool _InputFixtureSelected;
-
-        public bool InputFixtureSelected
-        {
-            get => _InputFixtureSelected;
-            set
-            {
-                _InputFixtureSelected = value;
-                OnPropertyChanged();
-
-                if (_InputFixtureSelected && Dev.ViewModel != null)
-                {
-                    Dev.ViewModel.SelectedInputFixture = this;
-                }
-            }
-        }
-
         private double _flowRate;
         public double FlowRate
         {
@@ -122,7 +105,7 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         public ObservableCollection<AreaFamilyItem> InputAreas { get; set; } = new ObservableCollection<AreaFamilyItem>();
-        public ObservableCollection<FixtureFamilyItem> InputFixtureItems{ get; set; } = new ObservableCollection<FixtureFamilyItem>();
+        public ObservableCollection<InputFixtureItem> InputFixtureItems{ get; set; } = new ObservableCollection<InputFixtureItem>();
         public ObservableCollection<Pipe> OutputPipes { get; set; } = new ObservableCollection<Pipe>();
 
 
