@@ -129,6 +129,10 @@
     <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UI\Themes\BlueButtonTheme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\Themes\TransparentComboTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

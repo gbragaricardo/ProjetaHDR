@@ -13,6 +13,7 @@
         Height="600"
         Width="900"
         Background="Transparent"
+        WindowStartupLocation="CenterScreen"
         Title="ProjetaHDR">
 
     <!--Temas e Converters-->
@@ -21,6 +22,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Themes/RadioComboTheme.xaml"/>
                 <ResourceDictionary Source="../Themes/TransparentComboTheme.xaml"/>
+                <ResourceDictionary Source="../Themes/BlueButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
@@ -188,7 +190,7 @@
 
             <!--GRID PEÇA SELECIONADA-->
             <Grid Grid.Column="1" Grid.Row="1"
-                  Visibility="{Binding SelectedFixtureFamily}">
+                  Visibility="Visible">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -277,7 +279,7 @@
                                                           DisplayMemberPath="Value"
                                                           SelectedValuePath="Key"
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                          Width="87.5"
+                                                          Width="100"
                                                           HorizontalContentAlignment="Center"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Left"
@@ -359,7 +361,7 @@
                                                 HorizontalAlignment="Center">
 
                                         <RadioButton GroupName="Pecas"
-                                                     IsChecked="{Binding InputFixtureSelected,
+                                                     IsChecked="{Binding IsSelected,
                                                                  Mode=TwoWay,
                                                                  UpdateSourceTrigger=PropertyChanged}"
                                                      
@@ -371,16 +373,15 @@
                                                 <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies, Mode=TwoWay,
                                                                         RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                           DisplayMemberPath="Description"
-                                                          SelectedValuePath="Id"
-                                                          SelectedValue="{Binding Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          SelectedValue="{Binding CorrespondentFixture, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Margin="0"
-                                                          Width="87.5"
+                                                          Width="100"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Left"
                                                           HorizontalContentAlignment="Center"
                                                           VerticalContentAlignment="Center"/>
 
-                                                <TextBlock Text="{Binding FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                <TextBlock Text="{Binding CorrespondentFixture.FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
                                                            Margin="0 0 15 0"/>
                                                 
@@ -420,9 +421,12 @@
                             HorizontalAlignment="Stretch">
 
                     <Button Command="{Binding SelectPipesCommand}"
+                            HorizontalAlignment="Center"
                             Margin="0 0 0 10"
-                            Width="150" Height="20"
-                            Content="SELECIONAR TUBOS"/>
+                            Width="150" Height="30"
+                            Content="SELECIONAR TUBOS"
+                            Foreground="White" FontWeight="Bold"
+                            Style="{StaticResource BlueButton}"/>
 
 
                     <ItemsControl ItemsSource="{Binding ClassifiedOutputPipes,
@@ -452,17 +456,29 @@
                 <StackPanel Grid.Column="1" Grid.Row="2"
                             HorizontalAlignment="Center">
 
-                    <Button Command="{Binding CalculateFlowRateCommand}"
-                            Margin="0 0 0 10"
-                            Width="150" Height="20"
-                            Content="ANALISAR VAZAO"
-                            HorizontalAlignment="Center"/>
+                    <Border Background="#0784bc"
+                            Width="150" Height="30">
+                        <Border.Effect>
 
-                    <TextBlock Margin="0 0 10 0"
-                               Text="{Binding SelectedFixtureFamily.FlowRate, 
+                            <DropShadowEffect Color="Black" 
+                                              Direction="320" 
+                                              ShadowDepth="2.5" 
+                                              BlurRadius="1" 
+                                              Opacity="0.2"/>
+                            
+                        </Border.Effect>
+                        <TextBlock Text="VAZÃO DE SAÍDA"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </Border>
+                    
+                    <TextBlock Margin="0 15 0 0"
+                               Text="{Binding SelectedFixtureFamily.FlowRate,
+                                      StringFormat=' {0} L/min ',
                                       Mode=OneWay, 
                                       UpdateSourceTrigger=PropertyChanged}"
-                               HorizontalAlignment="Center"/>
+                               HorizontalAlignment="Center"
+                               FontWeight="Bold"/>
 
                 </StackPanel>
                 <!--FIM ANALISE DA VAZAO-->

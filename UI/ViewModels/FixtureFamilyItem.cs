@@ -19,6 +19,20 @@ namespace ProjetaHDR.UI.ViewModels
 
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
+        private bool _isValid = true;
+        public bool IsValid 
+        {
+            get => _isValid;
+            set
+            {
+                if (_isValid != value)
+                {
+                    _isValid = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private string _description;
         public string Description
         {
@@ -109,14 +123,19 @@ namespace ProjetaHDR.UI.ViewModels
         public ObservableCollection<Pipe> OutputPipes { get; set; } = new ObservableCollection<Pipe>();
 
 
-        private void UpdateFlowRate()
+        internal void UpdateFlowRate()
         {
+            FlowRate = 0;
+
             foreach (var area in InputAreas)
                 FlowRate += area.FlowRate;
 
             foreach (var inputFixture in InputFixtureItems)
-                FlowRate += inputFixture.FlowRate;
-
+            {
+                if (inputFixture.CorrespondentFixture != null)
+                    FlowRate += inputFixture.CorrespondentFixture.FlowRate;
+            }
+            
             FlowRate = Math.Round(FlowRate, 2);
         }
     }

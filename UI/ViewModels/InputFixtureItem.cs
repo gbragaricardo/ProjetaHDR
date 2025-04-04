@@ -15,24 +15,7 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class InputFixtureItem : ObservableObject
     {
-        Guid _flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
-
-
-        private string _id;
-        public string Id
-        {
-            get => _id;
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    OnPropertyChanged();
-
-                    CorrespondentFixture = Dev.ViewModel.AddedFixtureFamilies.FirstOrDefault(f => f.Id == Id);
-                }
-            }
-        }
+        public string Id { get; set; }
 
         private FixtureFamilyItem _correspondentFixture;
         public FixtureFamilyItem CorrespondentFixture
@@ -43,15 +26,21 @@ namespace ProjetaHDR.UI.ViewModels
                 if (_correspondentFixture != value)
                 {
                     _correspondentFixture = value;
+                    Id = _correspondentFixture.Id;
                     OnPropertyChanged();
 
-                    FlowRate = CorrespondentFixture.FlowRate;
+                    if(Dev.ViewModel != null)
+                    {
+                        if (!Dev.ViewModel.AddedFixtureFamilies.Any(added => added.Id == _correspondentFixture.Id))
+                            _correspondentFixture = null;
+                        
+                        Dev.ViewModel.AutoCalcFlowRate();
+                    }
                 }
             }
         }
 
         private bool _isSelected;
-
         public bool IsSelected
         {
             get => _isSelected;
@@ -66,31 +55,5 @@ namespace ProjetaHDR.UI.ViewModels
                 }
             }
         }
-
-        private double _flowRate;
-        public double FlowRate
-        {
-            get => _flowRate;
-            set
-            {
-                if (_flowRate != value)
-                {
-                    _flowRate = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-
-        //private void UpdateFlowRate()
-        //{
-        //    foreach (var area in InputAreas)
-        //        FlowRate += area.FlowRate;
-
-        //    foreach (var inputFixture in InputFixtureItems)
-        //        FlowRate += inputFixture.FlowRate;
-
-        //    FlowRate = Math.Round(FlowRate, 2);
-        //}
     }
 }

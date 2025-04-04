@@ -68,6 +68,12 @@ namespace ProjetaHDR.UI.ViewModels
                         double areaFlowRate = ((rainIntensity * areaValue) / 60);
 
                         FlowRate = Math.Round(areaFlowRate, 2);
+
+                        if (Dev.ViewModel != null)
+                        {
+                            Dev.ViewModel.AutoCalcFlowRate();
+                        }
+
                     }
                     else
                     {

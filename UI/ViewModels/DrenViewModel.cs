@@ -25,6 +25,7 @@ namespace ProjetaHDR.UI.ViewModels
                     _selectedFixtureFamily = value;
                     OnPropertyChanged();
                     UpdateClassifiedOutputPipes();
+                    AutoCalcFlowRate();
                 }
             }
         }
@@ -113,6 +114,11 @@ namespace ProjetaHDR.UI.ViewModels
             LoadFixturesFromRevit();
             LoadFixtureList();
 
+        }
+        internal void AutoCalcFlowRate()
+        {
+            foreach (var f in AddedFixtureFamilies)
+                f.UpdateFlowRate();
         }
 
         private void CalculateFlowRate()
@@ -251,6 +257,8 @@ namespace ProjetaHDR.UI.ViewModels
 
             else
                 SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex - 1).IsSelected = true;
+
+            AutoCalcFlowRate();
         }
 
         private void AddInputFixture(object param)
@@ -290,6 +298,8 @@ namespace ProjetaHDR.UI.ViewModels
 
             else
                 SelectedFixtureFamily.InputAreas.ElementAtOrDefault(selectedAreaIndex - 1).IsSelected = true;
+
+            AutoCalcFlowRate();
 
         }
 
@@ -339,6 +349,8 @@ namespace ProjetaHDR.UI.ViewModels
                 AddedFixtureFamilies.Insert(selectedIndex + 1, fixtureFamily);
         }
 
+        
+
         private void RemoveFixtureComboBox()
         {
             var selectedItem = AddedFixtureFamilies.FirstOrDefault(item => item.IsSelected);
@@ -347,7 +359,11 @@ namespace ProjetaHDR.UI.ViewModels
             if (selectedItem == null)
                 return;
             else
+            {
                 AddedFixtureFamilies.RemoveAt(selectedIndex);
+                selectedItem.IsValid = false;
+            }
+
 
             if (AddedFixtureFamilies.Count == 0) return;
 
@@ -356,7 +372,6 @@ namespace ProjetaHDR.UI.ViewModels
 
             else
                 AddedFixtureFamilies.ElementAtOrDefault(selectedIndex - 1).IsSelected = true;
-
 
         }
 
@@ -377,22 +392,18 @@ namespace ProjetaHDR.UI.ViewModels
                     item.InstanceElementId = ElementId.InvalidElementId;
 
                 foreach (var inputItem in item.InputFixtureItems)
-                {
-                    if (!AddedFixtureFamilies.Any(x => x.Id == inputItem.Id))
-                        inputItem.Id = null;
-                }
+                    if (inputItem.CorrespondentFixture != null && !inputItem.CorrespondentFixture.IsValid)
+                        inputItem.CorrespondentFixture = null;
+                
 
                 foreach (var inputArea in item.InputAreas)
-                {
                     if (inputArea.InstanceElementId != null && !AllDocumentAreas.ContainsKey(inputArea.InstanceElementId))
                         inputArea.InstanceElementId = ElementId.InvalidElementId;
-                }
-
+                
                 var toRemove = item.OutputPipes.Where(p => p == null || !p.IsValidObject).ToList();
+
                 foreach (var pipe in toRemove)
-                {
                     item.OutputPipes.Remove(pipe);
-                }
             }
         }
 
@@ -418,6 +429,14 @@ namespace ProjetaHDR.UI.ViewModels
 
             foreach (var fixture in loadedFixtures)
                 AddedFixtureFamilies.Add(fixture);
+
+            foreach (var fixture in AddedFixtureFamilies)
+            {
+                foreach (var inputFixture in fixture.InputFixtureItems)
+                    inputFixture.CorrespondentFixture = AddedFixtureFamilies.FirstOrDefault(added => added.Id == inputFixture.Id);
+            }
+                
+
         }
 
         public Dictionary<ElementId, string> GetPlumbingFixtures()

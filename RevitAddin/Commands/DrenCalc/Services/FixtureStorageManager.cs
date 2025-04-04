@@ -81,7 +81,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
                     fixtureEntity.Set("Id", fixture.Id);
                     fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId ?? ElementId.InvalidElementId);
                     fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
-                    fixtureEntity.Set("InputFixturesIds", (IList<string>)fixture.InputFixtureItems.Select(f => f.Id ?? "").ToList());
+                    // FAZER UM NULL CHECK CORRETO
+                    fixtureEntity.Set("InputFixturesIds", (IList<string>)fixture.InputFixtureItems.Select(f => f.CorrespondentFixture != null ? f.CorrespondentFixture.Id : "").ToList());
                     fixtureEntity.Set("OutputPipesIds", (IList<ElementId>)fixture.OutputPipes.Select(p => p.IsValidObject ? p.Id : null).ToList());
 
 
