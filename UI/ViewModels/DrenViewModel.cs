@@ -102,7 +102,7 @@ namespace ProjetaHDR.UI.ViewModels
             AddInputFixtureCommand = new RelayCommand(param => AddInputFixture(param));
             RemoveInputFixtureCommand = new RelayCommand(param => RemoveInputFixture(param));
             SelectPipesCommand = new RelayCommand(param => SelectOutputPipes(param));
-            CalculateFlowRateCommand = new RelayCommand(param => CalculateFlowRate());
+            //CalculateFlowRateCommand = new RelayCommand(param => CalculateFlowRate());
 
 
 
@@ -118,7 +118,7 @@ namespace ProjetaHDR.UI.ViewModels
                 f.UpdateFlowRate();
         }
 
-        private void CalculateFlowRate()
+        private void ExecuteOnModel()
         {
             Guid flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
 
@@ -126,20 +126,6 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 if (addedFix.InstanceElementId == null || addedFix.InstanceElementId == ElementId.InvalidElementId)
                     continue;
-
-                addedFix.FlowRate = 0;
-
-                foreach (var area in addedFix.InputAreas)
-                {
-                    
-                }
-
-                foreach (var fixture in addedFix.InputFixtureItems)
-                {
-                   
-                }
-
-                addedFix.FlowRate = Math.Round(addedFix.FlowRate, 2);
 
                 Element addedFixElement = Context.Doc.GetElement(addedFix.InstanceElementId);
                 addedFixElement.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);

@@ -28,6 +28,9 @@
                 <ResourceDictionary Source="../Themes/BlueButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+
+            <FontFamily x:Key="MontserratFont">pack://application:
+                ,,,/ProjetaHDR;component/UI/Montserrat-VariableFont_wght.ttf#Montserrat</FontFamily>
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
 
         </ResourceDictionary>
@@ -468,43 +471,41 @@
                 <StackPanel Grid.Column="1" Grid.Row="2"
                             HorizontalAlignment="Center">
 
-                    <Border Background="#0784bc"
+                    <Border 
                             Width="150" Height="30">
-                        <Border.Effect>
-
-                            <DropShadowEffect Color="Black" 
-                                              Direction="320" 
-                                              ShadowDepth="2.5" 
-                                              BlurRadius="1" 
-                                              Opacity="0.2"/>
-                            
-                        </Border.Effect>
+                       
                         <TextBlock Text="VAZÃO DE SAÍDA"
                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                   Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                   Foreground="#0784bc" FontWeight="ExtraBold" FontSize="12"/>
                     </Border>
 
-                    <Border Background="#83C1DD" CornerRadius="5"
+                    <Border Background="#0784bc" CornerRadius="5"
                             Margin="0 15 0 0" Padding="10">
                         <StackPanel>
                             <TextBlock Text="VAZÃO TOTAL:"
                                        HorizontalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
                                        FontWeight="Bold"/>
 
                             <TextBlock Margin="0 5 0 0"
                                        Text="{Binding SelectedFixtureFamily.FlowRate,
                                               StringFormat=' {0} L/min ',
                                               Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
                                        HorizontalAlignment="Center"
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="#83C1DD" CornerRadius="5"
+                    <Border Background="#0784bc" CornerRadius="5"
                             Margin="0 15 0 0" Padding="10">
                         <StackPanel>
                             <TextBlock Text="VAZÃO P/ CONDUTOR:"
                                        HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource MontserratFont}"
+                                       Foreground="White"
                                        FontWeight="Bold"/>
 
                             <TextBlock Margin="0 5 0 0"
@@ -512,6 +513,8 @@
                                               StringFormat=' {0} L/min ',
                                               Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                        HorizontalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
@@ -538,7 +541,7 @@
                     Grid.Column="1" Grid.Row="2"
                     Width="150" Height="25"
                     Foreground="White"
-                    FontFamily="Sans Serif"
+                    FontFamily="{StaticResource MontserratFont}" FontWeight="Bold"
                     Style="{StaticResource BlueButton}"/>
         </Grid>
     </Border>

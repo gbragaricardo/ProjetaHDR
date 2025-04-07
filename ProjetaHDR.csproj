@@ -118,13 +118,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="UI\Fonts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="ProjetaHDR.addin">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="UI\Fonts\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
+    <EmbeddedResource Include="UI\Fonts\Montserrat\Montserrat-VariableFont_wght.ttf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />

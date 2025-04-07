@@ -12,6 +12,7 @@ namespace ProjetaHDR.Commands
     [Transaction(TransactionMode.Manual)]
     internal class Dev : RevitCommandBase, IExternalCommand
     {
+        public int Contador { get; set; }
         internal static DrenViewModel ViewModel { get; private set; }
         internal static DrenWindow Window { get; private set; }
         public static RevitContext HelperContext { get; set; }
