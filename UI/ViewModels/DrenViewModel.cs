@@ -131,41 +131,13 @@ namespace ProjetaHDR.UI.ViewModels
 
                 foreach (var area in addedFix.InputAreas)
                 {
-                    if (area.InstanceElementId == null || area.InstanceElementId == ElementId.InvalidElementId)
-                        continue;
-
-                    Element areaElement = Context.Doc.GetElement(area.InstanceElementId);
-                    if (areaElement == null)
-                        continue;
-
-                    var areaValue = areaElement.get_Parameter(BuiltInParameter.ROOM_AREA).AsDouble();
-                    areaValue = UnitUtils.ConvertFromInternalUnits(areaValue, UnitTypeId.SquareMeters);
-
-                    Guid intensityParamGuid = new Guid("1669925a-e4f7-4013-9f2f-9c16192fb53a");
-                    var rainIntensity = areaElement.get_Parameter(intensityParamGuid).AsDouble();
-
-                    double areaFlowRate = ((rainIntensity * areaValue) / 60);
-
-                    area.FlowRate = Math.Round(areaFlowRate, 2);
-                    addedFix.FlowRate += areaFlowRate;
+                    
                 }
 
-                //foreach (var fixture in addedFix.InputFixtureItems)
-                //{
-                //    if (fixture.InstanceElementId == null || fixture.InstanceElementId == ElementId.InvalidElementId)
-                //        continue;
-
-                //    var correspondentFixture = AddedFixtureFamilies.FirstOrDefault(x => x.InstanceElementId == fixture.InstanceElementId);
-
-                //    if (correspondentFixture != null)
-                //        addedFix.FlowRate += correspondentFixture.FlowRate;
-
-                //    //Element fixtureElement = Context.Doc.GetElement(fixture.InstanceElementId);
-                //    //if (fixtureElement == null)
-                //    //    continue;
-
-                //    //var fixtureFlowRate = fixtureElement.get_Parameter(flowRateParamGuid).AsDouble();
-                //}
+                foreach (var fixture in addedFix.InputFixtureItems)
+                {
+                   
+                }
 
                 addedFix.FlowRate = Math.Round(addedFix.FlowRate, 2);
 
@@ -200,17 +172,23 @@ namespace ProjetaHDR.UI.ViewModels
             }
 
             if (pipesReferences.Count == 0)
+            {
+                SelectedFixtureFamily.OutputPipes.Clear();
                 return;
-
+            }
+               
             SelectedFixtureFamily.OutputPipes?.Clear();
-
             foreach (var pipeRef  in pipesReferences)
             {
                 Element pipeElement = Context.Doc.GetElement(pipeRef);
                 Pipe pipe = pipeElement as Pipe;
                 SelectedFixtureFamily.OutputPipes.Add(pipe);
             }
+            OnPropertyChanged(nameof(SelectedFixtureFamily.FlowPerConductor));
+
+            SelectedFixtureFamily.UpdateFlowPerConductor();
             UpdateClassifiedOutputPipes();
+
         }
 
         public void UpdateClassifiedOutputPipes()
@@ -252,8 +230,11 @@ namespace ProjetaHDR.UI.ViewModels
             if (selectedInputFixtureIndex == 0)
                 SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(0).IsSelected = true;
 
-            else
+            else if (selectedInputFixtureIndex == SelectedFixtureFamily.InputFixtureItems.Count())
                 SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex - 1).IsSelected = true;
+
+            else
+                SelectedFixtureFamily.InputFixtureItems.ElementAtOrDefault(selectedInputFixtureIndex).IsSelected = true;
 
             AutoCalcFlowRate();
         }
@@ -293,8 +274,11 @@ namespace ProjetaHDR.UI.ViewModels
             if (selectedAreaIndex == 0)
                 SelectedFixtureFamily.InputAreas.ElementAtOrDefault(0).IsSelected = true;
 
-            else
+            else if (selectedAreaIndex == SelectedFixtureFamily.InputAreas.Count())
                 SelectedFixtureFamily.InputAreas.ElementAtOrDefault(selectedAreaIndex - 1).IsSelected = true;
+
+            else
+                SelectedFixtureFamily.InputAreas.ElementAtOrDefault(selectedAreaIndex).IsSelected = true;
 
             AutoCalcFlowRate();
 
@@ -365,8 +349,11 @@ namespace ProjetaHDR.UI.ViewModels
             if (selectedIndex == 0)
                 AddedFixtureFamilies.ElementAtOrDefault(0).IsSelected = true;
 
-            else
+            else if (selectedIndex == AddedFixtureFamilies.Count())
                 AddedFixtureFamilies.ElementAtOrDefault(selectedIndex - 1).IsSelected = true;
+
+            else
+                AddedFixtureFamilies.ElementAtOrDefault(selectedIndex).IsSelected = true;
 
         }
 

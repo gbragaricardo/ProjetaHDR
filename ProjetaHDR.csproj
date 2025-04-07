@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
+    <Folder Include="UI\Fonts\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

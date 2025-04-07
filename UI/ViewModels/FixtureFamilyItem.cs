@@ -114,6 +114,22 @@ namespace ProjetaHDR.UI.ViewModels
                 {
                     _flowRate = value;
                     OnPropertyChanged();
+                    UpdateFlowPerConductor();
+                }
+            }
+        }
+
+        private double _flowPerConductor;
+        public double FlowPerConductor
+        {
+            get => _flowPerConductor;
+            set
+            {
+                if (_flowPerConductor != value)
+                {
+                    _flowPerConductor = value;
+                    OnPropertyChanged();
+                    UpdateFlowPerConductor();
                 }
             }
         }
@@ -142,6 +158,15 @@ namespace ProjetaHDR.UI.ViewModels
             }
             
             FlowRate = Math.Round(FlowRate, 2);
+        }
+
+        internal void UpdateFlowPerConductor()
+        {
+            if (OutputPipes.Count != 0)
+                FlowPerConductor = Math.Round((FlowRate / OutputPipes.Count), 2);
+
+            else
+                FlowPerConductor = 0;
         }
     }
 }

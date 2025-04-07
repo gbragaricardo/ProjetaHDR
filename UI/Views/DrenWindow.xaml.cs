@@ -38,5 +38,14 @@ namespace ProjetaHDR.UI.Views
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            if (DataContext is DrenViewModel viewModel)
+            {
+                viewModel.SaveDataStorage();
+            }
+        }
+
     }
 }

@@ -9,8 +9,11 @@
         d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
         mc:Ignorable="d" 
         WindowStyle="SingleBorderWindow"
-        ResizeMode="CanMinimize"
+        ResizeMode="CanResize"
+        MinHeight="625"
         Height="625"
+        MinWidth="900"
+        MaxWidth="900"
         Width="900"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
@@ -209,8 +212,9 @@
                             HorizontalAlignment="Center">
                     
                 
-                    <TextBlock Text="AREAS"
+                    <TextBlock Text="ÁREAS"
                                Foreground="#0784bc" FontWeight="Bold"
+                               FontSize="14"
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Button Command="{Binding AddAreaCommand}"
@@ -306,8 +310,10 @@
                             VerticalAlignment="Top">
 
 
-                    <TextBlock Text="PECAS"
+                    <TextBlock Text="PEÇAS"
                                Foreground="#0784bc" FontWeight="Bold"
+                                                              FontSize="14"
+
                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <Button Command="{Binding AddInputFixtureCommand}"
@@ -422,7 +428,6 @@
 
                     <Button Command="{Binding SelectPipesCommand}"
                             HorizontalAlignment="Center"
-                            Margin="0 0 0 10"
                             Width="150" Height="30"
                             Content="SELECIONAR TUBOS"
                             Foreground="White" FontWeight="Bold"
@@ -437,12 +442,19 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border>
+                                <Border Background="#83C1DD" CornerRadius="5"
+                                        Margin="0 15 0 0" Padding="10"
+                                        Width="225">
+                                    
                                     <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="TUBOS DE SAÍDA:"
+                                                   HorizontalAlignment="Center"
+                                                   FontWeight="Bold"/>
+                                        
                                         <TextBlock Margin="0 0 10 0"
                                                    Text="{Binding ., 
-                                                          Mode=OneWay, 
-                                                          UpdateSourceTrigger=PropertyChanged}"/>
+                                                   Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   TextWrapping="Wrap"/>
                                     </StackPanel>
                                    
                                 </Border>
@@ -496,14 +508,14 @@
                                        FontWeight="Bold"/>
 
                             <TextBlock Margin="0 5 0 0"
-                                       Text="{Binding SelectedFixtureFamily.FlowRate,
+                                       Text="{Binding SelectedFixtureFamily.FlowPerConductor,
                                               StringFormat=' {0} L/min ',
                                               Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                        HorizontalAlignment="Center"
                                        FontWeight="Bold"/>
                         </StackPanel>
                     </Border>
-
+                
                 </StackPanel>
                 <!--FIM ANALISE DA VAZAO-->
                 
@@ -521,9 +533,13 @@
 
             </StackPanel>-->
 
-            <Button Content="Executar no modelo"
+            <Button Content="EXECUTAR"
+                    Command="{Binding ExecuteCommand}"
                     Grid.Column="1" Grid.Row="2"
-                    Width="150" Height="25"/>
+                    Width="150" Height="25"
+                    Foreground="White"
+                    FontFamily="Sans Serif"
+                    Style="{StaticResource BlueButton}"/>
         </Grid>
     </Border>
 </Window>
