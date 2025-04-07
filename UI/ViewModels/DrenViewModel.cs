@@ -89,9 +89,6 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand SelectPipesCommand { get; }
         public RelayCommand CalculateFlowRateCommand { get; }
 
-
-
-
         public DrenViewModel(RevitContext context)
         {
             Context = context;
@@ -347,9 +344,7 @@ namespace ProjetaHDR.UI.ViewModels
                 AddedFixtureFamilies.Add(fixtureFamily);
             else
                 AddedFixtureFamilies.Insert(selectedIndex + 1, fixtureFamily);
-        }
-
-        
+        }        
 
         private void RemoveFixtureComboBox()
         {
@@ -420,7 +415,6 @@ namespace ProjetaHDR.UI.ViewModels
 
         public void SaveDataStorage()
             => FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
-        
 
         public void LoadFixturesFromRevit()
         {

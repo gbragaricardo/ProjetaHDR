@@ -23,7 +23,13 @@ namespace ProjetaHDR.UI.ViewModels
             get => _correspondentFixture;
             set
             {
-                if (_correspondentFixture != value)
+                if (value == null)
+                {
+                    _correspondentFixture = value;
+                    OnPropertyChanged(nameof(_correspondentFixture.FlowRate));
+                }
+
+                else if (_correspondentFixture != value)
                 {
                     _correspondentFixture = value;
                     Id = _correspondentFixture.Id;

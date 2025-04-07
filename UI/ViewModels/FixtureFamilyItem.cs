@@ -132,6 +132,11 @@ namespace ProjetaHDR.UI.ViewModels
 
             foreach (var inputFixture in InputFixtureItems)
             {
+                var correspodentFixture = inputFixture.CorrespondentFixture ?? null;
+
+                if (correspodentFixture != null && correspodentFixture.IsValid == false)
+                    inputFixture.CorrespondentFixture.FlowRate = 0;
+
                 if (inputFixture.CorrespondentFixture != null)
                     FlowRate += inputFixture.CorrespondentFixture.FlowRate;
             }
