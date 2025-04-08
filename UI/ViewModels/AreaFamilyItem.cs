@@ -49,14 +49,14 @@ namespace ProjetaHDR.UI.ViewModels
                     _instanceElementId = value;
                     OnPropertyChanged();
 
-                    if (Dev.HelperContext != null)
+                    if (RainNetwork.HelperContext != null)
                     {
-                        Description = Dev.HelperContext.Doc
+                        Description = RainNetwork.HelperContext.Doc
                             .GetElement(_instanceElementId)?
                             .get_Parameter(BuiltInParameter.ROOM_NAME)
                             .AsValueString();
 
-                        Element areaElement = Dev.HelperContext.Doc.GetElement(InstanceElementId);
+                        Element areaElement = RainNetwork.HelperContext.Doc.GetElement(InstanceElementId);
                         if (areaElement == null)
                             return;
 
@@ -69,9 +69,9 @@ namespace ProjetaHDR.UI.ViewModels
 
                         FlowRate = Math.Round(areaFlowRate, 2);
 
-                        if (Dev.ViewModel != null)
+                        if (RainNetwork.ViewModel != null)
                         {
-                            Dev.ViewModel.AutoCalcFlowRate();
+                            RainNetwork.ViewModel.AutoCalcFlowRate();
                         }
 
                     }
@@ -107,9 +107,9 @@ namespace ProjetaHDR.UI.ViewModels
                 _isSelected = value;
                 OnPropertyChanged();
 
-                if (_isSelected && Dev.ViewModel != null)
+                if (_isSelected && RainNetwork.ViewModel != null)
                 {
-                    Dev.ViewModel.SelectedAreaItem = this;
+                    RainNetwork.ViewModel.SelectedAreaItem = this;
                 }
             }
         }

@@ -69,9 +69,9 @@ namespace ProjetaHDR.UI.ViewModels
 
                     FlowRate = 0;
 
-                    if (Dev.HelperContext != null)
+                    if (RainNetwork.HelperContext != null)
                     {
-                        Description = Dev.HelperContext.Doc
+                        Description = RainNetwork.HelperContext.Doc
                             .GetElement(_instanceElementId)?
                             .get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
                             .AsValueString();
@@ -97,9 +97,9 @@ namespace ProjetaHDR.UI.ViewModels
                 _isSelected = value;
                 OnPropertyChanged();
 
-                if (_isSelected && Dev.ViewModel != null)
+                if (_isSelected && RainNetwork.ViewModel != null)
                 {
-                    Dev.ViewModel.SelectedFixtureFamily = this;
+                    RainNetwork.ViewModel.SelectedFixtureFamily = this;
                 }
             }
         }

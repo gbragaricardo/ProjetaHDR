@@ -48,51 +48,46 @@ namespace ProjetaHDR.RevitAddin.Commands.Services
             Schema schema = GetOrCreateSchema();
             Schema fixtureSchema = schema.GetField("FixtureItems").SubSchema;
 
-            using (Transaction transaction = new Transaction(doc, "Salvar Tabela"))
+            // Verifica se já existe um DataStorage com essa Schema
+            DataStorage storage = new FilteredElementCollector(doc)
+                .OfClass(typeof(DataStorage))
+                .Cast<DataStorage>()
+                .FirstOrDefault(ds => ds.GetEntity(schema).IsValid());
+
+            Entity entity;
+
+            if (storage == null)
             {
-                transaction.Start();
-
-                // Verifica se já existe um DataStorage com essa Schema
-                DataStorage storage = new FilteredElementCollector(doc)
-                    .OfClass(typeof(DataStorage))
-                    .Cast<DataStorage>()
-                    .FirstOrDefault(ds => ds.GetEntity(schema).IsValid());
-
-                Entity entity;
-
-                if (storage == null)
-                {
-                    // Se não existir, cria um novo DataStorage
-                    storage = DataStorage.Create(doc);
-                    entity = new Entity(schema);
-                }
-                else
-                {
-                    // Se já existir, recupera o Entity associado
-                    entity = storage.GetEntity(schema);
-                }
-
-                IList<Entity> fixtureEntities = new List<Entity>();
-                
-                foreach (FixtureFamilyItem fixture in fixtures)
-                {
-                    Entity fixtureEntity = new Entity(fixtureSchema);
-
-                    fixtureEntity.Set("Id", fixture.Id);
-                    fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId ?? ElementId.InvalidElementId);
-                    fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
-                    // FAZER UM NULL CHECK CORRETO
-                    fixtureEntity.Set("InputFixturesIds", (IList<string>)fixture.InputFixtureItems.Select(f => f.CorrespondentFixture != null ? f.CorrespondentFixture.Id : "").ToList());
-                    fixtureEntity.Set("OutputPipesIds", (IList<ElementId>)fixture.OutputPipes.Select(p => p.IsValidObject ? p.Id : null).ToList());
-
-
-                    fixtureEntities.Add(fixtureEntity);
-                }
-                entity.Set("FixtureItems", fixtureEntities);
-                storage.SetEntity(entity);
-
-                transaction.Commit();
+                // Se não existir, cria um novo DataStorage
+                storage = DataStorage.Create(doc);
+                entity = new Entity(schema);
             }
+            else
+            {
+                // Se já existir, recupera o Entity associado
+                entity = storage.GetEntity(schema);
+            }
+
+            IList<Entity> fixtureEntities = new List<Entity>();
+                
+            foreach (FixtureFamilyItem fixture in fixtures)
+            {
+                Entity fixtureEntity = new Entity(fixtureSchema);
+
+                fixtureEntity.Set("Id", fixture.Id);
+                fixtureEntity.Set("InstanceElementId", fixture.InstanceElementId ?? ElementId.InvalidElementId);
+                fixtureEntity.Set("InputAreasIds", (IList<ElementId>)fixture.InputAreas.Select(a => a.InstanceElementId ?? ElementId.InvalidElementId).ToList());
+                // FAZER UM NULL CHECK CORRETO
+                fixtureEntity.Set("InputFixturesIds", (IList<string>)fixture.InputFixtureItems.Select(f => f.CorrespondentFixture != null ? f.CorrespondentFixture.Id : "").ToList());
+                fixtureEntity.Set("OutputPipesIds", (IList<ElementId>)fixture.OutputPipes.Select(p => p.IsValidObject ? p.Id : null).ToList());
+
+
+                fixtureEntities.Add(fixtureEntity);
+            }
+            entity.Set("FixtureItems", fixtureEntities);
+            storage.SetEntity(entity);
+
+               
         }
 
         public static List<FixtureFamilyItem> LoadDataFromRevit(Document doc)

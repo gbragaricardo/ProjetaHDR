@@ -65,8 +65,11 @@
   <ItemGroup>
     <Compile Include="AddinApp.cs" />
     <Compile Include="RevitAddin\Commands\Dev.cs" />
+    <Compile Include="RevitAddin\Commands\RainNetwork.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
+    <Compile Include="UI\Events\ExecuteDrenEvent.cs" />
+    <Compile Include="UI\Events\SaveDataStorageEvent.cs" />
     <Compile Include="UI\Services\SelectionOptions.cs" />
     <Compile Include="UI\ViewModels\AreaFamilyItem.cs" />
     <Compile Include="UI\ViewModels\InputFixtureItem.cs" />

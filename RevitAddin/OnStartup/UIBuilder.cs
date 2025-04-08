@@ -81,8 +81,8 @@ namespace ProjetaHDR.Startup
             false);
 
             var drenWindow = RibbonManager.CreateAndAddPushButton
-            ("drenwindow", "⠀⠀DrenWindow⠀⠀",
-            "ProjetaHDR.Commands.Dev",
+            ("drenwindow", "⠀Rede⠀\n⠀Pluvial⠀",
+            "ProjetaHDR.Commands.RainNetwork",
             _drenPanel,
             "drenWindow",
             "drenwindow.png",

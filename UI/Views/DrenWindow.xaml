@@ -196,7 +196,7 @@
 
             <!--GRID PEÇA SELECIONADA-->
             <Grid Grid.Column="1" Grid.Row="1"
-                  Visibility="Visible">
+                  Visibility="{Binding HasSelectedFixture}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -524,17 +524,6 @@
                 
             </Grid>
             <!--FIM GRID PEÇA SELECIONADA-->
-            
-            
-            
-            <!--<StackPanel Grid.Column="2" 
-                        Grid.ColumnSpan="2" Grid.Row="2"
-                        HorizontalAlignment="Center">
-
-                <Button Content="AREAS TESTE"
-                        Command="{Binding SetAreasGPCommand}"/>
-
-            </StackPanel>-->
 
             <Button Content="EXECUTAR"
                     Command="{Binding ExecuteCommand}"

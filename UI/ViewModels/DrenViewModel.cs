@@ -8,6 +8,8 @@ using System.Linq;
 using ProjetaHDR.RevitAddin.Commands.Services;
 using ProjetaHDR.UI.Services;
 using Autodesk.Revit.DB.Plumbing;
+using ProjetaHDR.UI.Events;
+using System.Windows;
 
 namespace ProjetaHDR.UI.ViewModels
 {
@@ -19,7 +21,7 @@ namespace ProjetaHDR.UI.ViewModels
         {
             get => _selectedFixtureFamily;
             set
-            {
+            {  
                 if (_selectedFixtureFamily != value)
                 {
                     _selectedFixtureFamily = value;
@@ -59,6 +61,8 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         private ObservableCollection<string> _classifiedOutputPipes = new ObservableCollection<string>();
+        private bool hasSelectedFixture;
+
         public ObservableCollection<string> ClassifiedOutputPipes
         {
             get => _classifiedOutputPipes;
@@ -87,10 +91,16 @@ namespace ProjetaHDR.UI.ViewModels
         public RelayCommand AddInputFixtureCommand { get; }
         public RelayCommand RemoveInputFixtureCommand { get; }
         public RelayCommand SelectPipesCommand { get; }
-        public RelayCommand CalculateFlowRateCommand { get; }
+        public RelayCommand ExecuteCommand { get; }
+
+        private readonly SaveDataStorageEvent _saveStorageHandler;
+        private readonly ExternalEvent _saveStorageEvent;
+        private readonly ExecuteDrenEvent _executeDrenHandler;
+        private readonly ExternalEvent _executeDrenEvent;
 
         public DrenViewModel(RevitContext context)
         {
+
             Context = context;
             AddComboBoxCommand = new RelayCommand(param => AddFixtureComboBox());
             RefreshAllFixturesCommand = new RelayCommand(param => LoadFixtureList());
@@ -102,11 +112,15 @@ namespace ProjetaHDR.UI.ViewModels
             AddInputFixtureCommand = new RelayCommand(param => AddInputFixture(param));
             RemoveInputFixtureCommand = new RelayCommand(param => RemoveInputFixture(param));
             SelectPipesCommand = new RelayCommand(param => SelectOutputPipes(param));
-            //CalculateFlowRateCommand = new RelayCommand(param => CalculateFlowRate());
-
-
+            ExecuteCommand = new RelayCommand(param => ExecuteOnModel());
 
             AddedFixtureFamilies = new ObservableCollection<FixtureFamilyItem>();
+
+            _saveStorageHandler = new SaveDataStorageEvent(Context.Doc, AddedFixtureFamilies);
+            _saveStorageEvent = ExternalEvent.Create(_saveStorageHandler);
+
+            _executeDrenHandler = new ExecuteDrenEvent(Context.Doc, AddedFixtureFamilies);
+            _executeDrenEvent = ExternalEvent.Create(_executeDrenHandler);
 
             LoadFixturesFromRevit();
             LoadFixtureList();
@@ -119,26 +133,7 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         private void ExecuteOnModel()
-        {
-            Guid flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
-
-            foreach (var addedFix in AddedFixtureFamilies)
-            {
-                if (addedFix.InstanceElementId == null || addedFix.InstanceElementId == ElementId.InvalidElementId)
-                    continue;
-
-                Element addedFixElement = Context.Doc.GetElement(addedFix.InstanceElementId);
-                addedFixElement.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);
-
-                foreach (var pipe in addedFix.OutputPipes)
-                {
-                    pipe.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);
-                }
-
-                //if (addedFix.IsSelected == true)
-                //    return;
-            }
-        }
+            => _executeDrenEvent.Raise();
 
         private void SelectOutputPipes(object param)
         {
@@ -387,7 +382,7 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         public void SaveDataStorage()
-            => FixtureStorageManager.SaveDataToRevit(Context.Doc, AddedFixtureFamilies);
+            => _saveStorageEvent.Raise();
 
         public void LoadFixturesFromRevit()
         {

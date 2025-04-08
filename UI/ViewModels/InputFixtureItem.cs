@@ -35,12 +35,12 @@ namespace ProjetaHDR.UI.ViewModels
                     Id = _correspondentFixture.Id;
                     OnPropertyChanged();
 
-                    if(Dev.ViewModel != null)
+                    if(RainNetwork.ViewModel != null)
                     {
-                        if (!Dev.ViewModel.AddedFixtureFamilies.Any(added => added.Id == _correspondentFixture.Id))
+                        if (!RainNetwork.ViewModel.AddedFixtureFamilies.Any(added => added.Id == _correspondentFixture.Id))
                             _correspondentFixture = null;
                         
-                        Dev.ViewModel.AutoCalcFlowRate();
+                        RainNetwork.ViewModel.AutoCalcFlowRate();
                     }
                 }
             }
@@ -55,9 +55,9 @@ namespace ProjetaHDR.UI.ViewModels
                 _isSelected = value;
                 OnPropertyChanged();
 
-                if (_isSelected && Dev.ViewModel != null)
+                if (_isSelected && RainNetwork.ViewModel != null)
                 {
-                    Dev.ViewModel.SelectedInputFixture = this;
+                    RainNetwork.ViewModel.SelectedInputFixture = this;
                 }
             }
         }

@@ -13,8 +13,11 @@ namespace ProjetaHDR
         protected RevitContext Context { get; private set; }
 
         protected void InitializeContext(ExternalCommandData commandData)
-        {
-            Context = new RevitContext(commandData.Application);
-        }
+            => Context = new RevitContext(commandData.Application);
+
+        protected void InitializeContextEvent(UIApplication UIApp)
+            =>  Context = new RevitContext(UIApp);
+        
+
     }
 }
