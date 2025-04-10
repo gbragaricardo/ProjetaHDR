@@ -144,8 +144,11 @@ namespace ProjetaHDR.UI.ViewModels
             FlowRate = 0;
 
             foreach (var area in InputAreas)
+            {
+                area.UpdateAreaFlow();
                 FlowRate += area.FlowRate;
-
+            }
+                
             foreach (var inputFixture in InputFixtureItems)
             {
                 var correspodentFixture = inputFixture.CorrespondentFixture ?? null;

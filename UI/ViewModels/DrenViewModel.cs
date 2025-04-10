@@ -10,11 +10,25 @@ using ProjetaHDR.UI.Services;
 using Autodesk.Revit.DB.Plumbing;
 using ProjetaHDR.UI.Events;
 using System.Windows;
+using Visibility = System.Windows.Visibility;
 
 namespace ProjetaHDR.UI.ViewModels
 {
     internal class DrenViewModel : ObservableObject
     {
+        private Visibility _hasSelected = Visibility.Hidden;
+        public Visibility HasSelected
+        {
+            get => _hasSelected;
+            set
+            {
+                if (_hasSelected != value)
+                {
+                    _hasSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private FixtureFamilyItem _selectedFixtureFamily;
         public FixtureFamilyItem SelectedFixtureFamily
@@ -28,6 +42,9 @@ namespace ProjetaHDR.UI.ViewModels
                     OnPropertyChanged();
                     UpdateClassifiedOutputPipes();
                     AutoCalcFlowRate();
+                    if (value.IsValid)
+                        HasSelected = Visibility.Visible;
+
                 }
             }
         }
@@ -61,8 +78,6 @@ namespace ProjetaHDR.UI.ViewModels
         }
 
         private ObservableCollection<string> _classifiedOutputPipes = new ObservableCollection<string>();
-        private bool hasSelectedFixture;
-
         public ObservableCollection<string> ClassifiedOutputPipes
         {
             get => _classifiedOutputPipes;
@@ -318,14 +333,15 @@ namespace ProjetaHDR.UI.ViewModels
 
             if (selectedItem == null)
                 return;
-            else
+            
+            AddedFixtureFamilies.RemoveAt(selectedIndex);
+            selectedItem.IsValid = false;
+            
+            if (AddedFixtureFamilies.Count == 0)
             {
-                AddedFixtureFamilies.RemoveAt(selectedIndex);
-                selectedItem.IsValid = false;
+                HasSelected = Visibility.Hidden;
+                return;
             }
-
-
-            if (AddedFixtureFamilies.Count == 0) return;
 
             if (selectedIndex == 0)
                 AddedFixtureFamilies.ElementAtOrDefault(0).IsSelected = true;
@@ -378,6 +394,7 @@ namespace ProjetaHDR.UI.ViewModels
 
 
             ValidateFixtureItems();
+            AutoCalcFlowRate();
             OnPropertyChanged(nameof(AddedFixtureFamilies));
         }
 

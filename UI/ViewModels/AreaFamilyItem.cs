@@ -11,8 +11,6 @@ namespace ProjetaHDR.UI.ViewModels
 {
     internal class AreaFamilyItem : ObservableObject
     {
-        Guid _intensityParamGuid = new Guid("1669925a-e4f7-4013-9f2f-9c16192fb53a");
-
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
         private string _description;
@@ -43,43 +41,17 @@ namespace ProjetaHDR.UI.ViewModels
 
                     Description = null;
                     FlowRate = 0;
+                    return;
                 }
-                else if (_instanceElementId != value)
+
+                if (_instanceElementId != value)
                 {
                     _instanceElementId = value;
                     OnPropertyChanged();
+                    UpdateAreaFlow();
 
-                    if (RainNetwork.HelperContext != null)
-                    {
-                        Description = RainNetwork.HelperContext.Doc
-                            .GetElement(_instanceElementId)?
-                            .get_Parameter(BuiltInParameter.ROOM_NAME)
-                            .AsValueString();
-
-                        Element areaElement = RainNetwork.HelperContext.Doc.GetElement(InstanceElementId);
-                        if (areaElement == null)
-                            return;
-
-                        var areaValue = areaElement.get_Parameter(BuiltInParameter.ROOM_AREA).AsDouble();
-                        areaValue = UnitUtils.ConvertFromInternalUnits(areaValue, UnitTypeId.SquareMeters);
-
-                        var rainIntensity = areaElement.get_Parameter(_intensityParamGuid).AsDouble();
-
-                        double areaFlowRate = ((rainIntensity * areaValue) / 60);
-
-                        FlowRate = Math.Round(areaFlowRate, 2);
-
-                        if (RainNetwork.ViewModel != null)
-                        {
-                            RainNetwork.ViewModel.AutoCalcFlowRate();
-                        }
-
-                    }
-                    else
-                    {
-                        Description = null;
-                        FlowRate = 0;
-                    }
+                    if (RainNetwork.ViewModel != null)
+                        RainNetwork.ViewModel.AutoCalcFlowRate();
                 }
             }
         }
@@ -112,6 +84,49 @@ namespace ProjetaHDR.UI.ViewModels
                     RainNetwork.ViewModel.SelectedAreaItem = this;
                 }
             }
+        }
+
+        public void UpdateAreaFlow()
+        {
+            if (RainNetwork.HelperContext != null && _instanceElementId != null)
+            {
+
+                Element areaElement = RainNetwork.HelperContext.Doc.GetElement(InstanceElementId);
+                if (areaElement == null)
+                {
+
+                    Description = null;
+                    FlowRate = 0;
+                    return;
+                }
+                    
+
+                Description = areaElement
+                    .get_Parameter(BuiltInParameter.ROOM_NAME)
+                    .AsValueString();
+
+                var areaValue = areaElement.get_Parameter(BuiltInParameter.ROOM_AREA).AsDouble();
+                areaValue = UnitUtils.ConvertFromInternalUnits(areaValue, UnitTypeId.SquareMeters);
+
+                double a = areaElement.get_Parameter(new Guid("c9688612-5497-43b6-b36e-bf7559036bec")).AsDouble();
+                double b = areaElement.get_Parameter(new Guid("80506c0c-c8cd-43bb-9895-70a89ea83433")).AsDouble();
+                double c = areaElement.get_Parameter(new Guid("5cf801e8-6c6d-411b-a076-69d66f1b93fd")).AsDouble();
+                double k = areaElement.get_Parameter(new Guid("c8022a50-c2ba-4d9c-982e-97cbfc536fb6")).AsDouble();
+                double runoffCoef = areaElement.get_Parameter(new Guid("bee6c53d-9ca0-4a45-8fab-a710e1884587")).AsDouble();
+                int tr = areaElement.get_Parameter(new Guid("fd39346e-f1b6-42bc-8996-ab8a606aa983")).AsInteger();
+
+                double rainIntensity = (k * (Math.Pow(tr, a))) / (Math.Pow((5 + b), c));
+                double areaFlowRate = ((rainIntensity * areaValue) / 60);
+
+                if (runoffCoef > 0)
+                    areaFlowRate *= runoffCoef;
+
+                FlowRate = Math.Round(areaFlowRate, 2); return;
+            }
+
+            Description = null;
+            FlowRate = 0;
+            
         }
     }
 }

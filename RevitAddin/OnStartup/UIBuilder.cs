@@ -89,7 +89,7 @@ namespace ProjetaHDR.Startup
             false);
 
             var setAreasGP = RibbonManager.CreatePushButtonData("SetAreasGP", "Set Intensidade Pluviometrica", "ProjetaHDR.Commands.SetAreasGP", "globalparam.png", "Botao Teste");
-            var setAreasTR = RibbonManager.CreatePushButtonData("SetAreasTR", "Set Tempo Retorno", "ProjetaHDR.Commands.SetAreasGP", "tr.png", "Botao Teste");
+            var setAreasTR = RibbonManager.CreatePushButtonData("SetAreasTR", "Set Tempo Retorno", "ProjetaHDR.Commands.SetAreasTR", "tr.png", "Botao Teste");
 
             var drenButtons = RibbonManager.AddStackedPushButtons(_drenPanel, setAreasGP, setAreasTR);
         }

@@ -46,7 +46,7 @@ namespace ProjetaHDR.Commands
             {
                 if (elementArea is Area area)
                 {
-                    var returnTimeParam = area.get_Parameter(new Guid("7060a00c-91d5-44d8-b410-320562ae0a97"));
+                    var returnTimeParam = area.get_Parameter(new Guid("fd39346e-f1b6-42bc-8996-ab8a606aa983"));
                     if (area.AreaScheme.Id.Value == 23802931) // Cobertura
                         returnTimeParam.Set(25);
 

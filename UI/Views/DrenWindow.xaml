@@ -32,7 +32,6 @@
             <FontFamily x:Key="MontserratFont">pack://application:
                 ,,,/ProjetaHDR;component/UI/Montserrat-VariableFont_wght.ttf#Montserrat</FontFamily>
             <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
-
         </ResourceDictionary>
 
     </Window.Resources>
@@ -145,7 +144,8 @@
             </StackPanel>
 
             <ScrollViewer Grid.Row="1"
-                          Grid.Column="0" Margin="0 50 10 0">
+                          Grid.Column="0" 
+                          Margin="0 50 10 0">
                 <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}"
                               AlternationCount="200"
@@ -164,6 +164,7 @@
                                         <Grid>
                                             <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
                                                               RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                       Foreground="Black"
                                                        VerticalAlignment="Center"
                                                        Margin="10 0 0 0"
                                                        />
@@ -177,8 +178,8 @@
                                                       Margin="0"
                                                       MinWidth="125"
                                                       Style="{StaticResource TransparentCombo}"
-                                                      HorizontalAlignment="Right"
-                                                      VerticalContentAlignment="Center">
+                                                      HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                                      FontWeight="Bold">
 
                                             </ComboBox>
                                         </Grid>
@@ -196,13 +197,15 @@
 
             <!--GRID PEÇA SELECIONADA-->
             <Grid Grid.Column="1" Grid.Row="1"
-                  Visibility="{Binding HasSelectedFixture}">
+                  Visibility="{Binding HasSelected, Mode=OneWay,
+                                       UpdateSourceTrigger=PropertyChanged}">
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="250"/>
+                    <RowDefinition MinHeight="250" Height="*"/>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
@@ -249,16 +252,12 @@
                                         ConverterParameter='remove.png'}"
                                RenderOptions.BitmapScalingMode="HighQuality"/>
                     </Button>
-
-
                 </StackPanel>
 
                 <ScrollViewer Grid.Column="0" Grid.Row="0"
-                              Margin="15"
+                              Margin="15 50 15 40"
                               Padding="0 0 5 0"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
-                              Height="150"
+                              HorizontalAlignment="Center" VerticalAlignment="Stretch"
                               Width="220">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
@@ -288,12 +287,14 @@
                                                           SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Width="100"
                                                           HorizontalContentAlignment="Center"
+                                                          FontWeight="Bold"
                                                           Style="{StaticResource TransparentCombo}"
                                                           HorizontalAlignment="Left"
                                                           VerticalContentAlignment="Center"/>
 
                                                 <TextBlock Text="{Binding FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           FontWeight="Bold"
                                                            Margin="0 0 15 0"/>
                                             </Grid>
                                         </RadioButton>
@@ -352,11 +353,9 @@
                 </StackPanel>
 
                 <ScrollViewer Grid.Column="1" Grid.Row="0"
-                              Margin="15"
-                              HorizontalAlignment="Center"
+                              Margin="15 50 15 40"
+                              HorizontalAlignment="Center" VerticalAlignment="Stretch"
                               Padding="0 0 5 0"
-                              VerticalAlignment="Center"
-                              Height="150"
                               Width="220">
 
                     <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputFixtureItems , Mode=TwoWay,
@@ -386,12 +385,13 @@
                                                           Margin="0"
                                                           Width="100"
                                                           Style="{StaticResource TransparentCombo}"
-                                                          HorizontalAlignment="Left"
-                                                          HorizontalContentAlignment="Center"
+                                                          HorizontalAlignment="Left" HorizontalContentAlignment="Center"
+                                                          FontWeight="Bold"
                                                           VerticalContentAlignment="Center"/>
 
                                                 <TextBlock Text="{Binding CorrespondentFixture.FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           FontWeight="Bold"
                                                            Margin="0 0 15 0"/>
                                                 
                                             </Grid>
@@ -457,6 +457,7 @@
                                         <TextBlock Margin="0 0 10 0"
                                                    Text="{Binding ., 
                                                    Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   FontWeight="Bold"
                                                    TextWrapping="Wrap"/>
                                     </StackPanel>
                                    
@@ -530,7 +531,7 @@
                     Grid.Column="1" Grid.Row="2"
                     Width="150" Height="25"
                     Foreground="White"
-                    FontFamily="{StaticResource MontserratFont}" FontWeight="Bold"
+                    FontWeight="Bold"
                     Style="{StaticResource BlueButton}"/>
         </Grid>
     </Border>
