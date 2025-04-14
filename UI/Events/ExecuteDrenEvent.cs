@@ -4,8 +4,10 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ProjetaHDR.Commands;
 using ProjetaHDR.RevitAddin.Commands.Services;
 using ProjetaHDR.UI.ViewModels;
 
@@ -42,6 +44,8 @@ namespace ProjetaHDR.UI.Events
                     foreach (var pipe in addedFix.OutputPipes)
                         pipe.get_Parameter(flowRateParamGuid).Set(addedFix.FlowRate);
                 }
+
+                MessageBox.Show("Execução Completa!", "Retorno");
 
                 transaction.Commit();
             }

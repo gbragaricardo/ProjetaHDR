@@ -12,9 +12,6 @@ namespace ProjetaHDR.Startup
             var Documents = RibbonManager.CriarRibbonPanel(application, "⠀⠀Docs⠀⠀");
             var _drenPanel = RibbonManager.CriarRibbonPanel(application, "⠀⠀Drenagem⠀⠀");
 
-
-
-
             var LoginPushButton = RibbonManager.CreateAndAddPushButton
             ("GrupoProjeta", "⠀⠀Grupo Projeta⠀⠀",
             "ProjetaHDR.Commands.Login",
@@ -84,12 +81,23 @@ namespace ProjetaHDR.Startup
             ("drenwindow", "⠀Rede⠀\n⠀Pluvial⠀",
             "ProjetaHDR.Commands.RainNetwork",
             _drenPanel,
-            "drenWindow",
+            "Interface para cálculo de vazão da Rede Pluvial",
             "drenwindow.png",
             false);
 
-            var setAreasGP = RibbonManager.CreatePushButtonData("SetAreasGP", "Set Intensidade Pluviometrica", "ProjetaHDR.Commands.SetAreasGP", "globalparam.png", "Botao Teste");
-            var setAreasTR = RibbonManager.CreatePushButtonData("SetAreasTR", "Set Tempo Retorno", "ProjetaHDR.Commands.SetAreasTR", "tr.png", "Botao Teste");
+            var setAreasGP = RibbonManager.CreatePushButtonData(
+                "SetAreasGP",
+                "Intensidade Pluviometrica", 
+                "ProjetaHDR.Commands.SetAreasGP",
+                "globalparam.png", 
+                "Insere nas áreas os Parâmetros Globais K A B e C para calculo de vazão");
+
+            var setAreasTR = RibbonManager.CreatePushButtonData(
+                "SetAreasTR",
+                "Tempo De Retorno", 
+                "ProjetaHDR.Commands.SetAreasTR",
+                "tr.png",
+                "Insere nas áreas o parâmetro de tempo de retorno - 25 Cobertura - Térreo");
 
             var drenButtons = RibbonManager.AddStackedPushButtons(_drenPanel, setAreasGP, setAreasTR);
         }

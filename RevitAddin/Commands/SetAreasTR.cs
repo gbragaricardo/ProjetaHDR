@@ -50,7 +50,7 @@ namespace ProjetaHDR.Commands
                     if (area.AreaScheme.Id.Value == 23802931) // Cobertura
                         returnTimeParam.Set(25);
 
-                    else if (area.AreaScheme.Id.Value == 23802949) // Cobertura
+                    if (area.AreaScheme.Id.Value == 23802949) // Térreo
                         returnTimeParam.Set(5);
 
                 }
