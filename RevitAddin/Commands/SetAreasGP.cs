@@ -41,6 +41,10 @@ namespace ProjetaHDR.Commands
 
             foreach (var area in areasList)
             {
+                var coefParam = area.get_Parameter(new Guid("bee6c53d-9ca0-4a45-8fab-a710e1884587"));
+                if (coefParam.HasValue == false)
+                    coefParam.Set(1);
+
                 Parameter a = area.get_Parameter(new Guid("c9688612-5497-43b6-b36e-bf7559036bec"));
                 Parameter b = area.get_Parameter(new Guid("80506c0c-c8cd-43bb-9895-70a89ea83433"));
                 Parameter c = area.get_Parameter(new Guid("5cf801e8-6c6d-411b-a076-69d66f1b93fd"));

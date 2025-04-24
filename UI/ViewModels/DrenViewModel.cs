@@ -422,16 +422,18 @@ namespace ProjetaHDR.UI.ViewModels
 
         public Dictionary<ElementId, string> GetPlumbingFixtures()
         {
+            Guid fixtureAbrevGuid = new Guid("55475402-d237-4920-8346-697a85c27f50");
+
             var orderedElementsList = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_PlumbingFixtures)
                 .WhereElementIsNotElementType()
                 .ToElements()
-                .Where(f => !String.IsNullOrEmpty(f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()))
-                .OrderBy(f => f.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString());
+                .Where(f => !String.IsNullOrEmpty(f.get_Parameter(fixtureAbrevGuid).AsValueString()))
+                .OrderBy(f => f.get_Parameter(fixtureAbrevGuid).AsValueString());
 
             Dictionary<ElementId, string> fixturesDictionary = orderedElementsList
                 .ToDictionary(element => element.Id,
-                              element => element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsValueString()
+                              element => element.get_Parameter(fixtureAbrevGuid).AsValueString()
                               );
 
             return fixturesDictionary;

@@ -18,12 +18,13 @@ namespace ProjetaHDR.UI.Services
         {
             if (element.Category == null) return false;
 
-            if (element.Category.Id.Value == ((int)_category)) return true;
+            if (element.Category.GetHashCode() == ((int)_category)) return true;
 
             return false;
         }
 
         public bool AllowReference(Reference reference, XYZ position) => false;
-        
+    
     }
+
 }

@@ -16,7 +16,7 @@ namespace ProjetaHDR.UI.ViewModels
     internal class FixtureFamilyItem : ObservableObject
     {
         Guid _flowRateParamGuid = new Guid("ac19ab22-052c-47b3-8e14-76ecd81f5353");
-
+        Guid _fixtureAbrevGuid = new Guid("55475402-d237-4920-8346-697a85c27f50");
         public string Id { get; set; } = Guid.NewGuid().ToString("N").Substring(0, 8);
 
         private bool _isValid = true;
@@ -73,7 +73,7 @@ namespace ProjetaHDR.UI.ViewModels
                     {
                         Description = RainNetwork.HelperContext.Doc
                             .GetElement(_instanceElementId)?
-                            .get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)
+                            .get_Parameter(_fixtureAbrevGuid)
                             .AsValueString();
 
                         UpdateFlowRate();
