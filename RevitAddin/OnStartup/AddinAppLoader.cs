@@ -15,12 +15,32 @@ namespace ProjetaHDR.Startup
         internal static void StartupMain(UIControlledApplication application)
         {
             // Configuração de carregamento de assemblies
+            // 1. Pega a versão do Revit dinamicamente (ex: "2024")
+            string revitVersion = application.ControlledApplication.VersionNumber;
+
+            // 2. Pega o caminho da pasta do add-in 
+            string addinPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Autodesk",
+                "Revit",
+                "Addins",
+                revitVersion,
+                "ProjetaHDR"
+            );
+
             AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
             {
-                string folderPath = @"C:\Users\Usuario\AppData\Roaming\Autodesk\Revit\Addins\2024\ProjetaHDR";
-                string assemblyPath = Path.Combine(folderPath, new AssemblyName(args.Name).Name + ".dll");
-                return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
+                string assemblyName = new AssemblyName(args.Name).Name;
+                string assemblyPath = Path.Combine(addinPath, $"{assemblyName}.dll");
+
+                return File.Exists(assemblyPath)
+                    ? Assembly.LoadFrom(assemblyPath)
+                    : null;
             };
+
+
+            ////
+            
 
             // Criar aba
             try

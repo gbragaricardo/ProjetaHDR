@@ -251,6 +251,8 @@ namespace ProjetaHDR.UI.ViewModels
             {
                 SelectedFixtureFamily.InputFixtureItems.Add(new InputFixtureItem());
             }
+
+            AutoCalcFlowRate();
         }
 
         private void RemoveInputArea(object param)

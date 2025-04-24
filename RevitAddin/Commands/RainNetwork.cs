@@ -19,6 +19,8 @@ namespace ProjetaHDR.Commands
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
+            var revitVersion = commandData.Application.Application.VersionNumber;
+
             InitializeContext(commandData);
             HelperContext = Context;
 
@@ -31,7 +33,7 @@ namespace ProjetaHDR.Commands
                     ViewModel = null;
                     Window = null;
                 }
-                else if (ViewModel.Context.Doc.CreationGUID != Context.Doc.CreationGUID)
+                else if (ViewModel.Context.Doc.PathName != Context.Doc.PathName)
                 {
                     ViewModel = null;
                     Window = null;

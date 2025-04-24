@@ -15,7 +15,7 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
-            using (Transaction transacao = new Transaction(Context.Doc, "Nested Families"))
+            using (Transaction transacao = new Transaction(Context.Doc, "Parametros de intensidade em Areas"))
             {
                 transacao.Start();
 
@@ -54,16 +54,16 @@ namespace ProjetaHDR.Commands
                 c.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "C").Id);
                 k.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "K").Id);
 
-                switch (returnTimeParam.AsInteger())
-                {
-                    case 5: IntensidadePluvio.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "Intensidade Terreo").Id);
-                            break;
+                //switch (returnTimeParam.AsInteger())
+                //{
+                //    case 5: IntensidadePluvio.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "Intensidade 05 Anos").Id);
+                //            break;
 
-                    case 25: IntensidadePluvio.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "Intensidade Cobertura").Id);
-                             break;
+                //    case 25: IntensidadePluvio.AssociateWithGlobalParameter(globalParameters.FirstOrDefault(gp => gp.Name == "Intensidade Cobertura").Id);
+                //             break;
 
-                    default: break;
-                }
+                //    default: break;
+                //}
                
             }
         }

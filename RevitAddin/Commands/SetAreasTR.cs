@@ -15,7 +15,7 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
-            using (Transaction transacao = new Transaction(Context.Doc, "Nested Families"))
+            using (Transaction transacao = new Transaction(Context.Doc, "Tempo de Retorno em Areas"))
             {
                 transacao.Start();
 
@@ -31,8 +31,8 @@ namespace ProjetaHDR.Commands
         {
             IList<AreaScheme> areaSchemes = new FilteredElementCollector(Context.Doc)
                 .OfCategory(BuiltInCategory.OST_AreaSchemes)
-                .Where(a =>    a.Id.Value == 23802931 // Cobertura
-                            || a.Id.Value == 23802949) // Terreo
+                .Where(a =>    a.Name == "Cobertura" // Cobertura
+                            || a.Name == "Piso") // Piso
 
                 .Select(a => a as AreaScheme)
                 .ToList();
@@ -47,10 +47,10 @@ namespace ProjetaHDR.Commands
                 if (elementArea is Area area)
                 {
                     var returnTimeParam = area.get_Parameter(new Guid("fd39346e-f1b6-42bc-8996-ab8a606aa983"));
-                    if (area.AreaScheme.Id.Value == 23802931) // Cobertura
+                    if (area.AreaScheme.Name == "Cobertura") // Cobertura
                         returnTimeParam.Set(25);
 
-                    if (area.AreaScheme.Id.Value == 23802949) // Térreo
+                    if (area.AreaScheme.Name == "Piso") // Térreo
                         returnTimeParam.Set(5);
 
                 }
