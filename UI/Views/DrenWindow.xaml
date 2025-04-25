@@ -1,0 +1,538 @@
+﻿<Window x:Class="ProjetaHDR.UI.Views.DrenWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:ProjetaHDR.UI.Views"
+        xmlns:converters="clr-namespace:ProjetaHDR.UI.Converters"
+        xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
+        d:DataContext="{d:DesignInstance viewModel:DrenViewModel}"
+        mc:Ignorable="d" 
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize"
+        MinHeight="625"
+        Height="625"
+        MinWidth="900"
+        MaxWidth="900"
+        Width="900"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        Title="ProjetaHDR">
+
+    <!--Temas e Converters-->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Themes/RadioComboTheme.xaml"/>
+                <ResourceDictionary Source="../Themes/TransparentComboTheme.xaml"/>
+                <ResourceDictionary Source="../Themes/BlueButtonTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+
+            <FontFamily x:Key="MontserratFont">pack://application:
+                ,,,/ProjetaHDR;component/UI/Montserrat-VariableFont_wght.ttf#Montserrat</FontFamily>
+            <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Border Background="White"
+            Padding="15">
+
+        <!--GRID GERAL-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+
+            <!--Faixa Superior-->
+            <TextBlock Grid.Column="0" Grid.Row="0"
+                       Text="PEÇAS PLUVIAIS"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="16" FontWeight="Bold"
+                       Foreground="#0784bc"/>
+
+            <TextBlock Grid.Column="1" Grid.Row="0"
+                       Text="ENTRADAS"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       FontSize="16" FontWeight="Bold"
+                       Foreground="#0784bc"/>
+            <!--Fim Faixa Superior-->
+
+            <!--Main ScrollViwer-->
+            <StackPanel Orientation="Horizontal"
+                        Grid.Column="0" Grid.Row="1"
+                        VerticalAlignment="Top" HorizontalAlignment="Center">
+
+                <Button Command="{Binding AddComboBoxCommand}"
+                        Grid.Row="1"
+                        FontSize="9"
+                        Height="25"
+                        Width="25"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+
+                    <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                            ConverterParameter='add.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+
+                <Button Command="{Binding RemoveComboBoxCommand}"
+                        FontSize="9"
+                        Margin="15 0 7.5 0"
+                        Height="25"
+                        Width="25"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+
+                    <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                            ConverterParameter='remove.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+
+                <Button Command="{Binding MoveUpCommand}"
+                        CommandParameter="{Binding DataContext.SelectedFixture,
+                                           RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                        FontSize="9"
+                        Margin="7.5 0 15 0"
+                        Height="25"
+                        Width="25"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+
+                    <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                            ConverterParameter='arrowup.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+
+                <Button Command="{Binding MoveDownCommand}"
+                        CommandParameter="{Binding DataContext.SelectedFixture, 
+                                           RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                        FontSize="9"
+                        Height="25"
+                        Width="25"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+
+                    <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                            ConverterParameter='arrowdown.png'}"
+                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Button>
+
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1"
+                          Grid.Column="0" 
+                          Margin="0 50 10 0">
+                <ItemsControl ItemsSource="{Binding AddedFixtureFamilies, Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                              AlternationCount="200"
+                              HorizontalAlignment="Center">
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton GroupName="Fixtures"
+                                                 IsChecked="{Binding IsSelected, Mode=TwoWay,
+                                                                     UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource RadioComboTheme}"
+                                                 Width="250">
+
+                                        <Grid>
+                                            <TextBlock Text="{Binding (ItemsControl.AlternationIndex),
+                                                              RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                       Foreground="Black"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10 0 0 0"
+                                                       />
+
+                                            <ComboBox ItemsSource="{Binding DataContext.AllFixturesAndComments,
+                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      DisplayMemberPath="Value"
+                                                      SelectedValuePath="Key"
+                                                      SelectedValue="{Binding InstanceElementId, Mode=TwoWay,
+                                                                              UpdateSourceTrigger=PropertyChanged}"
+                                                      Margin="0"
+                                                      MinWidth="125"
+                                                      Style="{StaticResource TransparentCombo}"
+                                                      HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                                      FontWeight="Bold">
+
+                                            </ComboBox>
+                                        </Grid>
+                                    </RadioButton>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+
+                </ItemsControl>
+            </ScrollViewer>
+            <!--FIM Main ScrollViwer-->
+
+
+            <!--GRID PEÇA SELECIONADA-->
+            <Grid Grid.Column="1" Grid.Row="1"
+                  Visibility="{Binding HasSelected, Mode=OneWay,
+                                       UpdateSourceTrigger=PropertyChanged}">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="250" Height="*"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+
+                <!--SCROLL INPUT AREAS-->
+                <StackPanel Grid.Column="0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center">
+                    
+                
+                    <TextBlock Text="ÁREAS"
+                               Foreground="#0784bc" FontWeight="Bold"
+                               FontSize="14"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Button Command="{Binding AddAreaCommand}"
+                            Margin="10 0 10 0"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                ConverterParameter='add.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                    <Button Command="{Binding RemoveAreaCommand}"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                        ConverterParameter='remove.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                </StackPanel>
+
+                <ScrollViewer Grid.Column="0" Grid.Row="0"
+                              Margin="15 50 15 40"
+                              Padding="0 0 5 0"
+                              HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                              Width="220">
+
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputAreas , Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                                AlternationCount="200">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+
+                                        <RadioButton GroupName="Areas"
+                                                     IsChecked="{Binding IsSelected,
+                                                                         Mode=TwoWay,
+                                                                         UpdateSourceTrigger=PropertyChanged}"
+                                                     
+                                                     Style="{StaticResource RadioComboTheme}"
+                                                     Width="175">
+
+                                            <Grid>
+
+                                                <ComboBox ItemsSource="{Binding DataContext.AllDocumentAreas,
+                                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          DisplayMemberPath="Value"
+                                                          SelectedValuePath="Key"
+                                                          SelectedValue="{Binding InstanceElementId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Width="100"
+                                                          HorizontalContentAlignment="Center"
+                                                          FontWeight="Bold"
+                                                          Style="{StaticResource TransparentCombo}"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalContentAlignment="Center"/>
+
+                                                <TextBlock Text="{Binding FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           FontWeight="Bold"
+                                                           Margin="0 0 15 0"/>
+                                            </Grid>
+                                        </RadioButton>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <!--FIM SCROLL INPUT AREAS-->
+
+
+                <!--SCROLL INPUT PECAS-->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top">
+
+
+                    <TextBlock Text="PEÇAS"
+                               Foreground="#0784bc" FontWeight="Bold"
+                                                              FontSize="14"
+
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <Button Command="{Binding AddInputFixtureCommand}"
+                            Margin="10 0 10 0"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                ConverterParameter='add.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+
+                    <Button Command="{Binding RemoveInputFixtureCommand}"
+                            Height="25"
+                            Width="25"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+
+                        <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                        ConverterParameter='remove.png'}"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Button>
+                </StackPanel>
+
+                <ScrollViewer Grid.Column="1" Grid.Row="0"
+                              Margin="15 50 15 40"
+                              HorizontalAlignment="Center" VerticalAlignment="Stretch"
+                              Padding="0 0 5 0"
+                              Width="220">
+
+                    <ItemsControl ItemsSource="{Binding SelectedFixtureFamily.InputFixtureItems , Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}"
+                                AlternationCount="200">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+
+                                        <RadioButton GroupName="Pecas"
+                                                     IsChecked="{Binding IsSelected,
+                                                                 Mode=TwoWay,
+                                                                 UpdateSourceTrigger=PropertyChanged}"
+                                                     
+                                                     Style="{StaticResource RadioComboTheme}"
+                                                     Width="175">
+
+                                            <Grid>
+
+                                                <ComboBox ItemsSource="{Binding DataContext.AddedFixtureFamilies, Mode=TwoWay,
+                                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                          DisplayMemberPath="Description"
+                                                          SelectedValue="{Binding CorrespondentFixture, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Margin="0"
+                                                          Width="100"
+                                                          Style="{StaticResource TransparentCombo}"
+                                                          HorizontalAlignment="Left" HorizontalContentAlignment="Center"
+                                                          FontWeight="Bold"
+                                                          VerticalContentAlignment="Center"/>
+
+                                                <TextBlock Text="{Binding CorrespondentFixture.FlowRate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                           FontWeight="Bold"
+                                                           Margin="0 0 15 0"/>
+                                                
+                                            </Grid>
+                                        </RadioButton>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <!--FIM SCROLL INPUT PECAS-->
+
+
+                <!--LINHA AZUL-->
+                <Border Grid.ColumnSpan="2" Grid.Row="0"
+                        Margin="25 10"
+                        Width="Auto" Height="2"
+                        CornerRadius="1"
+                        VerticalAlignment="Bottom"
+                        Background="#0784bc"/>
+                <!--FIM LINHA AZUL-->
+
+                <!--FAIXA COM TEXTO SAÍDA-->
+                <StackPanel Grid.ColumnSpan="2" Grid.Row="1"
+                            Height="25"
+                            VerticalAlignment="Top">
+                    <TextBlock Margin="0"
+                               HorizontalAlignment="Center"
+                               FontSize="16" FontWeight="Bold"
+                               Text="SAÍDA" Foreground="#0784bc"/>
+                </StackPanel>
+                <!--FIM FAIXA COM TEXTO SAÍDA-->
+
+                <!--TUBOS SELECIONADOS-->
+                <StackPanel Grid.Column="0" Grid.Row="2"
+                            HorizontalAlignment="Stretch">
+
+                    <Button Command="{Binding SelectPipesCommand}"
+                            HorizontalAlignment="Center"
+                            Width="150" Height="30"
+                            Content="SELECIONAR TUBOS"
+                            Foreground="White" FontWeight="Bold"
+                            Style="{StaticResource BlueButton}"/>
+
+
+                    <ItemsControl ItemsSource="{Binding ClassifiedOutputPipes,
+                                                Mode=OneWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                  
+                                  AlternationCount="200">
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="#83C1DD" CornerRadius="5"
+                                        Margin="0 15 0 0" Padding="10"
+                                        Width="225">
+                                    
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="TUBOS DE SAÍDA:"
+                                                   HorizontalAlignment="Center"
+                                                   FontWeight="Bold"/>
+                                        
+                                        <TextBlock Margin="0 0 10 0"
+                                                   Text="{Binding ., 
+                                                   Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   FontWeight="Bold"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                   
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <!--FIM TUBOS SELECIONADOS-->
+
+                <!--ANALISE DA VAZAO-->
+                <StackPanel Grid.Column="1" Grid.Row="2"
+                            HorizontalAlignment="Center">
+
+                    <Border 
+                            Width="150" Height="30">
+                       
+                        <TextBlock Text="VAZÃO DE SAÍDA"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   Foreground="#0784bc" FontWeight="ExtraBold" FontSize="12"/>
+                    </Border>
+
+                    <Border Background="#0784bc" CornerRadius="5"
+                            Margin="0 15 0 0" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="VAZÃO TOTAL:"
+                                       HorizontalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
+                                       FontWeight="Bold"/>
+
+                            <TextBlock Margin="0 5 0 0"
+                                       Text="{Binding SelectedFixtureFamily.FlowRate,
+                                              StringFormat=' {0} L/min ',
+                                              Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
+                                       HorizontalAlignment="Center"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#0784bc" CornerRadius="5"
+                            Margin="0 15 0 0" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="VAZÃO P/ CONDUTOR:"
+                                       HorizontalAlignment="Center"
+                                       FontFamily="{StaticResource MontserratFont}"
+                                       Foreground="White"
+                                       FontWeight="Bold"/>
+
+                            <TextBlock Margin="0 5 0 0"
+                                       Text="{Binding SelectedFixtureFamily.FlowPerConductor,
+                                              StringFormat=' {0} L/min ',
+                                              Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                       HorizontalAlignment="Center"
+                                       Foreground="White"
+                                       FontFamily="{StaticResource MontserratFont}"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                
+                </StackPanel>
+                <!--FIM ANALISE DA VAZAO-->
+                
+            </Grid>
+            <!--FIM GRID PEÇA SELECIONADA-->
+
+            <Button Content="EXECUTAR"
+                    Command="{Binding ExecuteCommand}"
+                    Grid.Column="1" Grid.Row="2"
+                    Width="150" Height="25"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Style="{StaticResource BlueButton}"/>
+        </Grid>
+    </Border>
+</Window>

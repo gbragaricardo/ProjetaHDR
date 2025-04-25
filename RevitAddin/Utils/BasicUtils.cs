@@ -28,5 +28,6 @@ namespace ProjetaHDR.Utils
             // Reunir as palavras em uma frase
             return string.Join(" ", palavras);
         }
+
     }
 }

@@ -2,11 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace ProjetaHDR.Startup
@@ -32,7 +28,7 @@ namespace ProjetaHDR.Startup
         }
 
         // Criar botões no painel
-        internal static PushButton CriarPushButton
+        internal static PushButton CreateAndAddPushButton
             (string nomeInterno, string nomeExibido,
              string nomeClasse, RibbonPanel painel,
              string dica, string nomeImagem,
@@ -54,12 +50,8 @@ namespace ProjetaHDR.Startup
             pushButton.Enabled = enableOption;
             pushButton.ToolTip = dica;
 
-            // Define o caminho para o ícone do botão
-            string iconPath = Path.Combine(Path.GetDirectoryName(ThisAssemblyPath), "Icons", nomeImagem);
-
             // Cria a imagem do ícone
-            Uri uri = new Uri(iconPath);
-            BitmapImage bitmap = new BitmapImage(uri);
+            BitmapImage bitmap = ResourceImage.GetIcon(nomeImagem);
 
             // Define a imagem como o ícone do botão
             pushButton.LargeImage = bitmap;
@@ -67,5 +59,40 @@ namespace ProjetaHDR.Startup
 
             return pushButton;
         }
+
+        internal static IList<PushButton> AddStackedPushButtons(RibbonPanel panel, PushButtonData button1, PushButtonData button2, PushButtonData button3 = null)
+        {
+            IList<RibbonItem> stackedItems;
+            IList<PushButton> stackedPushButtons = new List<PushButton>();
+
+            if (button3 == null)
+                stackedItems = panel.AddStackedItems(button1, button2);
+            else
+                stackedItems = panel.AddStackedItems(button1, button2, button3);
+
+            foreach (RibbonItem item in stackedItems)
+                stackedPushButtons.Add(item as PushButton);
+            
+
+            foreach (var push in stackedPushButtons)
+            {
+                PushButtonsList.Add(push);
+                push.Enabled = false;
+            }
+
+            return stackedPushButtons;
+        }
+
+        internal static PushButtonData CreatePushButtonData(string dataName, string nameOnUI, string fullClassName, string imageName, string toolTip)
+        {
+            var pushButtonData = new PushButtonData(dataName, nameOnUI, ThisAssemblyPath, fullClassName);
+
+            BitmapImage bitmap = ResourceImage.GetIcon(imageName);
+            pushButtonData.Image = bitmap;
+            pushButtonData.ToolTip = toolTip;
+
+            return pushButtonData;  
+        }
+
     }
 }

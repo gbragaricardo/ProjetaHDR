@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:ProjetaHDR.UI.Views"
+        xmlns:converters="clr-namespace:ProjetaHDR.UI.Converters"
         xmlns:viewModel="clr-namespace:ProjetaHDR.UI.ViewModels"
         d:DataContext="{d:DesignInstance viewModel:LoginViewModel}"
         mc:Ignorable="d" 
@@ -14,12 +15,19 @@
         Title="ProjetaHDR"
         WindowStartupLocation="CenterScreen">
 
+
+    <Window.Resources>
+        <converters:BitmapImageConverter x:Key="BitmapImageConverter"/>
+    </Window.Resources>
+    
     <Border Background="#E7E7E7"
             Padding="10">
 
         <StackPanel>
 
-            <Image Source="{Binding ImagesPath}"
+            <Image Source="{Binding Converter={StaticResource BitmapImageConverter},
+                                    ConverterParameter='logo-projeta-main.png'}"
+                   RenderOptions.BitmapScalingMode="HighQuality"
                    Stretch="Uniform"
                    HorizontalAlignment="Center"
                    Width="150"

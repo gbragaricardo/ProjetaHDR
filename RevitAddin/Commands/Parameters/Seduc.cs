@@ -18,7 +18,7 @@ namespace ProjetaHDR.Commands
         {
             InitializeContext(commandData);
 
-            using (Transaction transacao = new Transaction(Context.Doc, "Nested Families"))
+            using (Transaction transacao = new Transaction(Context.Doc, "Etapa Seduc"))
             {
                 transacao.Start();
 

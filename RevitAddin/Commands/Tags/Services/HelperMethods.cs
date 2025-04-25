@@ -4,6 +4,7 @@ using ProjetaHDR.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,40 +82,47 @@ namespace ProjetaHDR
                 return tempDirection;
 
             // Calcula a direção do fluxo
-            XYZ flowVector = pipeOut.Origin - pipeIn.Origin;
-
-            double projRight = flowVector.DotProduct(viewDirections.Right);
-            double projUp = flowVector.DotProduct(viewDirections.Up);
-
-            if (IsHydraulic == true)
+            try
             {
-                if (Math.Round(projRight, 3) != 0)
+                XYZ flowVector = pipeOut.Origin - pipeIn.Origin;
+
+                double projRight = flowVector.DotProduct(viewDirections.Right);
+                double projUp = flowVector.DotProduct(viewDirections.Up);
+
+                if (IsHydraulic == true)
                 {
-                    if (Math.Round(projRight, 3) > 0) return "Direita";
-                    if (Math.Round(projRight, 3) < 0) return "Esquerda";
+                    if (Math.Round(projRight, 3) != 0)
+                    {
+                        if (Math.Round(projRight, 3) > 0) return "Direita";
+                        if (Math.Round(projRight, 3) < 0) return "Esquerda";
+                    }
+                    else
+                    {
+                        if (Math.Round(projUp, 3) > 0) return "Direita";
+                        if (Math.Round(projUp, 3) < 0) return "Esquerda";
+                    }
                 }
                 else
                 {
-                    if (Math.Round(projUp, 3) > 0) return "Direita";
-                    if (Math.Round(projUp, 3) < 0) return "Esquerda";
+                    if (Math.Round(flowVector.X, 3) != 0)
+                    {
+                        if (Math.Round(flowVector.X, 3) > 0) return "Direita";
+                        if (Math.Round(flowVector.X, 3) < 0) return "Esquerda";
+                    }
+                    else
+                    {
+                        if (Math.Round(flowVector.Y, 3) > 0) return "Direita";
+                        if (Math.Round(flowVector.Y, 3) < 0) return "Esquerda";
+                    }
                 }
+
+                return tempDirection;
             }
-            else
+            catch
             {
-                if (Math.Round(flowVector.X, 3) != 0)
-                {
-                    if (Math.Round(flowVector.X, 3) > 0) return "Direita";
-                    if (Math.Round(flowVector.X, 3) < 0) return "Esquerda";
-                }
-                else
-                {
-                    if (Math.Round(flowVector.Y, 3) > 0) return "Direita";
-                    if (Math.Round(flowVector.Y, 3) < 0) return "Esquerda";
-                }
+                return tempDirection;
             }
-            return tempDirection;
         }
-
     }
 }
 
