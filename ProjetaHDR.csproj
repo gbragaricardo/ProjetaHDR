@@ -226,7 +226,7 @@
 
 SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
 
-SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2022
+SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
 
 
 
