@@ -1,4 +1,5 @@
 ﻿using Autodesk.Revit.UI;
+using Microsoft.Office.Interop.Word;
 
 namespace ProjetaHDR.Startup
 {
@@ -36,6 +37,27 @@ namespace ProjetaHDR.Startup
             "Insere a Tag \"PRJ HDR: Diametro\" nos tubos da vista ativa",
             "diameter.png",
             false);
+
+            var SlopeSplitButton = RibbonManager.AddSplitButton("⠀⠀Tag⠀⠀\n⠀⠀Inclinacao⠀⠀", "Modos", PanelMain, "porcentagem.png");
+
+            var realSlope = RibbonManager.CreatePushButtonData(
+                "RealSlopeTag",
+                "⠀⠀Tag⠀⠀\nInclinção Real",
+                "ProjetaHDR.Commands.SlopeTag",
+                "porcentagem.png",
+                "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa");
+
+            var expectedSlope = RibbonManager.CreatePushButtonData(
+                "expectedSlopeTag",
+                "⠀⠀Tag⠀⠀\nInclinação Provavel",
+                "ProjetaHDR.Commands.SlopeTag",
+                "porcentagem.png",
+                "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa");
+
+            SlopeSplitButton.AddPushButton(expectedSlope);
+            SlopeSplitButton.AddPushButton(realSlope);
+            SlopeSplitButton.IsSynchronizedWithCurrentItem = true;
+
 
             var SlopeTagPushButton = RibbonManager.CreateAndAddPushButton
             ("SlopeTag", "⠀⠀Tag⠀⠀\n⠀⠀Inclinacao⠀⠀",
