@@ -12,6 +12,7 @@ namespace ProjetaHDR.Startup
         internal static readonly string TabName = "ProjetaHDR";
         private static readonly string ThisAssemblyPath = Assembly.GetExecutingAssembly().Location;
         internal static List<PushButton> PushButtonsList = new List<PushButton>();
+        internal static List<SplitButton> SplitButtonList = new List<SplitButton>();
 
         // Criar painel
         internal static RibbonPanel CriarRibbonPanel(UIControlledApplication application, string nomePainel)
@@ -92,6 +93,8 @@ namespace ProjetaHDR.Startup
 
             SplitButton splitButton = panel.AddItem(splitButtonData) as SplitButton;
             splitButton.LargeImage = bitmap;
+            splitButton.Enabled = false;
+            SplitButtonList.Add(splitButton);
 
             return splitButton;
         }

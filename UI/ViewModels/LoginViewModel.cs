@@ -114,6 +114,11 @@ namespace ProjetaHDR.UI.ViewModels
                         pushButton.Visible = true;
                             pushButton.Enabled = true;
                     }
+                    foreach (var splitButton in RibbonManager.SplitButtonList)
+                    {
+                        splitButton.Visible = true;
+                        splitButton.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -121,6 +126,11 @@ namespace ProjetaHDR.UI.ViewModels
                     {
                         if (pushButton.Name != "Dev")
                             pushButton.Enabled = true;
+                    }
+                    foreach (var splitButton in RibbonManager.SplitButtonList)
+                    {
+                        if (splitButton.Name != "Dev")
+                            splitButton.Enabled = true;
                     }
                 }
 

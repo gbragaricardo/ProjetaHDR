@@ -42,14 +42,14 @@ namespace ProjetaHDR.Startup
 
             var realSlope = RibbonManager.CreatePushButtonData(
                 "RealSlopeTag",
-                "⠀⠀Tag⠀⠀\nInclinção Real",
+                "Inclinação\n⠀⠀Real⠀⠀",
                 "ProjetaHDR.Commands.SlopeTag",
                 "porcentagem.png",
                 "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa");
 
             var expectedSlope = RibbonManager.CreatePushButtonData(
                 "expectedSlopeTag",
-                "⠀⠀Tag⠀⠀\nInclinação Provavel",
+                "Inclinação\nProvavel",
                 "ProjetaHDR.Commands.SlopeTag",
                 "porcentagem.png",
                 "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa");
@@ -59,13 +59,13 @@ namespace ProjetaHDR.Startup
             SlopeSplitButton.IsSynchronizedWithCurrentItem = true;
 
 
-            var SlopeTagPushButton = RibbonManager.CreateAndAddPushButton
-            ("SlopeTag", "⠀⠀Tag⠀⠀\n⠀⠀Inclinacao⠀⠀",
-            "ProjetaHDR.Commands.SlopeTag",
-            PanelMain,
-            "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa",
-            "porcentagem.png",
-            false);
+            //var SlopeTagPushButton = RibbonManager.CreateAndAddPushButton
+            //("SlopeTag", "⠀⠀Tag⠀⠀\n⠀⠀Inclinacao⠀⠀",
+            //"ProjetaHDR.Commands.SlopeTag",
+            //PanelMain,
+            //"Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa",
+            //"porcentagem.png",
+            //false);
 
             var FlowTagPushButton = RibbonManager.CreateAndAddPushButton
             ("Flow Tag", "⠀⠀Tag⠀⠀\n⠀⠀Fluxo⠀⠀",
