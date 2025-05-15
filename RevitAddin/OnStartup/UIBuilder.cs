@@ -43,9 +43,9 @@ namespace ProjetaHDR.Startup
             var realSlope = RibbonManager.CreatePushButtonData(
                 "RealSlopeTag",
                 "Inclinação\n⠀⠀Real⠀⠀",
-                "ProjetaHDR.Commands.SlopeTag",
+                "ProjetaHDR.Commands.RealSlopeTag",
                 "porcentagem.png",
-                "Insere a Tag \"PRJ HDR: Inclinacao\" nos tubos da vista ativa");
+                "Insere a Tag \"PRJ HDR: Inclinacao Real\" nos tubos da vista ativa");
 
             var expectedSlope = RibbonManager.CreatePushButtonData(
                 "expectedSlopeTag",
