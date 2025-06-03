@@ -68,6 +68,7 @@
     <Compile Include="RevitAddin\Commands\RainNetwork.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
+    <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
     <Compile Include="UI\Events\ExecuteDrenEvent.cs" />
     <Compile Include="UI\Events\SaveDataStorageEvent.cs" />
     <Compile Include="UI\Services\SelectionOptions.cs" />
@@ -226,7 +227,7 @@
 
 SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
 
-SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
+SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2022
 
 
 

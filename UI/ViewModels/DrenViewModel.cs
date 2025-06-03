@@ -199,7 +199,7 @@ namespace ProjetaHDR.UI.ViewModels
                     {
                         string name = group.Key.Replace("PVC", "").Trim();
                         string diameter = $"{group.First().Diameter * 304.8}";
-                        return $"{group.Count()}x {name} - {diameter}mm";
+                        return $"{group.Count()}x {name} - Ø{diameter}mm";
                     });
 
                 foreach (var item in result)
