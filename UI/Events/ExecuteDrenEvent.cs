@@ -50,7 +50,7 @@ namespace ProjetaHDR.UI.Events
                         {
                             string name = group.Key.Replace("PVC", "").Trim();
                             string diameter = $"{group.First().Diameter * 304.8}";
-                            return $"{group.Count()}x {diameter}mm";
+                            return $"{group.Count()}x Ø{diameter}mm";
                         })
                         .FirstOrDefault();
 

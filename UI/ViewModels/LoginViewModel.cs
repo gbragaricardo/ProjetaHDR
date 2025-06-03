@@ -112,7 +112,7 @@ namespace ProjetaHDR.UI.ViewModels
                     foreach (var pushButton in RibbonManager.PushButtonsList)
                     {
                         pushButton.Visible = true;
-                            pushButton.Enabled = true;
+                        pushButton.Enabled = true;
                     }
                     foreach (var splitButton in RibbonManager.SplitButtonList)
                     {
