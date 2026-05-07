@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
 using System.Collections.Generic;
@@ -18,13 +19,37 @@ namespace ProjetaHDR.Commands.Waterproofing
         {
             InitializeContext(commandData);
 
-            MainView mainView = new MainView();
-            mainView.ShowDialog();
+            //MainView mainView = new MainView();
+            //mainView.ShowDialog();
 
-            using (Transaction transacao = new Transaction(Context.Doc, "Tempo de Retorno em Areas"))
+            PickRegions pickRegionsService = new PickRegions();
+
+            IList<Reference> pickedRegions = pickRegionsService.Pick(Context.UiDoc);
+
+            using (Transaction transaction = new Transaction(Context.Doc, "Conveter regioes em piso de imp"))
             {
+
+                foreach (Reference refRegion in pickedRegions)
+                {
+                    Element regionElement = Context.Doc.GetElement(refRegion);
+
+                    FilledRegion filledRegion = regionElement as FilledRegion;
+
+                    if (filledRegion == null)
+                        continue;
+
+                    IList<CurveLoop> regionCurves = filledRegion.GetBoundaries();
+
+                    transaction.Start();
+
+                    Floor.Create(Context.Doc, regionCurves, new ElementId((long)2147595), ((View)Context.Doc.ActiveView).GenLevel.Id);
+                    Context.Doc.Delete(regionElement.Id);
+
+                    transaction.Commit();
+                }
             }
-                return Result.Succeeded;
+
+            return Result.Succeeded;
         }
     }
 }

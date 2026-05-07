@@ -82,6 +82,8 @@
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegions.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
