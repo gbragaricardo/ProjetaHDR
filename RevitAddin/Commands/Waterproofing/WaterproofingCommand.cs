@@ -19,8 +19,8 @@ namespace ProjetaHDR.Commands.Waterproofing
         {
             InitializeContext(commandData);
 
-            //MainView mainView = new MainView();
-            //mainView.ShowDialog();
+            MainView mainView = new MainView();
+            mainView.ShowDialog();
 
             PickRegions pickRegionsService = new PickRegions();
 

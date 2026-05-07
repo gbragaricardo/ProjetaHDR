@@ -82,8 +82,10 @@
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Models\WaterproofingType.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegions.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\MainViewModel.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -141,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
-    <Folder Include="RevitAddin\Commands\Waterproofing\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

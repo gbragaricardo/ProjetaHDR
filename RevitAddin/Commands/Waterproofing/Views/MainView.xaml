@@ -6,13 +6,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
+    xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
     xmlns:converters="clr-namespace:ProjetaHDR.UI.Converters"
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
-    d:DesignHeight="200"
+    d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
+    d:DesignHeight="220"
     d:DesignWidth="360"
-    Height="200"
+    Height="220"
     Width="360">
 
     <Controls:MetroWindow.Resources>
@@ -45,9 +47,9 @@
                 HorizontalAlignment="Left">
 
                 <TextBlock
-                    Text="Criar piso de impermeabilização" 
+                    Text="Criar piso de impermeabilização"
                     FontSize="16"
-                    FontWeight="SemiBold"/>
+                    FontWeight="SemiBold" />
 
                 <StackPanel
                     x:Name="Combobox"
@@ -57,7 +59,7 @@
                     <TextBlock
                         Text="Material" />
                     <ComboBox
-                        Controls:ControlsHelper.CornerRadius="4"/>
+                        Controls:ControlsHelper.CornerRadius="4" />
                 </StackPanel>
 
                 <StackPanel
@@ -76,7 +78,7 @@
                 Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
-                        Width="Auto"/>
+                        Width="Auto" />
                     <ColumnDefinition
                         Width="*" />
                     <ColumnDefinition
@@ -92,7 +94,7 @@
                 <Button
                     Grid.Column="2"
                     Padding="8 0"
-                    Content="Selecionar limite"
+                    Content="Selecionar Regioes"
                     Background="Transparent" />
             </Grid>
         </Grid>
