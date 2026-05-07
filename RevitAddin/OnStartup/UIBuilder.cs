@@ -109,19 +109,27 @@ namespace ProjetaHDR.Startup
 
             var setAreasGP = RibbonManager.CreatePushButtonData(
                 "SetAreasGP",
-                "Intensidade Pluviometrica", 
+                "Intensidade Pluviometrica",
                 "ProjetaHDR.Commands.SetAreasGP",
-                "globalparam.png", 
+                "globalparam.png",
                 "Insere nas áreas os Parâmetros Globais K A B e C para calculo de vazão");
 
             var setAreasTR = RibbonManager.CreatePushButtonData(
                 "SetAreasTR",
-                "Tempo De Retorno", 
+                "Tempo De Retorno",
                 "ProjetaHDR.Commands.SetAreasTR",
                 "tr.png",
                 "Insere nas áreas o parâmetro de tempo de retorno - 25 Cobertura - Térreo");
 
             var drenButtons = RibbonManager.AddStackedPushButtons(_drenPanel, setAreasGP, setAreasTR);
+
+            var waterproofingButton = RibbonManager.CreateAndAddPushButton
+                ("waterproof", "⠀Water⠀\n⠀Proof⠀",
+                "ProjetaHDR.Commands.Waterproofing.WaterproofingCommand",
+                _drenPanel,
+                "Interface para cálculo de vazão da impermeabilização",
+                "drenwindow.png",
+                false);
         }
     }
 }

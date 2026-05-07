@@ -69,6 +69,10 @@
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RevitAddin\Commands\Waterproofing\WaterproofingCommand.cs" />
     <Compile Include="UI\Events\ExecuteDrenEvent.cs" />
     <Compile Include="UI\Events\SaveDataStorageEvent.cs" />
     <Compile Include="UI\Services\SelectionOptions.cs" />
@@ -122,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ProjetaHDR\Docs\" />
+    <Folder Include="RevitAddin\Commands\Waterproofing\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -135,6 +140,10 @@
     <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Themes\BlueButtonTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -227,7 +236,7 @@
 
 SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
 
-SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2022
+SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
 
 
 
