@@ -1,6 +1,7 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace ProjetaHDR.Commands.Waterproofing
         {
             InitializeContext(commandData);
 
-
+            MainView mainView = new MainView();
+            mainView.ShowDialog();
 
             using (Transaction transacao = new Transaction(Context.Doc, "Tempo de Retorno em Areas"))
             {
