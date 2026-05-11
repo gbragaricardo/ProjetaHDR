@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,15 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
         public MainView()
         {
             InitializeComponent();
+        }
+
+        private void BtnSelectRegions_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = this.DataContext as MainViewModel;
+            vm.IsConfirmed = true;
+
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }

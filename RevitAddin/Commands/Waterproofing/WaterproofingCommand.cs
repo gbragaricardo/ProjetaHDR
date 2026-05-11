@@ -1,13 +1,17 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ControlzEx.Standard;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ProjetaHDR.Commands.Waterproofing
 {
@@ -19,37 +23,60 @@ namespace ProjetaHDR.Commands.Waterproofing
         {
             InitializeContext(commandData);
 
-            MainView mainView = new MainView();
-            mainView.ShowDialog();
+            if (Context.Doc.ActiveView.GenLevel == null)
+            {
+                TaskDialog.Show("Atenção", "Por favor, execute este comando em uma vista de Planta.");
+                return Result.Failed;
+            }
 
-            PickRegions pickRegionsService = new PickRegions();
+            MainViewModel viewModel = new MainViewModel();
+            MainView window = new MainView { DataContext = viewModel };
 
-            IList<Reference> pickedRegions = pickRegionsService.Pick(Context.UiDoc);
+            bool? windowResult = window.ShowDialog();
 
-            using (Transaction transaction = new Transaction(Context.Doc, "Conveter regioes em piso de imp"))
+            if (windowResult == true && viewModel.IsConfirmed)
             {
 
-                foreach (Reference refRegion in pickedRegions)
+                try
                 {
-                    Element regionElement = Context.Doc.GetElement(refRegion);
+                    PickRegionsService pickRegionsService = new PickRegionsService();
+                    IList<Reference> pickedRegionReferences = pickRegionsService.Pick(Context.UiDoc);
 
-                    FilledRegion filledRegion = regionElement as FilledRegion;
+                    using (Transaction transaction = new Transaction(Context.Doc, "Converter Regiões em Pisos"))
+                    {
+                        transaction.Start();
 
-                    if (filledRegion == null)
-                        continue;
+                        ElementId levelId = Context.Doc.ActiveView.GenLevel.Id;
 
-                    IList<CurveLoop> regionCurves = filledRegion.GetBoundaries();
+                        foreach (Reference regionRef in pickedRegionReferences)
+                        {
+                            Element regionElement = Context.Doc.GetElement(regionRef);
 
-                    transaction.Start();
+                            FilledRegion filledRegion = regionElement as FilledRegion;
 
-                    Floor.Create(Context.Doc, regionCurves, new ElementId((long)2147595), ((View)Context.Doc.ActiveView).GenLevel.Id);
-                    Context.Doc.Delete(regionElement.Id);
+                            if (filledRegion == null)
+                                continue;
 
-                    transaction.Commit();
+                            IList<CurveLoop> regionCurves = filledRegion.GetBoundaries();
+
+                            Floor.Create(Context.Doc, regionCurves, /*viewModel.WaterproofingType.id*/ new ElementId((long)2147595), levelId);
+
+                            Context.Doc.Delete(regionElement.Id);
+                        }
+
+                        transaction.Commit();
+                    }
+
+                    return Result.Succeeded;
+                }
+                catch (OperationCanceledException)
+                {
+                    return Result.Cancelled;
                 }
             }
 
-            return Result.Succeeded;
+            return Result.Cancelled;
         }
     }
 }
+

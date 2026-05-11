@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Models
 {
-    internal class WaterproofingType
+    public class WaterproofingType
     {
         public string Name { get; set; }
-        public ElementId ElementTypeId{ get; set; }
+        public int id{ get; set; }
     }
 }

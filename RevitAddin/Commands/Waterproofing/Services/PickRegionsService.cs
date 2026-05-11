@@ -9,7 +9,7 @@ using Autodesk.Revit.UI.Selection;
 
 namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
 {
-    internal class PickRegions
+    internal class PickRegionsService
     {
         public IList<Reference> Pick(UIDocument uiDoc)
         {

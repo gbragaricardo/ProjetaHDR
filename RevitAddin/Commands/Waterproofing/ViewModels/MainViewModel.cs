@@ -1,17 +1,30 @@
-﻿using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models;
+﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
 using ProjetaHDR.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 {
-    internal class MainViewModel : ObservableObject
+    public class MainViewModel : ObservableObject
     {
-        public ObservableCollection<WaterproofingType> AvailableTypes { get; set; } = new ObservableCollection<WaterproofingType>();
+        private readonly Document _doc;
+        private readonly UIDocument _uiDoc;
+        public ObservableCollection<WaterproofingType> AvailableTypes { get; set; } = new ObservableCollection<WaterproofingType>
+        {
+            new WaterproofingType{Name= "Manta Asfaltica",},
+            new WaterproofingType{Name= "Outro Tipo", },
+            new WaterproofingType{Name= "Tipo 3 Asfaltica"}
+        };
+
+        public bool IsConfirmed { get; set; }
 
         private WaterproofingType _waterproofingType;
         public WaterproofingType WaterproofingType
@@ -53,24 +66,6 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
                     OnPropertyChanged();
                 }
             }
-        }
-
-        public MainViewModel()
-        {
-            CancelCommand = new RelayCommand(Cancel);
-            SelectRegionsCommand = new RelayCommand(SelectRegions);
-        }
-
-        public RelayCommand CancelCommand { get; }
-        public RelayCommand SelectRegionsCommand { get; }
-
-        private void SelectRegions(object parameter)
-        {
-
-        }
-        private void Cancel(object parameter)
-        {
-            return;
         }
 
     }
