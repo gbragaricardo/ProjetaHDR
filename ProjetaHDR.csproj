@@ -85,6 +85,7 @@
     <Compile Include="RevitAddin\Commands\Waterproofing\Models\WaterproofingType.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegionsService.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Services\WaterproofingTypeService.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\MainViewModel.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>

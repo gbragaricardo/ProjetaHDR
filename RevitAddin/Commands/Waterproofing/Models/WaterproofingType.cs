@@ -10,6 +10,6 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Models
     public class WaterproofingType
     {
         public string Name { get; set; }
-        public int id{ get; set; }
+        public ElementId ElementTypeId{ get; set; }
     }
 }

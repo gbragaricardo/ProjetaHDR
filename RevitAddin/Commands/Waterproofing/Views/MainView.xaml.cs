@@ -35,5 +35,11 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
             this.DialogResult = true;
             this.Close();
         }
+
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
+        }
     }
 }

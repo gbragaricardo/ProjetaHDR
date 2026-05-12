@@ -54,20 +54,9 @@
                         Controls:ControlsHelper.CornerRadius="4"
                         d:SelectedIndex="2"
                         DisplayMemberPath="Name"
-                        ItemsSource="{Binding AvailableTypes}"
-                        SelectedValuePath="ElementTypeId">
-
-                        <d:ComboBox.ItemsSource>
-                            <x:Array Type="{x:Type models:WaterproofingType}">
-
-                                <models:WaterproofingType Name="Manta Asfáltica 3mm" />
-                                <models:WaterproofingType Name="Argamassa Polimérica" />
-                                <models:WaterproofingType Name="Poliuretano (PU) Líquido" />
-                                <models:WaterproofingType Name="Emulsão Asfáltica" />
-
-                            </x:Array>
-                        </d:ComboBox.ItemsSource>
-                    </ComboBox>
+                        ItemsSource="{Binding AvailableFloorTypes, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding SelectedFloorType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="ElementTypeId" />
                 </StackPanel>
 
                 <StackPanel x:Name="TextBox" Orientation="Vertical">
@@ -83,18 +72,17 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="32" />
+                            <ColumnDefinition Width="26" />
                         </Grid.ColumnDefinitions>
 
                         <TextBox
                             Grid.Column="0"
+                            Margin="0,0,8,0"
                             Controls:ControlsHelper.CornerRadius="4"
-                            Margin="0 0 8 0"
                             d:Text="0 cm"
                             Text="{Binding BaseboardHeigth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Button
-                            Grid.Column="1" />
+                        <Button Grid.Column="1" />
                     </Grid>
                 </StackPanel>
 
@@ -117,7 +105,8 @@
                     Grid.Column="2"
                     Padding="8,0"
                     Background="Transparent"
-                    Content="Selecionar Regioes" />
+                    Content="Selecionar Regioes"
+                    Click="BtnSelectRegions_Click"/>
             </Grid>
         </Grid>
     </Border>

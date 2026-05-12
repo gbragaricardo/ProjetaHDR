@@ -29,14 +29,15 @@ namespace ProjetaHDR.Commands.Waterproofing
                 return Result.Failed;
             }
 
-            MainViewModel viewModel = new MainViewModel();
+            WaterproofingTypeService waterproofingTypeService = new WaterproofingTypeService(Context.Doc);
+
+            MainViewModel viewModel = new MainViewModel(waterproofingTypeService);
             MainView window = new MainView { DataContext = viewModel };
 
             bool? windowResult = window.ShowDialog();
 
             if (windowResult == true && viewModel.IsConfirmed)
             {
-
                 try
                 {
                     PickRegionsService pickRegionsService = new PickRegionsService();
@@ -59,7 +60,7 @@ namespace ProjetaHDR.Commands.Waterproofing
 
                             IList<CurveLoop> regionCurves = filledRegion.GetBoundaries();
 
-                            Floor.Create(Context.Doc, regionCurves, /*viewModel.WaterproofingType.id*/ new ElementId((long)2147595), levelId);
+                            Floor newFloor = Floor.Create(Context.Doc, regionCurves, viewModel.SelectedFloorType, levelId);
 
                             Context.Doc.Delete(regionElement.Id);
                         }

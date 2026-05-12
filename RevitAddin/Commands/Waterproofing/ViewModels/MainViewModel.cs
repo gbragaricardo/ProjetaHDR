@@ -15,9 +15,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        private readonly Document _doc;
-        private readonly UIDocument _uiDoc;
-        public ObservableCollection<WaterproofingType> AvailableTypes { get; set; } = new ObservableCollection<WaterproofingType>
+        private readonly WaterproofingTypeService _waterproofingTypeService;
+        public ObservableCollection<WaterproofingType> AvailableFloorTypes { get; set; } = new ObservableCollection<WaterproofingType>
         {
             new WaterproofingType{Name= "Manta Asfaltica",},
             new WaterproofingType{Name= "Outro Tipo", },
@@ -65,6 +64,36 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
                     _offset = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        private ElementId _selectedFloorType;
+        public ElementId SelectedFloorType
+        {
+            get => _selectedFloorType;
+            set
+            {
+                if (_selectedFloorType != value)
+                {
+                    _selectedFloorType = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public MainViewModel(WaterproofingTypeService waterproofingTypeService)
+        {
+            _waterproofingTypeService = waterproofingTypeService;
+            PopulateAvailableTypesCollection(_waterproofingTypeService.GetAvailableTypes());
+        }
+
+        public void PopulateAvailableTypesCollection(IList<WaterproofingType> availableTypes)
+        {
+            AvailableFloorTypes.Clear();
+
+            foreach(WaterproofingType type in availableTypes.OrderBy(t => t.Name))
+            {
+                AvailableFloorTypes.Add(type);
             }
         }
 
