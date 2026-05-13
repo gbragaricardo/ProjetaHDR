@@ -1,0 +1,134 @@
+﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Selection;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models.Enums;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting.Contexts;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
+{
+    public class WaterproofingHandler : RevitCommandBase, IExternalEventHandler
+    {
+        public Action<double> OnElevationPicked { get; set; }
+        public Action OnExecuteCompleted { get; set; }
+        public WaterproofingAction WaterproofingAction { get; set; }
+        public ElementId SelectedFloorTypeId { get; set; }
+        public double FloorLevelOffset { get; set; }
+        public double WaterproofingBaseboardHeight { get; set; }
+
+        public void Execute(UIApplication app)
+        {
+            InitializeContextEvent(app);
+
+            if (Context.Doc.ActiveView.GenLevel == null)
+            {
+                TaskDialog.Show("Atenção", "Por favor, execute este comando em uma vista de Planta.");
+
+                OnExecuteCompleted?.Invoke();
+                return;
+            }
+
+            try
+            {
+                using (Transaction transaction = new Transaction(Context.Doc, "Converter Regiões em Pisos"))
+                {
+                    transaction.Start();
+                    {
+
+                        switch (WaterproofingAction)
+                        {
+                            case WaterproofingAction.PickRegions:
+                                RunPickerAndGeneration(Context.UiDoc, Context.Doc);
+                                break;
+
+                            case WaterproofingAction.PickOffsetTarget:
+                                RunElevationPicker(Context.UiDoc, Context.Doc);
+                                break;
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+            }
+            catch { }
+            finally { OnExecuteCompleted?.Invoke(); }
+        }
+
+
+        public string GetName() => "Waterproofing Event Handler";
+
+        private void RunPickerAndGeneration(UIDocument uidoc, Document doc)
+        {
+            try
+            {
+                PickRegionsService pickRegionsService = new PickRegionsService();
+                IList<Reference> pickedRegionReferences = pickRegionsService.Pick(Context.UiDoc);
+
+                ElementId levelId = Context.Doc.ActiveView.GenLevel.Id;
+
+                foreach (Reference regionRef in pickedRegionReferences)
+                {
+                    Element regionElement = Context.Doc.GetElement(regionRef);
+
+                    FilledRegion filledRegion = regionElement as FilledRegion;
+
+                    if (filledRegion == null)
+                        continue;
+
+                    IList<CurveLoop> regionCurves = filledRegion.GetBoundaries();
+
+                    Floor newFloor = Floor.Create(Context.Doc, regionCurves, SelectedFloorTypeId, levelId);
+
+                    Parameter levelOffsetParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
+                    Parameter floorThicknessParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_ATTR_THICKNESS_PARAM);
+
+                    if (levelOffsetParameter != null && levelOffsetParameter.IsReadOnly == false)
+                    {
+                        double offsetEmPes = UnitUtils.ConvertToInternalUnits(FloorLevelOffset, UnitTypeId.Centimeters) + floorThicknessParameter.AsDouble();
+
+                        levelOffsetParameter.Set(offsetEmPes);
+                    }
+
+                    Context.Doc.Delete(regionElement.Id);
+                }
+            }
+            catch (OperationCanceledException) { }
+        }
+
+        private void RunElevationPicker(UIDocument uidoc, Document doc)
+        {
+            try
+            {
+                var filter = new ElevationSelectionFilter(doc);
+
+                Reference pickedRef = uidoc.Selection.PickObject(
+                    ObjectType.PointOnElement,
+                    filter,
+                    "Selecione uma face ou ponto para definir o deslocamento");
+
+                if (pickedRef == null) return;
+
+                double absoluteZ = 0;
+
+
+                absoluteZ = pickedRef.GlobalPoint.Z;
+
+                Level currentLevel = doc.ActiveView.GenLevel;
+                double levelElevation = currentLevel.Elevation;
+
+                double offsetInFeet = absoluteZ - levelElevation;
+                double offsetInCm = Math.Round(UnitUtils.ConvertFromInternalUnits(offsetInFeet, UnitTypeId.Centimeters), 3);
+
+                OnElevationPicked?.Invoke(offsetInCm);
+            }
+            catch (Autodesk.Revit.Exceptions.OperationCanceledException) { }
+        }
+    }
+}

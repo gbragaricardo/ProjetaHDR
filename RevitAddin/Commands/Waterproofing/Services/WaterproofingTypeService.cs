@@ -18,7 +18,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
 
         public List<WaterproofingType> GetAvailableTypes()
         {
-            List<WaterproofingType> tipos = new List<WaterproofingType>();
+            List<WaterproofingType> types = new List<WaterproofingType>();
 
             var floorTypes = new FilteredElementCollector(_doc)
                 .OfClass(typeof(FloorType))
@@ -27,14 +27,14 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
 
             foreach (var ft in floorTypes)
             {
-                tipos.Add(new WaterproofingType
+                types.Add(new WaterproofingType
                 {
                     Name = ft.Name,
-                    ElementTypeId = ft.Id // Guarda o ID dinâmico real deste projeto!
+                    ElementTypeId = ft.Id 
                 });
             }
 
-            return tipos; // Retorna essa lista para a sua ViewModel preencher o ComboBox
+            return types;
         }
 
         public ElementId CreateNewType(ElementId baseTypeId, string newTypeName)

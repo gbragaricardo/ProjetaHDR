@@ -1,6 +1,8 @@
 ﻿using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Events;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models.Enums;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
 using ProjetaHDR.UI;
 using System;
@@ -15,6 +17,13 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
+        public event Action RequestHide;
+        public event Action RequestShow;
+        public event Action RequestClose;
+
+        private readonly ExternalEvent _externalEvent;
+        private readonly WaterproofingHandler _eventHandler;
+
         private readonly WaterproofingTypeService _waterproofingTypeService;
         public ObservableCollection<WaterproofingType> AvailableFloorTypes { get; set; } = new ObservableCollection<WaterproofingType>
         {
@@ -67,35 +76,76 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             }
         }
 
-        private ElementId _selectedFloorType;
-        public ElementId SelectedFloorType
+        private ElementId _selectedFloorTypeId;
+        public ElementId SelectedFloorTypeId
         {
-            get => _selectedFloorType;
+            get => _selectedFloorTypeId;
             set
             {
-                if (_selectedFloorType != value)
+                if (_selectedFloorTypeId != value)
                 {
-                    _selectedFloorType = value;
+                    _selectedFloorTypeId = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public MainViewModel(WaterproofingTypeService waterproofingTypeService)
+        public RelayCommand PickRegionsCommand { get; set; }
+        public RelayCommand PickOffsetTargetCommand { get; set; }
+        public RelayCommand CancelCommand { get; set; }
+
+        public MainViewModel(WaterproofingTypeService waterproofingTypeService, ExternalEvent externalEvent, WaterproofingHandler eventHandler)
         {
+            _eventHandler = eventHandler;
+            _externalEvent = externalEvent;
             _waterproofingTypeService = waterproofingTypeService;
             PopulateAvailableTypesCollection(_waterproofingTypeService.GetAvailableTypes());
+
+            PickRegionsCommand = new RelayCommand(PickRegions);
+            PickOffsetTargetCommand = new RelayCommand(PickOffsetTarget);
+            CancelCommand = new RelayCommand(CancelOperation);
         }
 
-        public void PopulateAvailableTypesCollection(IList<WaterproofingType> availableTypes)
+        private void PopulateAvailableTypesCollection(IList<WaterproofingType> availableTypes)
         {
             AvailableFloorTypes.Clear();
 
-            foreach(WaterproofingType type in availableTypes.OrderBy(t => t.Name))
+            foreach (WaterproofingType type in availableTypes.OrderBy(t => t.Name))
             {
                 AvailableFloorTypes.Add(type);
             }
         }
 
+        private void PickRegions(object parameter)
+        {
+            HideUI();
+            _eventHandler.WaterproofingAction = WaterproofingAction.PickRegions;
+            _eventHandler.SelectedFloorTypeId = SelectedFloorTypeId;
+            _eventHandler.FloorLevelOffset = Offset;
+            _eventHandler.WaterproofingBaseboardHeight = BaseboardHeigth;
+
+            _eventHandler.OnExecuteCompleted = () => ShowUI();
+
+            _externalEvent.Raise();
+        }
+
+        private void PickOffsetTarget(object parameter)
+        {
+            HideUI();
+            _eventHandler.WaterproofingAction = WaterproofingAction.PickOffsetTarget;
+
+            _eventHandler.OnElevationPicked = (offsetValue) => Offset = offsetValue;
+            _eventHandler.OnExecuteCompleted = () => ShowUI(); 
+
+            _externalEvent.Raise();
+        }
+        private void CancelOperation(object parameter)
+        {
+            CloseUI();
+        }
+
+        public void HideUI() => RequestHide?.Invoke();
+        public void ShowUI() => RequestShow?.Invoke();
+        public void CloseUI() => RequestClose?.Invoke();
     }
 }

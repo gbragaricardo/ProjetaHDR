@@ -22,24 +22,15 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
     /// </summary>
     public partial class MainView : MetroWindow
     {
-        public MainView()
+        public MainView(MainViewModel viewModel)
         {
             InitializeComponent();
-        }
+            DataContext = viewModel;
 
-        private void BtnSelectRegions_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = this.DataContext as MainViewModel;
-            vm.IsConfirmed = true;
+            viewModel.RequestHide += () => this.Hide();
+            viewModel.RequestShow += () => this.Show();
+            viewModel.RequestClose += () => this.Close();
 
-            this.DialogResult = true;
-            this.Close();
-        }
-
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = false;
-            this.Close();
         }
     }
 }

@@ -37,6 +37,12 @@
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.2.4.11\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>packages\MahApps.Metro.IconPacks.Core.6.2.1\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Material, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>packages\MahApps.Metro.IconPacks.Material.6.2.1\lib\net47\MahApps.Metro.IconPacks.Material.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -82,7 +88,10 @@
     <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
     <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
     <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Events\WaterproofingHandler.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Models\Enums\WaterproofingAction.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Models\WaterproofingType.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Services\ElevationSelectionFilter.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegionsService.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\WaterproofingTypeService.cs" />

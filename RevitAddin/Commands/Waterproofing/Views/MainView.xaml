@@ -5,15 +5,17 @@
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:converters="clr-namespace:ProjetaHDR.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Models"
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
-    Width="360"
-    Height="Auto"
+    MinWidth="320"
+    MinHeight="320"
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     WindowStartupLocation="CenterScreen"
+    Title="PROJETA HDR"
     mc:Ignorable="d">
 
     <Controls:MetroWindow.Resources>
@@ -52,11 +54,11 @@
                     <TextBlock Margin="0,0,0,4" Text="Material" />
                     <ComboBox
                         Controls:ControlsHelper.CornerRadius="4"
-                        d:SelectedIndex="2"
                         DisplayMemberPath="Name"
                         ItemsSource="{Binding AvailableFloorTypes, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedValue="{Binding SelectedFloorType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedValuePath="ElementTypeId" />
+                        SelectedValue="{Binding SelectedFloorTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValuePath="ElementTypeId"
+                        SelectedIndex="0"/>
                 </StackPanel>
 
                 <StackPanel x:Name="TextBox" Orientation="Vertical">
@@ -72,7 +74,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="26" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBox
@@ -80,9 +82,18 @@
                             Margin="0,0,8,0"
                             Controls:ControlsHelper.CornerRadius="4"
                             d:Text="0 cm"
-                            Text="{Binding BaseboardHeigth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Button Grid.Column="1" />
+                        <Button
+                            Grid.Column="1"
+                            Background="Transparent"
+                            Command="{Binding PickOffsetTargetCommand}">
+                            <iconPacks:PackIconMaterial
+                                Kind="TargetVariant" 
+                                Width="16"
+                                Height="16"
+                                ToolTip="Selecionar em projeto o ponto base"/>
+                        </Button>
                     </Grid>
                 </StackPanel>
 
@@ -99,14 +110,15 @@
                     Grid.Column="0"
                     Padding="8,0"
                     Background="Transparent"
-                    Content="Cancelar" />
+                    Content="Cancelar" 
+                    Command="{Binding CancelCommand}"/>
 
                 <Button
                     Grid.Column="2"
                     Padding="8,0"
                     Background="Transparent"
                     Content="Selecionar Regioes"
-                    Click="BtnSelectRegions_Click"/>
+                    Command="{Binding PickRegionsCommand}"/>
             </Grid>
         </Grid>
     </Border>
