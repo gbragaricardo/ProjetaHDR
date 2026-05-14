@@ -21,7 +21,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
         public WaterproofingAction WaterproofingAction { get; set; }
         public ElementId SelectedFloorTypeId { get; set; }
         public double FloorLevelOffset { get; set; }
-        public double WaterproofingBaseboardHeight { get; set; }
+        public double WaterproofingHeight { get; set; }
 
         public void Execute(UIApplication app)
         {
@@ -86,8 +86,21 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
 
                     Floor newFloor = Floor.Create(Context.Doc, regionCurves, SelectedFloorTypeId, levelId);
 
+                    doc.Regenerate();
+
                     Parameter levelOffsetParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
                     Parameter floorThicknessParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_ATTR_THICKNESS_PARAM);
+                    Parameter floorPerimeterParameter = newFloor.get_Parameter(BuiltInParameter.HOST_PERIMETER_COMPUTED);
+                    Parameter waterproofHeigthParameter = newFloor.get_Parameter(new Guid("37c215c0-d09c-4564-bc77-53bba751abf6"));
+                    Parameter waterproofVerticalAreaParameter = newFloor.get_Parameter(new Guid("7a888c18-3ec3-4016-adb6-babb8222c85d"));
+
+                    double perimeterInMeters = UnitUtils.ConvertFromInternalUnits(floorPerimeterParameter.AsDouble(), UnitTypeId.Meters);
+
+                    if (waterproofHeigthParameter != null && waterproofHeigthParameter.IsReadOnly == false)
+                        waterproofHeigthParameter.Set(WaterproofingHeight);
+
+                    if (waterproofVerticalAreaParameter != null && waterproofVerticalAreaParameter.IsReadOnly == false)
+                        waterproofVerticalAreaParameter.Set(UnitUtils.ConvertToInternalUnits((WaterproofingHeight / 100) * perimeterInMeters, UnitTypeId.SquareMeters));
 
                     if (levelOffsetParameter != null && levelOffsetParameter.IsReadOnly == false)
                     {

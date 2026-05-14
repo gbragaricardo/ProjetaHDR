@@ -11,8 +11,8 @@
     xmlns:models="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Models"
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
-    MinWidth="320"
-    MinHeight="320"
+    MinWidth="320" Width="320"
+    MinHeight="320" Height="320"
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     WindowStartupLocation="CenterScreen"
     Title="PROJETA HDR"
@@ -57,8 +57,7 @@
                         DisplayMemberPath="Name"
                         ItemsSource="{Binding AvailableFloorTypes, UpdateSourceTrigger=PropertyChanged}"
                         SelectedValue="{Binding SelectedFloorTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedValuePath="ElementTypeId"
-                        SelectedIndex="0"/>
+                        SelectedValuePath="ElementTypeId"/>
                 </StackPanel>
 
                 <StackPanel x:Name="TextBox" Orientation="Vertical">
