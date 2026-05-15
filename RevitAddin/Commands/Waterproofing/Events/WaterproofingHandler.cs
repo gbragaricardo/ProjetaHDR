@@ -108,7 +108,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
 
                     if (levelOffsetParameter != null && levelOffsetParameter.IsReadOnly == false)
                     {
-                        double offsetEmPes = UnitUtils.ConvertToInternalUnits(FloorLevelOffset, UnitTypeId.Centimeters) + floorThicknessParameter.AsDouble();
+                        double offsetEmPes = UnitUtils.ConvertToInternalUnits(FloorLevelOffset, UnitTypeId.Centimeters);
 
                         levelOffsetParameter.Set(offsetEmPes);
                     }
