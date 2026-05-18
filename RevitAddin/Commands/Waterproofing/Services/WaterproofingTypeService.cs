@@ -23,6 +23,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
             var floorTypes = new FilteredElementCollector(_doc)
                 .OfClass(typeof(FloorType))
                 .Cast<FloorType>()
+                .Where(f => f.Name.ToLower().Contains("imp_"))
                 .ToList();
 
             foreach (var ft in floorTypes)

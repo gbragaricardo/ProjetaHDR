@@ -18,7 +18,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
 
                 ElementType regionType = elem.Document.GetElement(typeId) as ElementType;
 
-                if (regionType != null && regionType.Name.ToLower().Contains("_imp"))
+                if (regionType != null && regionType.Name.ToLower().Contains("imp"))
                     return true;
             }
 

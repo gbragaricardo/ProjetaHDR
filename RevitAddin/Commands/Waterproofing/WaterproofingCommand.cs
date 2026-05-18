@@ -9,10 +9,12 @@ using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace ProjetaHDR.Commands.Waterproofing
 {
@@ -20,6 +22,9 @@ namespace ProjetaHDR.Commands.Waterproofing
     [Regeneration(RegenerationOption.Manual)]
     public class WaterproofingCommand : RevitCommandBase, IExternalCommand
     {
+        private static MainView _window;
+        private static MainViewModel _viewModel;
+
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
@@ -28,11 +33,23 @@ namespace ProjetaHDR.Commands.Waterproofing
             ExternalEvent externalEvent = ExternalEvent.Create(handler);
 
             var waterproofingTypeService = new WaterproofingTypeService(Context.Doc);
-            var viewModel = new MainViewModel(waterproofingTypeService, externalEvent, handler);
 
-            var window = new MainView (viewModel);
+            if (_window != null && _window.IsVisible)
+            {
+                _window.Activate();
+                _window.Focus();
+                return Result.Succeeded;
+            }
 
-            window.Show();
+            if (_viewModel == null)
+                _viewModel = new MainViewModel(waterproofingTypeService, externalEvent, handler);
+
+            _window = new MainView(_viewModel);
+
+            IntPtr revitHandle = Process.GetCurrentProcess().MainWindowHandle;
+            new WindowInteropHelper(_window).Owner = revitHandle;
+
+            _window.Closed += (s, e) => _window = null;
 
             return Result.Succeeded;
         }

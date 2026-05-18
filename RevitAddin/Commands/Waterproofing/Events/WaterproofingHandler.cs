@@ -72,6 +72,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                 IList<Reference> pickedRegionReferences = pickRegionsService.Pick(Context.UiDoc);
 
                 ElementId levelId = Context.Doc.ActiveView.GenLevel.Id;
+                ElementId viewId = Context.Doc.ActiveView.Id;
 
                 foreach (Reference regionRef in pickedRegionReferences)
                 {
@@ -114,6 +115,31 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                     }
 
                     Context.Doc.Delete(regionElement.Id);
+
+                    Reference floorReference = new Reference(newFloor);
+                    BoundingBoxXYZ insertionBBox = newFloor.get_BoundingBox(Context.Doc.ActiveView);
+
+                    XYZ insertionPoint = (insertionBBox.Max + insertionBBox.Min) / 2;
+
+                    IndependentTag newTag = IndependentTag.Create(
+                        doc,
+                        viewId,
+                        floorReference,
+                        true,
+                        TagMode.TM_ADDBY_CATEGORY,
+                        TagOrientation.Horizontal,
+                        insertionPoint);
+
+                    FamilySymbol tagSymbol = new FilteredElementCollector(doc)
+                        .OfClass(typeof(FamilySymbol))
+                        .OfCategory(BuiltInCategory.OST_FloorTags)
+                        .Cast<FamilySymbol>()
+                        .FirstOrDefault(x => x.Name == "IMP_Tag_Padrao");
+
+                    if (tagSymbol != null)
+                    {
+                        newTag.ChangeTypeId(tagSymbol.Id);
+                    }
                 }
             }
             catch (OperationCanceledException) { }
