@@ -22,6 +22,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
         public ElementId SelectedFloorTypeId { get; set; }
         public double FloorLevelOffset { get; set; }
         public double WaterproofingHeight { get; set; }
+        public double WaterproofThickness { get; set; }
 
         public void Execute(UIApplication app)
         {
@@ -95,11 +96,15 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                     Parameter floorCommentParameter = newFloor.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
                     Parameter waterproofHeigthParameter = newFloor.get_Parameter(new Guid("37c215c0-d09c-4564-bc77-53bba751abf6"));
                     Parameter waterproofVerticalAreaParameter = newFloor.get_Parameter(new Guid("7a888c18-3ec3-4016-adb6-babb8222c85d"));
+                    Parameter waterproofThickness = newFloor.get_Parameter(new Guid("bd555174-5f28-4805-b282-1c46d71b1c5e"));
 
                     double perimeterInMeters = UnitUtils.ConvertFromInternalUnits(floorPerimeterParameter.AsDouble(), UnitTypeId.Meters);
 
                     if (waterproofHeigthParameter != null && waterproofHeigthParameter.IsReadOnly == false)
                         waterproofHeigthParameter.Set(WaterproofingHeight);
+
+                    if (waterproofThickness != null && waterproofThickness.IsReadOnly == false)
+                        waterproofThickness.Set(UnitUtils.ConvertToInternalUnits(WaterproofThickness, UnitTypeId.Millimeters));
 
                     if (floorCommentParameter != null && floorCommentParameter.IsReadOnly == false)
                         floorCommentParameter.Set("BANHEIRO/ÁREA MOLHADA");

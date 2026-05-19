@@ -60,15 +60,26 @@
                         SelectedValuePath="ElementTypeId"/>
                 </StackPanel>
 
-                <StackPanel x:Name="TextBox" Orientation="Vertical">
-                    <TextBlock Margin="0,0,0,4" Text="Altura do rodapé (cm)" />
+                <StackPanel x:Name="HeightTextBox" Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Altura na parede (cm)" />
                     <TextBox
                         Controls:ControlsHelper.CornerRadius="4"
-                        d:Text="30 cm"
+                        d:Text="30"
                         Text="{Binding BaseboardHeigth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
-                <StackPanel Margin="0,8" Orientation="Vertical">
+                <StackPanel
+                    x:Name="ThicknessTextBox"
+                    Margin="0,8"
+                    Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Espessura (mm)" />
+                    <TextBox
+                        Controls:ControlsHelper.CornerRadius="4"
+                        d:Text="4"
+                        Text="{Binding WaterproofThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
                     <TextBlock Margin="0,0,0,4" Text="Deslocamento do nível (cm)" />
                     <Grid>
                         <Grid.ColumnDefinitions>

@@ -62,6 +62,20 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             }
         }
 
+        private double _floorThickness;
+        public double WaterproofThickness
+        {
+            get => _floorThickness;
+            set
+            {
+                if (_floorThickness != value)
+                {
+                    _floorThickness = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private double _offset = 0.0;
         public double Offset
         {
@@ -85,6 +99,10 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
                 if (_selectedFloorTypeId != value)
                 {
                     _selectedFloorTypeId = value;
+
+                    var selectedType = AvailableFloorTypes.FirstOrDefault(t => _selectedFloorTypeId == t.ElementTypeId);
+                    WaterproofThickness = selectedType != null ? selectedType.Thickness : 0.0;
+
                     OnPropertyChanged();
                 }
             }
@@ -101,7 +119,9 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _waterproofingTypeService = waterproofingTypeService;
 
             PopulateAvailableTypesCollection(_waterproofingTypeService.GetAvailableTypes());
-            SelectedFloorTypeId = AvailableFloorTypes.First().ElementTypeId;
+
+            if (SelectedFloorTypeId == null)
+                SelectedFloorTypeId = AvailableFloorTypes.First().ElementTypeId;
 
             PickRegionsCommand = new RelayCommand(PickRegions);
             PickOffsetTargetCommand = new RelayCommand(PickOffsetTarget);
@@ -124,6 +144,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _eventHandler.WaterproofingAction = WaterproofingAction.PickRegions;
             _eventHandler.SelectedFloorTypeId = SelectedFloorTypeId;
             _eventHandler.FloorLevelOffset = Offset;
+            _eventHandler.WaterproofThickness = WaterproofThickness;
             _eventHandler.WaterproofingHeight = BaseboardHeigth;
 
             _eventHandler.OnExecuteCompleted = () => ShowUI();
@@ -137,7 +158,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _eventHandler.WaterproofingAction = WaterproofingAction.PickOffsetTarget;
 
             _eventHandler.OnElevationPicked = (offsetValue) => Offset = offsetValue;
-            _eventHandler.OnExecuteCompleted = () => ShowUI(); 
+            _eventHandler.OnExecuteCompleted = () => ShowUI();
 
             _externalEvent.Raise();
         }

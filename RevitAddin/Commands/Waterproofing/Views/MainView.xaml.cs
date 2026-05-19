@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
 {
-    /// <summary>
-    /// Interação lógica para MainView.xam
-    /// </summary>
     public partial class MainView : MetroWindow
     {
         public MainView(MainViewModel viewModel)

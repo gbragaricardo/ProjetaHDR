@@ -45,8 +45,9 @@ namespace ProjetaHDR.Commands.Waterproofing
                 _viewModel = new MainViewModel(waterproofingTypeService, externalEvent, handler);
 
             _window = new MainView(_viewModel);
+            _window.Show();
 
-            IntPtr revitHandle = Process.GetCurrentProcess().MainWindowHandle;
+            IntPtr revitHandle = Context.UiApp.MainWindowHandle;
             new WindowInteropHelper(_window).Owner = revitHandle;
 
             _window.Closed += (s, e) => _window = null;

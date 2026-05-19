@@ -11,5 +11,6 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Models
     {
         public string Name { get; set; }
         public ElementId ElementTypeId{ get; set; }
+        public double Thickness { get; set; }
     }
 }
