@@ -28,11 +28,12 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Services
 
             foreach (var ft in floorTypes)
             {
-                double floorThickness = ft.get_Parameter(BuiltInParameter.FLOOR_ATTR_DEFAULT_THICKNESS_PARAM)?.AsDouble() ?? 0;
-                double waterproofThicknessInMillimeters = UnitUtils.ConvertFromInternalUnits(floorThickness, UnitTypeId.Millimeters);
+                double floorTypeThickness = ft.get_Parameter(BuiltInParameter.FLOOR_ATTR_DEFAULT_THICKNESS_PARAM)?.AsDouble() ?? 0;
+                string floorTypeDescription = ft.get_Parameter(BuiltInParameter.ALL_MODEL_DESCRIPTION)?.AsString() ?? ft.Name;
+                double waterproofThicknessInMillimeters = UnitUtils.ConvertFromInternalUnits(floorTypeThickness, UnitTypeId.Millimeters);
                 types.Add(new WaterproofingType
                 {
-                    Name = ft.Name,
+                    Name = floorTypeDescription,
                     ElementTypeId = ft.Id,
                     Thickness = Math.Round(waterproofThicknessInMillimeters, 1)
                 });

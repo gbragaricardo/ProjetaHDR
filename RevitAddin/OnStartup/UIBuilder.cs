@@ -124,11 +124,11 @@ namespace ProjetaHDR.Startup
             var drenButtons = RibbonManager.AddStackedPushButtons(_drenPanel, setAreasGP, setAreasTR);
 
             var waterproofingButton = RibbonManager.CreateAndAddPushButton
-                ("waterproof", "⠀Water⠀\n⠀Proof⠀",
+                ("waterproof", "Criar\nImpermeabilização",
                 "ProjetaHDR.Commands.Waterproofing.WaterproofingCommand",
                 _drenPanel,
                 "Interface para cálculo de vazão da impermeabilização",
-                "drenwindow.png",
+                "waterproof.png",
                 false);
         }
     }

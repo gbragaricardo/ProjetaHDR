@@ -21,16 +21,11 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         public event Action RequestShow;
         public event Action RequestClose;
 
-        private readonly ExternalEvent _externalEvent;
-        private readonly WaterproofingHandler _eventHandler;
+        private ExternalEvent _externalEvent;
+        private WaterproofingHandler _eventHandler;
 
         private readonly WaterproofingTypeService _waterproofingTypeService;
-        public ObservableCollection<WaterproofingType> AvailableFloorTypes { get; set; } = new ObservableCollection<WaterproofingType>
-        {
-            new WaterproofingType{Name= "Manta Asfaltica",},
-            new WaterproofingType{Name= "Outro Tipo", },
-            new WaterproofingType{Name= "Tipo 3 Asfaltica"}
-        };
+        public ObservableCollection<WaterproofingType> WaterproofingFloorTypes { get; set; } = new ObservableCollection<WaterproofingType>();
 
         public bool IsConfirmed { get; set; }
 
@@ -100,7 +95,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
                 {
                     _selectedFloorTypeId = value;
 
-                    var selectedType = AvailableFloorTypes.FirstOrDefault(t => _selectedFloorTypeId == t.ElementTypeId);
+                    var selectedType = WaterproofingFloorTypes.FirstOrDefault(t => _selectedFloorTypeId == t.ElementTypeId);
                     WaterproofThickness = selectedType != null ? selectedType.Thickness : 0.0;
 
                     OnPropertyChanged();
@@ -118,23 +113,25 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _externalEvent = externalEvent;
             _waterproofingTypeService = waterproofingTypeService;
 
-            PopulateAvailableTypesCollection(_waterproofingTypeService.GetAvailableTypes());
+            UpdateWaterproofingFloorTypes();
 
             if (SelectedFloorTypeId == null)
-                SelectedFloorTypeId = AvailableFloorTypes.First().ElementTypeId;
+                SelectedFloorTypeId = WaterproofingFloorTypes.First().ElementTypeId;
 
             PickRegionsCommand = new RelayCommand(PickRegions);
             PickOffsetTargetCommand = new RelayCommand(PickOffsetTarget);
             CancelCommand = new RelayCommand(CancelOperation);
         }
 
-        private void PopulateAvailableTypesCollection(IList<WaterproofingType> availableTypes)
+        public void UpdateWaterproofingFloorTypes()
         {
-            AvailableFloorTypes.Clear();
+            var availableTypes = _waterproofingTypeService.GetAvailableTypes();
+
+            WaterproofingFloorTypes.Clear();
 
             foreach (WaterproofingType type in availableTypes.OrderBy(t => t.Name))
             {
-                AvailableFloorTypes.Add(type);
+                WaterproofingFloorTypes.Add(type);
             }
         }
 
@@ -165,6 +162,12 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         private void CancelOperation(object parameter)
         {
             CloseUI();
+        }
+
+        public void UpdateEvent(ExternalEvent newEvent, WaterproofingHandler newHandler)
+        {
+            this._externalEvent = newEvent;
+            this._eventHandler = newHandler;
         }
 
         public void HideUI() => RequestHide?.Invoke();

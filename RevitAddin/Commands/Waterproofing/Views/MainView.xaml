@@ -12,7 +12,7 @@
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
     MinWidth="320" Width="320"
-    MinHeight="320" Height="320"
+    MinHeight="340" Height="340"
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     WindowStartupLocation="CenterScreen"
     Title="PROJETA HDR"
@@ -37,6 +37,7 @@
 
             <StackPanel
                 x:Name="MainContent"
+                Margin="0 0 0 8"
                 Grid.Row="0"
                 HorizontalAlignment="Left"
                 Orientation="Vertical">
@@ -55,9 +56,10 @@
                     <ComboBox
                         Controls:ControlsHelper.CornerRadius="4"
                         DisplayMemberPath="Name"
-                        ItemsSource="{Binding AvailableFloorTypes, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding WaterproofingFloorTypes, UpdateSourceTrigger=PropertyChanged}"
                         SelectedValue="{Binding SelectedFloorTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedValuePath="ElementTypeId"/>
+                        SelectedValuePath="ElementTypeId"
+                        DropDownOpened="ComboBox_OnDropDownOpened"/>
                 </StackPanel>
 
                 <StackPanel x:Name="HeightTextBox" Orientation="Vertical">

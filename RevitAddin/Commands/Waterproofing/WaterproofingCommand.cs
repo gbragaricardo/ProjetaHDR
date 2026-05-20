@@ -29,20 +29,29 @@ namespace ProjetaHDR.Commands.Waterproofing
         {
             InitializeContext(commandData);
 
-            var handler = new WaterproofingHandler();
-            ExternalEvent externalEvent = ExternalEvent.Create(handler);
-
             var waterproofingTypeService = new WaterproofingTypeService(Context.Doc);
 
             if (_window != null && _window.IsVisible)
             {
+                if (_window.WindowState == System.Windows.WindowState.Minimized)
+                {
+                    _window.WindowState = System.Windows.WindowState.Normal;
+                }
+
                 _window.Activate();
                 _window.Focus();
                 return Result.Succeeded;
             }
 
+            var handler = new WaterproofingHandler();
+            ExternalEvent externalEvent = ExternalEvent.Create(handler);
+
             if (_viewModel == null)
                 _viewModel = new MainViewModel(waterproofingTypeService, externalEvent, handler);
+            else
+                _viewModel.UpdateEvent(externalEvent, handler);
+
+            
 
             _window = new MainView(_viewModel);
             _window.Show();

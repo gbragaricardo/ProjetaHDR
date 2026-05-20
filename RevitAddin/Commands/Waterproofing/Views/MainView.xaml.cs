@@ -19,15 +19,23 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
 {
     public partial class MainView : MetroWindow
     {
+        private MainViewModel _viewModel;
         public MainView(MainViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = viewModel;
+            _viewModel = viewModel;
+            DataContext = _viewModel;
 
             viewModel.RequestHide += () => this.Hide();
             viewModel.RequestShow += () => this.Show();
             viewModel.RequestClose += () => this.Close();
-
+        }
+        private void ComboBox_OnDropDownOpened(object sender, EventArgs e)
+        {
+            if (_viewModel != null)
+            {
+                _viewModel.UpdateWaterproofingFloorTypes();
+            }
         }
     }
 }

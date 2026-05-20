@@ -257,6 +257,9 @@
     <EmbeddedResource Include="RevitAddin\Icons\globalparam.png" />
     <EmbeddedResource Include="RevitAddin\Icons\tr.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="RevitAddin\Icons\waterproof.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>REM Define os caminhos corretamente

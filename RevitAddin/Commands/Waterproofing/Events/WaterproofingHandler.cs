@@ -165,7 +165,6 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
 
                 double absoluteZ = 0;
 
-
                 absoluteZ = pickedRef.GlobalPoint.Z;
 
                 Level currentLevel = doc.ActiveView.GenLevel;
