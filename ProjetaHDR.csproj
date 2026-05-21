@@ -95,7 +95,11 @@
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegionsService.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\WaterproofingTypeService.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\CreateWaterproofTypeViewModel.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\MainViewModel.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\Views\CreateWaterproofTypeView.xaml.cs">
+      <DependentUpon>CreateWaterproofTypeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -167,6 +171,10 @@
     <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="RevitAddin\Commands\Waterproofing\Views\CreateWaterproofTypeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

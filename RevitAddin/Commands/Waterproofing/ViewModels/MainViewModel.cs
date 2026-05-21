@@ -29,6 +29,31 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 
         public bool IsConfirmed { get; set; }
 
+        private object _currentViewModel;
+        public object CurrentViewModel
+        {
+            get => _currentViewModel;
+            set
+            {
+                _currentViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isFlyoutOpen;
+        public bool IsFlyoutOpen
+        {
+            get => _isFlyoutOpen;
+            set
+            {
+                if (_isFlyoutOpen != value)
+                {
+                    _isFlyoutOpen = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private WaterproofingType _waterproofingType;
         public WaterproofingType WaterproofingType
         {
@@ -105,6 +130,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 
         public RelayCommand PickRegionsCommand { get; set; }
         public RelayCommand PickOffsetTargetCommand { get; set; }
+        public RelayCommand OpenFlyoutCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
 
         public MainViewModel(WaterproofingTypeService waterproofingTypeService, ExternalEvent externalEvent, WaterproofingHandler eventHandler)
@@ -120,6 +146,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 
             PickRegionsCommand = new RelayCommand(PickRegions);
             PickOffsetTargetCommand = new RelayCommand(PickOffsetTarget);
+            OpenFlyoutCommand = new RelayCommand(OpenFlyout);
             CancelCommand = new RelayCommand(CancelOperation);
         }
 
@@ -158,6 +185,12 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _eventHandler.OnExecuteCompleted = () => ShowUI();
 
             _externalEvent.Raise();
+        }
+
+        private void OpenFlyout(object parameter)
+        {
+            CurrentViewModel = new CreateWaterproofTypeViewModel();
+            IsFlyoutOpen = true;
         }
         private void CancelOperation(object parameter)
         {
