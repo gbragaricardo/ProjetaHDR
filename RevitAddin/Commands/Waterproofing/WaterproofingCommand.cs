@@ -1,19 +1,10 @@
 ﻿using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using ControlzEx.Standard;
-using ProjetaHDR.RevitAddin.Commands.Waterproofing.Events;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Interop;
 
 namespace ProjetaHDR.Commands.Waterproofing
@@ -24,42 +15,46 @@ namespace ProjetaHDR.Commands.Waterproofing
     {
         private static MainView _window;
         private static MainViewModel _viewModel;
+        private static string _docPathName;
 
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             InitializeContext(commandData);
 
-            var waterproofingTypeService = new WaterproofingTypeService(Context.Doc);
+            if (_docPathName == null)
+                _docPathName = Context.Doc.PathName;
 
-            if (_window != null && _window.IsVisible)
+            if (_viewModel != null && Context.Doc.PathName != _docPathName)
+            {
+                _viewModel = null;
+                _window = null;
+                _docPathName = Context.Doc.PathName;
+            }
+
+            if (_viewModel == null)
+            {
+                WaterproofingTypeService waterproofingTypeService = new WaterproofingTypeService(Context.Doc);
+                _viewModel = new MainViewModel(waterproofingTypeService);
+            }
+
+            if (_window == null || !_window.IsVisible)
+            {
+                _window = new MainView(_viewModel);
+
+                IntPtr revitHandle = Context.UiApp.MainWindowHandle;
+                new WindowInteropHelper(_window).Owner = revitHandle;
+
+                _window.Closed += (s, e) => _window = null;
+                _window.Show();
+            }
+            else
             {
                 if (_window.WindowState == System.Windows.WindowState.Minimized)
-                {
                     _window.WindowState = System.Windows.WindowState.Normal;
-                }
 
                 _window.Activate();
                 _window.Focus();
-                return Result.Succeeded;
             }
-
-            var handler = new WaterproofingHandler();
-            ExternalEvent externalEvent = ExternalEvent.Create(handler);
-
-            if (_viewModel == null)
-                _viewModel = new MainViewModel(waterproofingTypeService, externalEvent, handler);
-            else
-                _viewModel.UpdateEvent(externalEvent, handler);
-
-            
-
-            _window = new MainView(_viewModel);
-            _window.Show();
-
-            IntPtr revitHandle = Context.UiApp.MainWindowHandle;
-            new WindowInteropHelper(_window).Owner = revitHandle;
-
-            _window.Closed += (s, e) => _window = null;
 
             return Result.Succeeded;
         }

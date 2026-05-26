@@ -21,8 +21,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         public event Action RequestShow;
         public event Action RequestClose;
 
-        private ExternalEvent _externalEvent;
-        private WaterproofingHandler _eventHandler;
+        private readonly ExternalEvent _externalEvent;
+        private readonly WaterproofingHandler _eventHandler;
 
         private readonly WaterproofingTypeService _waterproofingTypeService;
         public ObservableCollection<WaterproofingType> WaterproofingFloorTypes { get; set; } = new ObservableCollection<WaterproofingType>();
@@ -133,10 +133,10 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         public RelayCommand OpenFlyoutCommand { get; set; }
         public RelayCommand CancelCommand { get; set; }
 
-        public MainViewModel(WaterproofingTypeService waterproofingTypeService, ExternalEvent externalEvent, WaterproofingHandler eventHandler)
+        public MainViewModel(WaterproofingTypeService waterproofingTypeService)
         {
-            _eventHandler = eventHandler;
-            _externalEvent = externalEvent;
+            _eventHandler = new WaterproofingHandler();
+            _externalEvent = ExternalEvent.Create(_eventHandler);
             _waterproofingTypeService = waterproofingTypeService;
 
             UpdateWaterproofingFloorTypes();
@@ -189,19 +189,11 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 
         private void OpenFlyout(object parameter)
         {
-            CurrentViewModel = new CreateWaterproofTypeViewModel();
+            CurrentViewModel = new CreateWaterproofTypeViewModel(_externalEvent, _eventHandler, () => IsFlyoutOpen = false);
             IsFlyoutOpen = true;
         }
-        private void CancelOperation(object parameter)
-        {
-            CloseUI();
-        }
 
-        public void UpdateEvent(ExternalEvent newEvent, WaterproofingHandler newHandler)
-        {
-            this._externalEvent = newEvent;
-            this._eventHandler = newHandler;
-        }
+        private void CancelOperation(object parameter) => CloseUI();
 
         public void HideUI() => RequestHide?.Invoke();
         public void ShowUI() => RequestShow?.Invoke();

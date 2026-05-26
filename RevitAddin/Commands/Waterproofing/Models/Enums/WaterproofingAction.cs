@@ -9,6 +9,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Models.Enums
     public enum WaterproofingAction
     {
         PickRegions,
-        PickOffsetTarget
+        PickOffsetTarget,
+        CreateNewType
     }
 }

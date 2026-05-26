@@ -96,6 +96,7 @@
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Services\WaterproofingTypeService.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\CreateWaterproofTypeViewModel.cs" />
+    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\Items\WaterproofingLayerItemViewModel.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\MainViewModel.cs" />
     <Compile Include="RevitAddin\Commands\Waterproofing\Views\CreateWaterproofTypeView.xaml.cs">
       <DependentUpon>CreateWaterproofTypeView.xaml</DependentUpon>

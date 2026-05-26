@@ -4,6 +4,7 @@ using Autodesk.Revit.UI.Selection;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Models.Enums;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Services;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels;
+using ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels.Wrappers;
 using ProjetaHDR.RevitAddin.Commands.Waterproofing.Views;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
         public WaterproofingAction WaterproofingAction { get; set; }
         public ElementId SelectedFloorTypeId { get; set; }
         public double FloorLevelOffset { get; set; }
+        public List<WaterproofingLayerItemViewModel> WaterproofingLayers { get; set; }
         public double WaterproofingHeight { get; set; }
         public double WaterproofThickness { get; set; }
 
@@ -50,6 +52,10 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                                 break;
 
                             case WaterproofingAction.PickOffsetTarget:
+                                RunElevationPicker(Context.UiDoc, Context.Doc);
+                                break;
+
+                            case WaterproofingAction.CreateNewType:
                                 RunElevationPicker(Context.UiDoc, Context.Doc);
                                 break;
                         }
@@ -177,5 +183,77 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
             }
             catch (Autodesk.Revit.Exceptions.OperationCanceledException) { }
         }
+
+        private void CreateWaterproofingFloorType(Document doc, string newFloorTypeName, List<WaterproofingLayerItemViewModel> layerItems)
+        {
+
+            try
+            {
+                FloorType baseFloorType = new FilteredElementCollector(doc)
+                    .OfClass(typeof(FloorType))
+                    .Cast<FloorType>()
+                    .FirstOrDefault(ft => ft.IsFoundationSlab == false);
+
+                if (baseFloorType == null)
+                    throw new Exception("Nenhum piso base encontrado para duplicar.");
+
+                FloorType newFloorType = baseFloorType.Duplicate(newFloorTypeName) as FloorType;
+
+                IList<CompoundStructureLayer> newFloorLayers = new List<CompoundStructureLayer>();
+
+                // 4. Iterar sobre a lista do usuário
+                foreach (var layerItem in layerItems)
+                {
+                    string internalName = $"IMP_{layerItem.Name}";
+
+                    // --- CRIAÇÃO DO MATERIAL ---
+                    ElementId newMaterialId = Material.Create(doc, layerItem.Name);
+                    Material newMaterial = doc.GetElement(newMaterialId) as Material;
+
+                    // Definir a Descrição (BuiltInParameter)
+                    Parameter descParam = newMaterial.get_Parameter(BuiltInParameter.ALL_MODEL_DESCRIPTION);
+                    if (descParam != null && !descParam.IsReadOnly)
+                    {
+                        descParam.Set(layerItem.Name);
+                    }
+
+                    // Definir os Parâmetros Customizados (Multiplicadores de Área)
+                    // O Revit trata parâmetros Yes/No como Inteiros (1 = True, 0 = False)
+                    Parameter paramHorizontal = newMaterial.LookupParameter("IMP_Area_Horizontal"); // Substitua pelo nome exato do seu parâmetro
+                    if (paramHorizontal != null && !paramHorizontal.IsReadOnly)
+                    {
+                        paramHorizontal.Set(layerItem.HasHorizontalArea ? 1 : 0);
+                    }
+
+                    Parameter paramVertical = newMaterial.LookupParameter("IMP_Area_Vertical"); // Substitua pelo nome exato do seu parâmetro
+                    if (paramVertical != null && !paramVertical.IsReadOnly)
+                    {
+                        paramVertical.Set(layerItem.HasVerticalArea ? 1 : 0);
+                    }
+
+                    // --- CRIAÇÃO DA CAMADA ---
+                    // O Revit trabalha internamente com Pés (Feet). Precisamos converter de mm para Pés.
+                    double thicknessInFeet = UnitUtils.ConvertToInternalUnits(layerItem.Thickness, UnitTypeId.Millimeters);
+
+                    // O Item[0] é a camada principal (Core/Structure). As demais são Acabamentos (Finish1).
+                    MaterialFunctionAssignment layerFunction = MaterialFunctionAssignment.Finish1;
+
+                    CompoundStructureLayer newLayer = new CompoundStructureLayer(thicknessInFeet, layerFunction, newMaterialId);
+                    newFloorLayers.Add(newLayer);
+                }
+
+                CompoundStructure newCompoundStructure = CompoundStructure.CreateSimpleCompoundStructure(newFloorLayers);
+
+                newCompoundStructure.SetNumberOfShellLayers(ShellLayerType.Interior, newFloorLayers.Count);
+
+                newFloorType.SetCompoundStructure(newCompoundStructure);
+            }
+            catch (Exception ex)
+            {
+                // Aqui você pode disparar um MessageBox de erro ou passar para a UI
+                throw new Exception($"Falha ao criar o tipo de impermeabilização: {ex.Message}");
+            }
+        }
     }
 }
+

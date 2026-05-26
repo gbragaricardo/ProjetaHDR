@@ -111,7 +111,7 @@
                             Command="{Binding OpenFlyoutCommand}">
                             <iconPacks:PackIconMaterial
                                 Kind="Plus"
-                                Foreground="Green"
+                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                                 Width="16"
                                 Height="16"
                                 ToolTip="Selecionar em projeto o ponto base" />

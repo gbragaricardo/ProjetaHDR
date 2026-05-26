@@ -7,7 +7,9 @@
     xmlns:local="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
     mc:Ignorable="d"
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
+    xmlns:viewModelItems="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels.Wrappers"
     d:DataContext="{d:DesignInstance viewModels:CreateWaterproofTypeViewModel}"
     MinWidth="320"
     Width="Auto"
@@ -37,27 +39,65 @@
                 <RowDefinition
                     Height="*" />
                 <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
                     Height="32" />
             </Grid.RowDefinitions>
 
-            <Button
+            <TextBlock
                 Grid.Row="0"
-                Content="+" />
+                FontWeight="Bold" 
+                Text="Camada Principal"/>
+
             <ScrollViewer
                 VerticalScrollBarVisibility="Auto"
                 HorizontalScrollBarVisibility="Disabled"
                 Grid.Row="1">
                 <ItemsControl
-                    d:ItemsSource="{d:SampleData ItemCount=1}">
-                    
+                    d:ItemsSource="{d:SampleData ItemCount=2}"
+                    ItemsSource="{Binding WaterproofingLayers}">
+
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type viewModels:CreateWaterproofTypeViewModel}">
-                            
-                            <Expander d:IsExpanded="False"
-                                      Margin="0 8">
+                        <DataTemplate
+                            DataType="{x:Type viewModelItems:WaterproofingLayerItemViewModel}">
+
+                            <Expander
+                                d:IsExpanded="True"
+                                Margin="0 8">
 
                                 <Expander.Header>
-                                    <TextBlock Text="VEDACIT TOP"/>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            d:Text="VEDACIT TOP"
+                                            Text="{Binding HeaderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            Foreground="White"
+                                            FontWeight="Bold"
+                                            Margin="8 0"
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Center"/>
+
+                                        <Button
+                                            Command="{
+                                            Binding DataContext.RemoveLayerCommand,
+                                            RelativeSource={RelativeSource AncestorType=UserControl}
+                                            }"
+                                            CommandParameter="{Binding .}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Grid.Column="1"
+                                            Margin="8 0"
+                                            HorizontalAlignment="Right">
+                                            <iconPacks:PackIconMaterial
+                                                Kind="Minus"
+                                                Foreground="Red"
+                                                />
+                                        </Button>
+                                    </Grid>
                                 </Expander.Header>
 
                                 <StackPanel
@@ -77,7 +117,7 @@
                                             Controls:ControlsHelper.CornerRadius="4"
                                             Height="30"
                                             d:Text="VEDACIT TOP"
-                                            Text="{Binding WaterproofName}" />
+                                            Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
 
                                     <StackPanel
@@ -88,15 +128,16 @@
                                         <Controls:NumericUpDown
                                             Controls:ControlsHelper.CornerRadius="4"
                                             Height="30"
-                                            Value="{Binding WaterproofThickness}"
+                                            Value="{Binding Thickness}"
                                             Minimum="1"
+                                            TextAlignment="Left"
                                             NumericInputMode="Numbers"
                                             HideUpDownButtons="True" />
                                     </StackPanel>
 
                                     <StackPanel
                                         Orientation="Horizontal"
-                                        Margin="0 16">
+                                        Margin="0 16 0 0">
 
                                         <StackPanel
                                             Orientation="Horizontal"
@@ -105,7 +146,7 @@
                                                 Margin="0 0 4 0"
                                                 Padding="0"
                                                 d:IsChecked="True"
-                                                IsChecked="{Binding IsHorizontalWaterproof}" />
+                                                IsChecked="{Binding HasHorizontalArea}" />
                                             <TextBlock
                                                 Text="Área horizontal" />
                                         </StackPanel>
@@ -116,7 +157,7 @@
                                                 Margin="0 0 4 0"
                                                 Padding="0"
                                                 d:IsChecked="True"
-                                                IsChecked="{Binding IsVerticalWaterproof}" />
+                                                IsChecked="{Binding HasVerticalArea}" />
                                             <TextBlock
                                                 Text="Área vertical" />
                                         </StackPanel>
@@ -129,15 +170,29 @@
                 </ItemsControl>
             </ScrollViewer>
 
+            <Button
+                Command="{Binding AddNewLayerCommand}"
+                Margin="0 0 0 8"
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                Width="64">
+                <iconPacks:PackIconMaterial
+                    Kind="Plus"
+                    Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                    Width="16"
+                    Height="16"
+                    ToolTip="Selecionar em projeto o ponto base" />
+            </Button>
+
             <Grid
                 x:Name="BottomBar"
-                Grid.Row="2">
+                Grid.Row="3">
 
                 <Button
+                    Command="{Binding CreateTypeCommand}"
                     Padding="8,0"
                     Background="Transparent"
-                    Content="Confirmar"
-                    Command="" />
+                    Content="Confirmar"/>
             </Grid>
         </Grid>
     </Border>
