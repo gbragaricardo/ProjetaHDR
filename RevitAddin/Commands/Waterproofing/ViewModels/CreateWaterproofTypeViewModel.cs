@@ -23,10 +23,11 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         public RelayCommand RemoveLayerCommand { get; set; }
         public RelayCommand CreateTypeCommand { get; set; }
 
-        public CreateWaterproofTypeViewModel(ExternalEvent externalEvent, WaterproofingHandler waterproofingHandler, Action fecharFlyoutAction)
+        public CreateWaterproofTypeViewModel(ExternalEvent externalEvent, WaterproofingHandler waterproofingHandler, Action closeFlyoutAction)
         {
             _externalEvent = externalEvent;
             _eventHandler = waterproofingHandler;
+            _closeFlyoutAction = closeFlyoutAction;
 
             AddNewLayer(null);
 
@@ -35,8 +36,14 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             CreateTypeCommand = new RelayCommand(CreateType);
         }
 
-        private void AddNewLayer(object parameter) => WaterproofingLayers.Add(new WaterproofingLayerItemViewModel());
-        
+        private void AddNewLayer(object parameter)
+        {
+            foreach (var layer in WaterproofingLayers)
+                layer.IsExpanded = false;
+            WaterproofingLayers.Add(new WaterproofingLayerItemViewModel());
+
+        }
+
 
         private void RemoveLayer(object parameter)
         {

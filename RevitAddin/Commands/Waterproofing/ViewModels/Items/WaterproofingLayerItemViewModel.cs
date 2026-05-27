@@ -11,6 +11,20 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels.Wrappers
     public class WaterproofingLayerItemViewModel : ObservableObject
     {
 
+
+        private bool _isExpanded = true;
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                if (_isExpanded != value)
+                {
+                    _isExpanded = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         private string _headerName;
         public string HeaderName
         {
