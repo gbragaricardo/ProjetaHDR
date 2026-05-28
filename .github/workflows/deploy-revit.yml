@@ -26,22 +26,26 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # 4. Compila a versão 2024 forçando a otimização de performance
+        # 2.5 PREPARA O MOTOR CLÁSSICO DO VISUAL STUDIO (Para ler as referências COM/Windows)
+    - name: Configurar o MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    # 3. Compila a versão 2024 forçando a otimização de performance
     - name: Compilar Revit 2024
       run: dotnet build ProjetaHDR.csproj -c Revit2024 -p:Optimize=true
 
-    # 5. Compila a versão 2026 forçando a otimização de performance
+    # 4. Compila a versão 2026 forçando a otimização de performance
     - name: Compilar Revit 2026
       run: dotnet build ProjetaHDR.csproj -c Revit2026 -p:Optimize=true
 
-    # 6. Compacta a estrutura que o seu Post-Build gerou de forma limpa
+    # 5. Compacta a estrutura que o seu Post-Build gerou de forma limpa
     - name: Criar Pacotes ZIP para o Instalador
       shell: pwsh
       run: |
         Compress-Archive -Path "Releases\2024\*" -DestinationPath "ProjetaHDR_Revit2024.zip"
         Compress-Archive -Path "Releases\2026\*" -DestinationPath "ProjetaHDR_Revit2026.zip"
 
-    # 7. Cria a Release oficial no GitHub e faz o upload dos Zips
+    # 6. Cria a Release oficial no GitHub e faz o upload dos Zips
     - name: Publicar no GitHub Releases
       uses: softprops/action-gh-release@v2
       with:
