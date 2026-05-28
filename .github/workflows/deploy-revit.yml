@@ -26,10 +26,6 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # 3. Compila a versão 2023 usando as regras do seu .csproj
-    - name: Compilar Revit 2023
-      run: dotnet build ProjetaHDR.sln -c Revit2023
-
     # 4. Compila a versão 2024
     - name: Compilar Revit 2024
       run: dotnet build ProjetaHDR.sln -c Revit2024
@@ -42,7 +38,6 @@ jobs:
     - name: Criar Pacotes ZIP para o Instalador
       shell: pwsh
       run: |
-        Compress-Archive -Path "Releases\2023\*" -DestinationPath "ProjetaHDR_Revit2023.zip"
         Compress-Archive -Path "Releases\2024\*" -DestinationPath "ProjetaHDR_Revit2024.zip"
         Compress-Archive -Path "Releases\2026\*" -DestinationPath "ProjetaHDR_Revit2026.zip"
 
@@ -51,7 +46,6 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          ProjetaHDR_Revit2023.zip
           ProjetaHDR_Revit2024.zip
           ProjetaHDR_Revit2026.zip
         generate_release_notes: true # Gera a lista de novidades baseada nos seus commits!
