@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Windows.Controls;
+using Microsoft.Office.Core;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
+using Range = Microsoft.Office.Interop.Word.Range;
 using ProjetaHDR.Utils;
 using WordInterop = Microsoft.Office.Interop.Word;
 

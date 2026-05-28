@@ -1,315 +1,97 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10A35BCE-67FD-46D3-9344-BE14036E0EA9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ProjetaHDR</RootNamespace>
-    <AssemblyName>ProjetaHDR</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
-      <HintPath>packages\ControlzEx.4.4.0\lib\net462\ControlzEx.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.2.4.11\lib\net47\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Core, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.Core.6.2.1\lib\net47\MahApps.Metro.IconPacks.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Material, Version=6.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
-      <HintPath>packages\MahApps.Metro.IconPacks.Material.6.2.1\lib\net47\MahApps.Metro.IconPacks.Material.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1004\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
-    </Reference>
-    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="PresentationFramework.Aero2" />
-    <Reference Include="RevitAPI">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="RevitAPIUI">
-      <HintPath>..\..\..\..\..\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AddinApp.cs" />
-    <Compile Include="RevitAddin\Commands\Dev.cs" />
-    <Compile Include="RevitAddin\Commands\RainNetwork.cs" />
-    <Compile Include="RevitAddin\Commands\SetAreasTR.cs" />
-    <Compile Include="RevitAddin\Commands\SetAreasGP.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\RealSlopeTag.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Events\WaterproofingHandler.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Models\Enums\WaterproofingAction.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Models\WaterproofingType.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Services\ElevationSelectionFilter.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Services\PickRegionsService.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Services\RegionSelectionFilter.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Services\WaterproofingTypeService.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\CreateWaterproofTypeViewModel.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\Items\WaterproofingLayerItemViewModel.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\ViewModels\MainViewModel.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\Views\CreateWaterproofTypeView.xaml.cs">
-      <DependentUpon>CreateWaterproofTypeView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml.cs">
-      <DependentUpon>MainView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="RevitAddin\Commands\Waterproofing\WaterproofingCommand.cs" />
-    <Compile Include="RevitAddin\Commands\Waterproofing\WaterproofingSyncCommand.cs" />
-    <Compile Include="UI\Events\ExecuteDrenEvent.cs" />
-    <Compile Include="UI\Events\SaveDataStorageEvent.cs" />
-    <Compile Include="UI\Services\SelectionOptions.cs" />
-    <Compile Include="UI\ViewModels\AreaFamilyItem.cs" />
-    <Compile Include="UI\ViewModels\InputFixtureItem.cs" />
-    <Compile Include="UI\ViewModels\FixtureFamilyItem.cs" />
-    <Compile Include="RevitAddin\Commands\DrenCalc\Services\FixtureStorageManager.cs" />
-    <Compile Include="RevitAddin\Commands\Login.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\Services\Sheets.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\Services\WordHandler.cs" />
-    <Compile Include="RevitAddin\Commands\Parameters\Seduc.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\FlowTag.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\MemoHDS.cs" />
-    <Compile Include="RevitAddin\Commands\Memorials\Services\DocHandler.cs" />
-    <Compile Include="RevitAddin\Commands\Parameters\SanFittings.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\SlopeTag.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\DiameterTag.cs" />
-    <Compile Include="RevitAddin\Commands\Parameters\Services\NestedFittings.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\Services\FilterAndTagPipelines.cs" />
-    <Compile Include="RevitAddin\Utils\PipeUtils.cs" />
-    <Compile Include="RevitAddin\OnStartup\UIBuilder.cs" />
-    <Compile Include="RevitAddin\OnStartup\RibbonManager.cs" />
-    <Compile Include="RevitAddin\OnStartup\AddinAppLoader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RevitAddin\RevitContext\RevitCommandBase.cs" />
-    <Compile Include="RevitAddin\RevitContext\RevitContext.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\Services\PipeMethods.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\Services\HelperMethods.cs" />
-    <Compile Include="RevitAddin\Commands\Tags\Services\TagManager.cs" />
-    <Compile Include="RevitAddin\Utils\BasicUtils.cs" />
-    <Compile Include="RevitAddin\Utils\ResourceAssembly.cs" />
-    <Compile Include="RevitAddin\Utils\ResourceImage.cs" />
-    <Compile Include="RevitAddin\Utils\ViewDirections.cs" />
-    <Compile Include="UI\Converters\BitmapImageConverter.cs" />
-    <Compile Include="UI\Core\ObservableObject.cs" />
-    <Compile Include="UI\Core\RelayCommand.cs" />
-    <Compile Include="UI\Services\AuthService.cs" />
-    <Compile Include="UI\Services\SaveImageNamesToFile.cs" />
-    <Compile Include="UI\ViewModels\DrenViewModel.cs" />
-    <Compile Include="UI\ViewModels\LoginViewModel.cs" />
-    <Compile Include="UI\ViewModels\WordExportViewModel.cs" />
-    <Compile Include="UI\Views\DrenWindow.xaml.cs">
-      <DependentUpon>DrenWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Views\WordExportWindow.xaml.cs">
-      <DependentUpon>WordExportWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Views\LoginWindow.xaml.cs">
-      <DependentUpon>LoginWindow.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ProjetaHDR\Docs\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="ProjetaHDR.addin">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <EmbeddedResource Include="UI\Fonts\Montserrat\Montserrat-Italic-VariableFont_wght.ttf" />
-    <EmbeddedResource Include="UI\Fonts\Montserrat\Montserrat-VariableFont_wght.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\blueword.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="RevitAddin\Commands\Waterproofing\Views\CreateWaterproofTypeView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="RevitAddin\Commands\Waterproofing\Views\MainView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Themes\BlueButtonTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\Themes\TransparentComboTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\Themes\RadioComboTheme.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\Themes\InputBoxTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Views\DrenWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Views\WordExportWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="UI\Views\LoginWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\dev.ico" />
-    <EmbeddedResource Include="RevitAddin\Icons\projeta.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Resources\logo-projeta-main.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\eggprojeta.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\diameter.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\porcentagem.png" />
-    <EmbeddedResource Include="RevitAddin\Icons\setafluxo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\parameters.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\etapaseduc.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\diamante.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\metaverso.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\minas.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\objetiva.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\pitagoras.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\projeta.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="ProjetaHDR\Images\vitoria.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Resources\add.png" />
-    <EmbeddedResource Include="RevitAddin\Resources\arrowdown.png" />
-    <EmbeddedResource Include="RevitAddin\Resources\arrowup.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Resources\remove.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\drenwindow.png" />
-    <EmbeddedResource Include="RevitAddin\Icons\globalparam.png" />
-    <EmbeddedResource Include="RevitAddin\Icons\tr.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="RevitAddin\Icons\waterproof.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>REM Define os caminhos corretamente
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-SET LOCAL_TARGET=$(ProjectDir)$(ProjectName)
+	<PropertyGroup>
+		<TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
 
-SET REVIT_ADDINS=%25AppData%25\Autodesk\Revit\Addins\2024
+		<OutputType>Library</OutputType>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWPF>true</UseWPF>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+		<PlatformTarget>x64</PlatformTarget>
 
+		<RevitYear Condition="'$(TargetFramework)' == 'net48'">2024</RevitYear>
+		<RevitYear Condition="'$(TargetFramework)' == 'net8.0-windows'">2026</RevitYear>
+	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="ControlzEx" Version="4.4.0" />
+		<PackageReference Include="MahApps.Metro" Version="2.4.11" />
+		<PackageReference Include="MahApps.Metro.IconPacks.Core" Version="6.2.1" />
+		<PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.2.1" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1004" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
+		<Reference Include="PresentationFramework.Aero2" />
+		<COMReference Include="Microsoft.Office.Core">
+			<Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+			<VersionMajor>2</VersionMajor>
+			<VersionMinor>8</VersionMinor>
+			<Lcid>0</Lcid>
+			<WrapperTool>primary</WrapperTool>
+			<Isolated>False</Isolated>
+			<EmbedInteropTypes>True</EmbedInteropTypes>
+		</COMReference>
+	</ItemGroup>
 
-REM Garante que a pasta de destino exista antes da cópia
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
+		<Reference Include="RevitAPI">
+			<HintPath>C:\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="RevitAPIUI">
+			<HintPath>C:\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
 
-if not exist "%25LOCAL_TARGET%25" mkdir "%25LOCAL_TARGET%25"
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0-windows' ">
+		<Reference Include="RevitAPI">
+			<HintPath>C:\Program Files\Autodesk\Revit 2026\RevitAPI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="RevitAPIUI">
+			<HintPath>C:\Program Files\Autodesk\Revit 2026\RevitAPIUI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="ProjetaHDR\Docs\" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<None Update="ProjetaHDR.addin">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 
-REM Garante que a pasta do Revit Addins exista antes da cópia
-if not exist "%25REVIT_ADDINS%25" mkdir "%25REVIT_ADDINS%25"
+		<Resource Include="ProjetaHDR\Images\**\*.png" />
+		<EmbeddedResource Include="RevitAddin\Icons\**\*.png" />
+		<EmbeddedResource Include="RevitAddin\Icons\**\*.ico" />
+		<EmbeddedResource Include="RevitAddin\Resources\**\*.png" />
+		<EmbeddedResource Include="UI\Fonts\**\*.ttf" />
+	</ItemGroup>
 
+	<Target Name="CopiarParaORevit" AfterTargets="Build" Condition="'$(TargetFramework)' != ''">
 
+		<PropertyGroup>
+			<LocalTarget>$(ProjectDir)$(ProjectName)\$(RevitYear)</LocalTarget>
+			<RevitAddins>$(AppData)\Autodesk\Revit\Addins\$(RevitYear)</RevitAddins>
+		</PropertyGroup>
 
-REM Copia todas as DLLs geradas para a pasta dentro do projeto, sem subpastas
+		<Exec Command="if not exist &quot;$(LocalTarget)&quot; mkdir &quot;$(LocalTarget)&quot;" />
+		<Exec Command="if not exist &quot;$(RevitAddins)&quot; mkdir &quot;$(RevitAddins)&quot;" />
 
-xcopy /Y "$(TargetDir)*.dll" "%25LOCAL_TARGET%25"
+		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(LocalTarget)\&quot;" />
 
+		<Exec Command="xcopy /Y /E /I /Q &quot;$(LocalTarget)&quot; &quot;$(RevitAddins)\$(ProjectName)&quot;" />
 
+		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(RevitAddins)\&quot;" />
+		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(LocalTarget)\&quot;" />
 
-REM Copia a pasta BaseOffice para o diretório de Addins do Revit
+	</Target>
 
-xcopy /Y /E /I "%25LOCAL_TARGET%25" "%25REVIT_ADDINS%25\$(ProjectName)"
-
-
-
-REM Copia o arquivo .addin para o diretório de Addins do Revit
-
-copy /Y "$(ProjectDir)$(ProjectName).addin" "%25REVIT_ADDINS%25"
-
-
-
-REM Copia o arquivo .addin para a pasta do projeto
-
-copy /Y "$(ProjectDir)$(ProjectName).addin" "%25LOCAL_TARGET%25"</PostBuildEvent>
-  </PropertyGroup>
 </Project>
