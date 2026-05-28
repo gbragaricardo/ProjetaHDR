@@ -1,17 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
-
 		<OutputType>Library</OutputType>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<UseWPF>true</UseWPF>
-		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
 		<PlatformTarget>x64</PlatformTarget>
 
-		<RevitYear Condition="'$(TargetFramework)' == 'net48'">2024</RevitYear>
-		<RevitYear Condition="'$(TargetFramework)' == 'net8.0-windows'">2026</RevitYear>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+		<Configurations>Revit2023;Revit2024;Revit2026</Configurations>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Revit2023'">
+		<TargetFramework>net48</TargetFramework>
+		<RevitVersion>2023</RevitVersion>
+		<OutputPath>bin\Revit2023\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;REVIT2023</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Revit2024'">
+		<TargetFramework>net48</TargetFramework>
+		<RevitVersion>2024</RevitVersion>
+		<OutputPath>bin\Revit2024\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;REVIT2024</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Revit2026'">
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<RevitVersion>2026</RevitVersion>
+		<OutputPath>bin\Revit2026\</OutputPath>
+		<DefineConstants>DEBUG;TRACE;REVIT2026</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Reference Include="RevitAPI">
+			<HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="RevitAPIUI">
+			<HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPIUI.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ControlzEx" Version="4.4.0" />
@@ -37,28 +67,6 @@
 		</COMReference>
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
-		<Reference Include="RevitAPI">
-			<HintPath>C:\Program Files\Autodesk\Revit 2024\RevitAPI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="RevitAPIUI">
-			<HintPath>C:\Program Files\Autodesk\Revit 2024\RevitAPIUI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0-windows' ">
-		<Reference Include="RevitAPI">
-			<HintPath>C:\Program Files\Autodesk\Revit 2026\RevitAPI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="RevitAPIUI">
-			<HintPath>C:\Program Files\Autodesk\Revit 2026\RevitAPIUI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-
 	<ItemGroup>
 		<Folder Include="ProjetaHDR\Docs\" />
 	</ItemGroup>
@@ -75,22 +83,29 @@
 		<EmbeddedResource Include="UI\Fonts\**\*.ttf" />
 	</ItemGroup>
 
-	<Target Name="CopiarParaORevit" AfterTargets="Build" Condition="'$(TargetFramework)' != ''">
+	<ItemGroup>
+		<Compile Remove="NewFolder\**" />
+		<EmbeddedResource Remove="NewFolder\**" />
+		<None Remove="NewFolder\**" />
+		<Page Remove="NewFolder\**" />
+	</ItemGroup>
+
+	<Target Name="MontarReleaseEDeployLocal" AfterTargets="Build">
 
 		<PropertyGroup>
-			<LocalTarget>$(ProjectDir)$(ProjectName)\$(RevitYear)</LocalTarget>
-			<RevitAddins>$(AppData)\Autodesk\Revit\Addins\$(RevitYear)</RevitAddins>
+			<ReleaseRoot>$(ProjectDir)$(ProjectName)\Releases\$(RevitVersion)</ReleaseRoot>
+			<ReleasePluginFolder>$(ReleaseRoot)\$(ProjectName)</ReleasePluginFolder>
+			<RevitAddins>$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)</RevitAddins>
 		</PropertyGroup>
 
-		<Exec Command="if not exist &quot;$(LocalTarget)&quot; mkdir &quot;$(LocalTarget)&quot;" />
-		<Exec Command="if not exist &quot;$(RevitAddins)&quot; mkdir &quot;$(RevitAddins)&quot;" />
+		<Exec Command="if not exist &quot;$(ReleasePluginFolder)&quot; mkdir &quot;$(ReleasePluginFolder)&quot;" />
+		<Exec Command="if not exist &quot;$(RevitAddins)\$(ProjectName)&quot; mkdir &quot;$(RevitAddins)\$(ProjectName)&quot;" />
 
-		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(LocalTarget)\&quot;" />
+		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(ReleasePluginFolder)\&quot;" />
+		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(ReleaseRoot)\&quot;" />
 
-		<Exec Command="xcopy /Y /E /I /Q &quot;$(LocalTarget)&quot; &quot;$(RevitAddins)\$(ProjectName)&quot;" />
-
+		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(RevitAddins)\$(ProjectName)\&quot;" />
 		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(RevitAddins)\&quot;" />
-		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(LocalTarget)\&quot;" />
 
 	</Target>
 

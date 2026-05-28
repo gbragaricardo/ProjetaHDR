@@ -1,0 +1,14 @@
+﻿{
+  "profiles": {
+    "Debug Revit 2024": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\Revit 2024\\Revit.exe",
+      "commandLineArgs": "/language PTB"
+    },
+    "Debug Revit 2026": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Autodesk\\Revit 2026\\Revit.exe",
+      "commandLineArgs": "/language PTB"
+    }
+  }
+}

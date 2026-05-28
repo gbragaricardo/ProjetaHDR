@@ -1,16 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.10.35013.160
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11801.241 oobstable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetaHDR", "ProjetaHDR.csproj", "{10A35BCE-67FD-46D3-9344-BE14036E0EA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug 2024|Any CPU = Debug 2024|Any CPU
+		Debug 2026|Any CPU = Debug 2026|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug 2024|Any CPU.ActiveCfg = Revit2024|Any CPU
+		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug 2024|Any CPU.Build.0 = Revit2024|Any CPU
+		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug 2026|Any CPU.ActiveCfg = Revit2026|Any CPU
+		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug 2026|Any CPU.Build.0 = Revit2026|Any CPU
 		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A35BCE-67FD-46D3-9344-BE14036E0EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
