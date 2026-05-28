@@ -26,13 +26,13 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
-    # 4. Compila a versão 2024 forçando a otimização de Release
+    # 4. Compila a versão 2024 forçando a otimização de performance
     - name: Compilar Revit 2024
-      run: dotnet build ProjetaHDR.sln -c Revit2024 -p:Configuration=Release
+      run: dotnet build ProjetaHDR.csproj -c Revit2024 -p:Optimize=true
 
-    # 5. Compila a versão 2026 forçando a otimização de Release
+    # 5. Compila a versão 2026 forçando a otimização de performance
     - name: Compilar Revit 2026
-      run: dotnet build ProjetaHDR.sln -c Revit2026 -p:Configuration=Release
+      run: dotnet build ProjetaHDR.csproj -c Revit2026 -p:Optimize=true
 
     # 6. Compacta a estrutura que o seu Post-Build gerou de forma limpa
     - name: Criar Pacotes ZIP para o Instalador
