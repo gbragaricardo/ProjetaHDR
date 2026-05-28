@@ -30,13 +30,13 @@ jobs:
     - name: Configurar o MSBuild
       uses: microsoft/setup-msbuild@v2
 
-    # 3. Compila a versão 2024 forçando a otimização de performance
+   # 3. Compila a versão 2024 forçando a otimização de performance (USANDO MSBUILD)
     - name: Compilar Revit 2024
-      run: dotnet build ProjetaHDR.csproj -c Revit2024 -p:Optimize=true
+      run: msbuild ProjetaHDR.csproj -restore -p:Configuration=Revit2024 -p:Optimize=true
 
-    # 4. Compila a versão 2026 forçando a otimização de performance
+    # 4. Compila a versão 2026 forçando a otimização de performance (USANDO MSBUILD)
     - name: Compilar Revit 2026
-      run: dotnet build ProjetaHDR.csproj -c Revit2026 -p:Optimize=true
+      run: msbuild ProjetaHDR.csproj -restore -p:Configuration=Revit2026 -p:Optimize=true
 
     # 5. Compacta a estrutura que o seu Post-Build gerou de forma limpa
     - name: Criar Pacotes ZIP para o Instalador
