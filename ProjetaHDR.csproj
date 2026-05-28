@@ -33,17 +33,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="RevitAPI">
-			<HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="RevitAPIUI">
-			<HintPath>C:\Program Files\Autodesk\Revit $(RevitVersion)\RevitAPIUI.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="ControlzEx" Version="4.4.0" />
 		<PackageReference Include="MahApps.Metro" Version="2.4.11" />
 		<PackageReference Include="MahApps.Metro.IconPacks.Core" Version="6.2.1" />
@@ -90,11 +79,12 @@
 		<Page Remove="ProjetaHDR\Docs\**" />
 	</ItemGroup>
 
-	<Target Name="MontarReleaseEDeployLocal" AfterTargets="Build">
+	<Target Name="LocalReleaseAndDeploy" AfterTargets="Build">
 
 		<PropertyGroup>
-			<ReleaseRoot>$(ProjectDir)$(ProjectName)\Releases\$(RevitVersion)</ReleaseRoot>
+			<ReleaseRoot>$(ProjectDir)Releases\$(RevitVersion)</ReleaseRoot>
 			<ReleasePluginFolder>$(ReleaseRoot)\$(ProjectName)</ReleasePluginFolder>
+
 			<RevitAddins>$(AppData)\Autodesk\Revit\Addins\$(RevitVersion)</RevitAddins>
 		</PropertyGroup>
 
@@ -106,6 +96,14 @@
 
 		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(RevitAddins)\$(ProjectName)\&quot;" />
 		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(RevitAddins)\&quot;" />
+
+		<Exec Command="if exist &quot;$(ProjectDir)Docs&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Docs&quot; &quot;$(ReleasePluginFolder)\Docs&quot;" />
+		<Exec Command="if exist &quot;$(ProjectDir)Images&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Images&quot; &quot;$(ReleasePluginFolder)\Images&quot;" />
+		<Exec Command="if exist &quot;$(ProjectDir)Resources&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Resources&quot; &quot;$(ReleasePluginFolder)\Resources&quot;" />
+
+		<Exec Command="if exist &quot;$(ProjectDir)Docs&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Docs&quot; &quot;$(RevitAddins)\$(ProjectName)\Docs&quot;" />
+		<Exec Command="if exist &quot;$(ProjectDir)Images&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Images&quot; &quot;$(RevitAddins)\$(ProjectName)\Images&quot;" />
+		<Exec Command="if exist &quot;$(ProjectDir)Resources&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Resources&quot; &quot;$(RevitAddins)\$(ProjectName)\Resources&quot;" />
 
 	</Target>
 
