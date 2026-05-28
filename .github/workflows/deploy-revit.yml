@@ -1,0 +1,57 @@
+﻿name: Publicar Release do Plugin
+
+# O pipeline só vai rodar quando você criar e enviar uma tag de versão (ex: v1.0.0)
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    name: Build e Criar Release
+    runs-on: windows-latest
+
+    # Dá permissão para o robô criar a página de Release e anexar arquivos
+    permissions:
+      contents: write
+
+    steps:
+    # 1. Baixa o seu código-fonte para dentro do servidor do GitHub
+    - name: Baixar o código-fonte
+      uses: actions/checkout@v4
+
+    # 2. Instala o motor do .NET moderno na máquina virtual
+    - name: Configurar o .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # 3. Compila a versão 2023 usando as regras do seu .csproj
+    - name: Compilar Revit 2023
+      run: dotnet build ProjetaHDR.sln -c Revit2023
+
+    # 4. Compila a versão 2024
+    - name: Compilar Revit 2024
+      run: dotnet build ProjetaHDR.sln -c Revit2024
+
+    # 5. Compila a versão 2026
+    - name: Compilar Revit 2026
+      run: dotnet build ProjetaHDR.sln -c Revit2026
+
+    # 6. Compacta a estrutura que o seu Post-Build gerou de forma limpa
+    - name: Criar Pacotes ZIP para o Instalador
+      shell: pwsh
+      run: |
+        Compress-Archive -Path "Releases\2023\*" -DestinationPath "ProjetaHDR_Revit2023.zip"
+        Compress-Archive -Path "Releases\2024\*" -DestinationPath "ProjetaHDR_Revit2024.zip"
+        Compress-Archive -Path "Releases\2026\*" -DestinationPath "ProjetaHDR_Revit2026.zip"
+
+    # 7. Cria a Release oficial no GitHub e faz o upload dos Zips
+    - name: Publicar no GitHub Releases
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          ProjetaHDR_Revit2023.zip
+          ProjetaHDR_Revit2024.zip
+          ProjetaHDR_Revit2026.zip
+        generate_release_notes: true # Gera a lista de novidades baseada nos seus commits!

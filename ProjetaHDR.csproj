@@ -32,6 +32,14 @@
 		<DefineConstants>DEBUG;TRACE;REVIT2026</DefineConstants>
 	</PropertyGroup>
 
+	<ItemGroup Condition="'$(RevitVersion)' == '2024'">
+		<PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2024.0.0" PrivateAssets="All" ExcludeAssets="Runtime" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(RevitVersion)' == '2026'">
+		<PackageReference Include="Revit_All_Main_Versions_API_x64" Version="2026.0.1" PrivateAssets="All" ExcludeAssets="Runtime" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="ControlzEx" Version="4.4.0" />
 		<PackageReference Include="MahApps.Metro" Version="2.4.11" />
@@ -69,14 +77,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="NewFolder\**" />
 		<Compile Remove="ProjetaHDR\Docs\**" />
-		<EmbeddedResource Remove="NewFolder\**" />
 		<EmbeddedResource Remove="ProjetaHDR\Docs\**" />
-		<None Remove="NewFolder\**" />
 		<None Remove="ProjetaHDR\Docs\**" />
-		<Page Remove="NewFolder\**" />
 		<Page Remove="ProjetaHDR\Docs\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include=".github\workflows\deploy-revit.yml" />
 	</ItemGroup>
 
 	<Target Name="LocalReleaseAndDeploy" AfterTargets="Build">
