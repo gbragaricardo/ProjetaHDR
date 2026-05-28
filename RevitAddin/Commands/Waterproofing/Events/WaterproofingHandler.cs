@@ -114,9 +114,11 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                         Parameter levelOffsetParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_HEIGHTABOVELEVEL_PARAM);
                         Parameter floorThicknessParameter = newFloor.get_Parameter(BuiltInParameter.FLOOR_ATTR_THICKNESS_PARAM);
                         Parameter floorPerimeterParameter = newFloor.get_Parameter(BuiltInParameter.HOST_PERIMETER_COMPUTED);
+                        Parameter floorAreaParameter = newFloor.get_Parameter(BuiltInParameter.HOST_PERIMETER_COMPUTED);
                         Parameter floorCommentParameter = newFloor.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
                         Parameter waterproofHeigthParameter = newFloor.get_Parameter(new Guid("37c215c0-d09c-4564-bc77-53bba751abf6"));
-                        Parameter waterproofVerticalAreaParameter = newFloor.get_Parameter(new Guid("7a888c18-3ec3-4016-adb6-babb8222c85d"));
+                        Parameter waterproofVerticalAreaParameter = newFloor.get_Parameter(new Guid("c7e6ac03-e7c6-4575-92a1-2f67054729a9"));
+                        Parameter waterproofHorizontalAreaParameter = newFloor.get_Parameter(new Guid("dd40ebd8-2bad-44da-9cce-de2d16eeda94"));
                         Parameter waterproofThickness = newFloor.get_Parameter(new Guid("bd555174-5f28-4805-b282-1c46d71b1c5e"));
 
                         double perimeterInMeters = UnitUtils.ConvertFromInternalUnits(floorPerimeterParameter.AsDouble(), UnitTypeId.Meters);
@@ -132,6 +134,9 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
 
                         if (waterproofVerticalAreaParameter != null && waterproofVerticalAreaParameter.IsReadOnly == false)
                             waterproofVerticalAreaParameter.Set(UnitUtils.ConvertToInternalUnits((WaterproofingHeight / 100) * perimeterInMeters, UnitTypeId.SquareMeters));
+
+                        if (waterproofHorizontalAreaParameter != null && waterproofHorizontalAreaParameter.IsReadOnly == false)
+                            waterproofVerticalAreaParameter.Set(floorAreaParameter.AsDouble());
 
                         if (levelOffsetParameter != null && levelOffsetParameter.IsReadOnly == false)
                         {

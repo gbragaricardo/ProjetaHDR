@@ -10,33 +10,29 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Models"
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
-    xmlns:views="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
-    MinWidth="320"
+    xmlns:views="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
+    Title="PROJETA HDR"
     Width="320"
-    MinHeight="360"
     Height="Auto"
+    MinWidth="320"
+    MinHeight="360"
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     WindowStartupLocation="CenterScreen"
-    Title="PROJETA HDR"
     mc:Ignorable="d">
 
     <Controls:MetroWindow.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <DataTemplate
-                        DataType="{x:Type viewModels:CreateWaterproofTypeViewModel}">
+                    <DataTemplate DataType="{x:Type viewModels:CreateWaterproofTypeViewModel}">
                         <views:CreateWaterproofTypeView />
                     </DataTemplate>
                 </ResourceDictionary>
 
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Controls:MetroWindow.Resources>
@@ -44,32 +40,28 @@
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
             <Controls:Flyout
-                Position="Right"
-                Header="Criar novo tipo"
                 Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}}"
-                IsOpen="{Binding IsFlyoutOpen}">
+                Header="Criar novo tipo"
+                IsOpen="{Binding IsFlyoutOpen}"
+                Position="Right">
 
-                <Controls:MetroContentControl
-                    Content="{Binding CurrentViewModel}" />
+                <Controls:MetroContentControl Content="{Binding CurrentViewModel}" />
 
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
-    <Border
-        Padding="8">
+    <Border Padding="8">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="*" />
-                <RowDefinition
-                    Height="32" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="32" />
             </Grid.RowDefinitions>
 
             <StackPanel
                 x:Name="MainContent"
-                Margin="0 0 0 16"
                 Grid.Row="0"
+                Margin="0,0,0,16"
                 HorizontalAlignment="Stretch"
                 Orientation="Vertical">
 
@@ -83,16 +75,12 @@
                     Margin="0,8"
                     Orientation="Vertical">
 
-                    <TextBlock
-                        Margin="0,0,0,4"
-                        Text="Material" />
+                    <TextBlock Margin="0,0,0,4" Text="Material" />
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="*" />
-                            <ColumnDefinition
-                                Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <ComboBox
@@ -100,87 +88,79 @@
                             Margin="0,0,8,0"
                             Controls:ControlsHelper.CornerRadius="4"
                             DisplayMemberPath="Name"
+                            DropDownOpened="ComboBox_OnDropDownOpened"
                             ItemsSource="{Binding WaterproofingFloorTypes, UpdateSourceTrigger=PropertyChanged}"
                             SelectedValue="{Binding SelectedFloorTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedValuePath="ElementTypeId"
-                            DropDownOpened="ComboBox_OnDropDownOpened" />
+                            SelectedValuePath="ElementTypeId" />
 
                         <Button
                             Grid.Column="1"
                             Background="Transparent"
                             Command="{Binding OpenFlyoutCommand}">
                             <iconPacks:PackIconMaterial
-                                Kind="Plus"
-                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
                                 Width="16"
                                 Height="16"
+                                Foreground="{StaticResource MahApps.Brushes.AccentBase}"
+                                Kind="Plus"
                                 ToolTip="Selecionar em projeto o ponto base" />
                         </Button>
                     </Grid>
                 </StackPanel>
 
-                <StackPanel
-                    x:Name="HeightTextBox"
-                    Orientation="Vertical">
-                    <TextBlock
-                        Margin="0,0,0,4"
-                        Text="Altura na parede (cm)" />
+                <StackPanel x:Name="HeightTextBox" Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Altura na parede (cm)" />
                     <Controls:NumericUpDown
-                        Controls:ControlsHelper.CornerRadius="4"
                         Height="30"
-                        Value="{Binding BaseboardHeigth}"
+                        Controls:ControlsHelper.CornerRadius="4"
+                        HideUpDownButtons="True"
                         Minimum="1"
                         NumericInputMode="Numbers"
-                        HideUpDownButtons="True" />
+                        TextAlignment="Left"
+                        Value="{Binding BaseboardHeigth}" />
                 </StackPanel>
 
                 <StackPanel
                     x:Name="ThicknessTextBox"
                     Margin="0,8"
                     Orientation="Vertical">
-                    <TextBlock
-                        Margin="0,0,0,4"
-                        Text="Espessura Total (mm)" />
+                    <TextBlock Margin="0,0,0,4" Text="Espessura Total (mm)" />
                     <Controls:NumericUpDown
-                        Controls:ControlsHelper.CornerRadius="4"
                         Height="30"
-                        Value="{Binding WaterproofThickness}"
+                        Controls:ControlsHelper.CornerRadius="4"
+                        HideUpDownButtons="True"
                         Minimum="1"
                         NumericInputMode="Numbers"
-                        HideUpDownButtons="True" />
+                        TextAlignment="Left"
+                        Value="{Binding WaterproofThickness}" />
                 </StackPanel>
 
-                <StackPanel
-                    Orientation="Vertical">
-                    <TextBlock
-                        Margin="0,0,0,4"
-                        Text="Deslocamento do nível (cm)" />
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Deslocamento do nível (cm)" />
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="*" />
-                            <ColumnDefinition
-                                Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Controls:NumericUpDown
                             Grid.Column="0"
-                            Margin="0 0 8 0"
-                            Controls:ControlsHelper.CornerRadius="4"
                             Height="30"
-                            Value="{Binding Offset}"
-                            Minimum="1"
+                            Margin="0,0,8,0"
+                            Controls:ControlsHelper.CornerRadius="4"
+                            HideUpDownButtons="True"
+                            Minimum="0"
                             NumericInputMode="Numbers"
-                            HideUpDownButtons="True" />
+                            TextAlignment="Left"
+                            Value="{Binding Offset}" />
 
                         <Button
                             Grid.Column="1"
                             Background="Transparent"
                             Command="{Binding PickOffsetTargetCommand}">
                             <iconPacks:PackIconMaterial
-                                Kind="TargetVariant"
                                 Width="16"
                                 Height="16"
+                                Kind="TargetVariant"
                                 ToolTip="Selecionar em projeto o ponto base" />
                         </Button>
                     </Grid>
@@ -188,31 +168,26 @@
 
             </StackPanel>
 
-            <Grid
-                x:Name="BottomBar"
-                Grid.Row="1">
+            <Grid x:Name="BottomBar" Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition
-                        Width="Auto" />
-                    <ColumnDefinition
-                        Width="*" />
-                    <ColumnDefinition
-                        Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button
                     Grid.Column="0"
                     Padding="8,0"
                     Background="Transparent"
-                    Content="Cancelar"
-                    Command="{Binding CancelCommand}" />
+                    Command="{Binding CancelCommand}"
+                    Content="Cancelar" />
 
                 <Button
                     Grid.Column="2"
                     Padding="8,0"
                     Background="Transparent"
-                    Content="Selecionar Regioes"
-                    Command="{Binding PickRegionsCommand}" />
+                    Command="{Binding PickRegionsCommand}"
+                    Content="Selecionar Regioes" />
             </Grid>
         </Grid>
     </Border>

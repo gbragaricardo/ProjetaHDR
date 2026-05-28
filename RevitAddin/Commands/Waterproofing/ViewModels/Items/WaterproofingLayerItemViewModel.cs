@@ -68,7 +68,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels.Wrappers
             }
         }
 
-        private bool _hasHorizontalArea;
+        private bool _hasHorizontalArea = true;
         public bool HasHorizontalArea
         {
             get => _hasHorizontalArea;
@@ -82,7 +82,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels.Wrappers
             }
         }
 
-        private bool _hasVerticalArea;
+        private bool _hasVerticalArea = true;
         public bool HasVerticalArea
         {
             get => _hasVerticalArea;

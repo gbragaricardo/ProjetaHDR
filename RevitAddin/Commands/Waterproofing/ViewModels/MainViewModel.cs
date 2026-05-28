@@ -67,7 +67,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             }
         }
 
-        private double _baseboardHeigth = 0.0;
+        private double _baseboardHeigth = 30;
         public double BaseboardHeigth
         {
             get => _baseboardHeigth;
@@ -197,5 +197,6 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
         public void HideUI() => RequestHide?.Invoke();
         public void ShowUI() => RequestShow?.Invoke();
         public void CloseUI() => RequestClose?.Invoke();
+
     }
 }

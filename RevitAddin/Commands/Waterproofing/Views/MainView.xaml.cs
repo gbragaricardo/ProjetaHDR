@@ -26,10 +26,22 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Views
             _viewModel = viewModel;
             DataContext = _viewModel;
 
-            viewModel.RequestHide += () => this.Hide();
-            viewModel.RequestShow += () => this.Show();
-            viewModel.RequestClose += () => this.Close();
+            viewModel.RequestHide += this.Hide;
+            viewModel.RequestShow += this.Show;
+            viewModel.RequestClose += this.Close;
+            this.Closed += MainView_Closed;
         }
+
+        private void MainView_Closed(object sender, EventArgs e)
+        {
+            if (_viewModel != null)
+            {
+                _viewModel.RequestHide -= this.Hide;
+                _viewModel.RequestShow -= this.Show;
+                _viewModel.RequestClose -= this.Close;
+            }
+        }
+
         private void ComboBox_OnDropDownOpened(object sender, EventArgs e)
         {
             if (_viewModel != null)

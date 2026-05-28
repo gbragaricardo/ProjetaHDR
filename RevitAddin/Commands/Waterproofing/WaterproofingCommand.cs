@@ -26,6 +26,9 @@ namespace ProjetaHDR.Commands.Waterproofing
 
             if (_viewModel != null && Context.Doc.PathName != _docPathName)
             {
+                if (_window != null && _window.IsLoaded)
+                    _window.Close();
+
                 _viewModel = null;
                 _window = null;
                 _docPathName = Context.Doc.PathName;
