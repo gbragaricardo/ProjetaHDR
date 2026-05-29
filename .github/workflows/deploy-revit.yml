@@ -38,18 +38,15 @@ jobs:
     - name: Compilar Revit 2026
       run: msbuild ProjetaHDR.csproj -restore -p:Configuration=Revit2026 -p:Optimize=true
 
-    # 5. Compacta a estrutura que o seu Post-Build gerou de forma limpa
-    - name: Criar Pacotes ZIP para o Instalador
+    # 5. Compacta a pasta inteira preservando a hierarquia (Releases/2024 e Releases/2026)
+    - name: Criar Pacote ZIP Unificado
       shell: pwsh
       run: |
-        Compress-Archive -Path "Releases\2024\*" -DestinationPath "ProjetaHDR_Revit2024.zip"
-        Compress-Archive -Path "Releases\2026\*" -DestinationPath "ProjetaHDR_Revit2026.zip"
+        Compress-Archive -Path "Releases" -DestinationPath "ProjetaHDR.zip"
 
-    # 6. Cria a Release oficial no GitHub e faz o upload dos Zips
+    # 6. Cria a Release oficial no GitHub e faz o upload do Zip
     - name: Publicar no GitHub Releases
       uses: softprops/action-gh-release@v2
       with:
-        files: |
-          ProjetaHDR_Revit2024.zip
-          ProjetaHDR_Revit2026.zip
-        generate_release_notes: true # Gera a lista de novidades baseada nos seus commits!
+        files: ProjetaHDR.zip
+        generate_release_notes: true
