@@ -124,7 +124,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                         double perimeterInMeters = UnitUtils.ConvertFromInternalUnits(floorPerimeterParameter.AsDouble(), UnitTypeId.Meters);
 
                         if (waterproofHeigthParameter != null && waterproofHeigthParameter.IsReadOnly == false)
-                            waterproofHeigthParameter.Set(WaterproofingHeight);
+                            waterproofHeigthParameter.Set(UnitUtils.ConvertToInternalUnits(WaterproofingHeight, UnitTypeId.Centimeters));
 
                         if (waterproofThickness != null && waterproofThickness.IsReadOnly == false)
                             waterproofThickness.Set(UnitUtils.ConvertToInternalUnits(WaterproofThickness, UnitTypeId.Millimeters));
