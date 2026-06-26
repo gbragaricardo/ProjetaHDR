@@ -12,11 +12,12 @@
     xmlns:ui="clr-namespace:ProjetaHDR.UI"
     xmlns:viewModels="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels"
     xmlns:views="clr-namespace:ProjetaHDR.RevitAddin.Commands.Waterproofing.Views"
+    x:Name="WaterproofWindow"
     Title="PROJETA HDR"
     Width="320"
-    Height="Auto"
+    Height="420"
     MinWidth="320"
-    MinHeight="360"
+    MinHeight="420"
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -105,6 +106,19 @@
                                 ToolTip="Selecionar em projeto o ponto base" />
                         </Button>
                     </Grid>
+                </StackPanel>
+
+                <StackPanel
+                    x:Name="LocalTypeComboBox"
+                    Margin="0,0,0,8"
+                    Orientation="Vertical">
+                    <TextBlock Margin="0,0,0,4" Text="Tipo de Local" />
+                    <ComboBox
+                        Height="30"
+                        Controls:ControlsHelper.CornerRadius="4"
+                        IsEditable="True"
+                        ItemsSource="{Binding DefaultLocalTypes}"
+                        Text="{Binding SelectedLocalType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel x:Name="HeightTextBox" Orientation="Vertical">

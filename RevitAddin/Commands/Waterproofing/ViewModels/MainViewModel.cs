@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 {
@@ -127,6 +128,29 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             }
         }
 
+        public ObservableCollection<string> DefaultLocalTypes { get; set; } = new ObservableCollection<string>
+        {
+            "Área molhada interna",
+            "Área molhada externa",
+            "Laje de cobertura",
+            "Laje técnica",
+            "Reservatório enterrado"
+        };
+
+        private string _selectedLocalType;
+        public string SelectedLocalType
+        {
+            get => _selectedLocalType;
+            set
+            {
+                if (_selectedLocalType != value)
+                {
+                    _selectedLocalType = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         public RelayCommand PickRegionsCommand { get; set; }
         public RelayCommand PickOffsetTargetCommand { get; set; }
         public RelayCommand OpenFlyoutCommand { get; set; }
@@ -142,6 +166,8 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
 
             if (SelectedFloorTypeId == null)
                 SelectedFloorTypeId = WaterproofingFloorTypes.First().ElementTypeId;
+
+            SelectedLocalType = DefaultLocalTypes[0];
 
             PickRegionsCommand = new RelayCommand(PickRegions);
             PickOffsetTargetCommand = new RelayCommand(PickOffsetTarget);
@@ -169,6 +195,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.ViewModels
             _eventHandler.FloorLevelOffset = Offset;
             _eventHandler.WaterproofThickness = WaterproofThickness;
             _eventHandler.WaterproofingHeight = BaseboardHeigth;
+            _eventHandler.WaterproofLocalType = SelectedLocalType;
 
             _eventHandler.OnExecuteCompleted = () => ShowUI();
 

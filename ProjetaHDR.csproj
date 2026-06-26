@@ -85,10 +85,10 @@
 		<Exec Command="if not exist &quot;$(ReleasePluginFolder)&quot; mkdir &quot;$(ReleasePluginFolder)&quot;" />
 		<Exec Command="if not exist &quot;$(RevitAddins)\$(ProjectName)&quot; mkdir &quot;$(RevitAddins)\$(ProjectName)&quot;" />
 
-		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(ReleasePluginFolder)\&quot;" />
+		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.*&quot; &quot;$(ReleasePluginFolder)\&quot;" />
 		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(ReleaseRoot)\&quot;" />
 
-		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.dll&quot; &quot;$(RevitAddins)\$(ProjectName)\&quot;" />
+		<Exec Command="xcopy /Y /Q &quot;$(TargetDir)*.*&quot; &quot;$(RevitAddins)\$(ProjectName)\&quot;" />
 		<Exec Command="copy /Y &quot;$(ProjectDir)$(ProjectName).addin&quot; &quot;$(RevitAddins)\&quot;" />
 
 		<Exec Command="if exist &quot;$(ProjectDir)Docs&quot; xcopy /Y /E /I /Q &quot;$(ProjectDir)Docs&quot; &quot;$(ReleasePluginFolder)\Docs&quot;" />

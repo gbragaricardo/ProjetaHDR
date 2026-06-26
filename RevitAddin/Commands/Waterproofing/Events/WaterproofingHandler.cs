@@ -24,6 +24,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
         public List<WaterproofingLayerItemViewModel> WaterproofingLayers { get; set; }
         public double WaterproofingHeight { get; set; }
         public double WaterproofThickness { get; set; }
+        public string WaterproofLocalType { get; set; }
 
         public string GetName() => "Waterproofing Event Handler";
         public void Execute(UIApplication app)
@@ -120,6 +121,7 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                         Parameter waterproofVerticalAreaParameter = newFloor.get_Parameter(new Guid("c7e6ac03-e7c6-4575-92a1-2f67054729a9"));
                         Parameter waterproofHorizontalAreaParameter = newFloor.get_Parameter(new Guid("dd40ebd8-2bad-44da-9cce-de2d16eeda94"));
                         Parameter waterproofThickness = newFloor.get_Parameter(new Guid("bd555174-5f28-4805-b282-1c46d71b1c5e"));
+                        Parameter waterproofLocalType = newFloor.get_Parameter(new Guid("e41c624b-47e6-423f-83af-cb9a3479cea6"));
 
                         double perimeterInMeters = UnitUtils.ConvertFromInternalUnits(floorPerimeterParameter.AsDouble(), UnitTypeId.Meters);
 
@@ -130,7 +132,10 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
                             waterproofThickness.Set(UnitUtils.ConvertToInternalUnits(WaterproofThickness, UnitTypeId.Millimeters));
 
                         if (floorCommentParameter != null && floorCommentParameter.IsReadOnly == false)
-                            floorCommentParameter.Set("BANHEIRO/ÁREA MOLHADA");
+                            floorCommentParameter.Set("AMBIENTE");
+
+                        if (waterproofLocalType != null && waterproofLocalType.IsReadOnly == false)
+                            waterproofLocalType.Set(WaterproofLocalType);
 
                         if (waterproofVerticalAreaParameter != null && waterproofVerticalAreaParameter.IsReadOnly == false)
                             waterproofVerticalAreaParameter.Set(UnitUtils.ConvertToInternalUnits((WaterproofingHeight / 100) * perimeterInMeters, UnitTypeId.SquareMeters));
@@ -257,6 +262,13 @@ namespace ProjetaHDR.RevitAddin.Commands.Waterproofing.Events
 
                         // Definir os Parâmetros Customizados (Multiplicadores de Área)
                         // O Revit trata parâmetros Yes/No como Inteiros (1 = True, 0 = False)
+                        if (layerItems.IndexOf(layerItem) == 0)
+                        {
+                            Parameter paramMainLayer = newMaterial.LookupParameter("PRJ IMP_Camada_Principal");
+                            if (paramMainLayer != null && !paramMainLayer.IsReadOnly)
+                                paramMainLayer.Set(1);
+                        }
+
                         Parameter paramHorizontal = newMaterial.LookupParameter("PRJ IMP_Multiplicador_Horizontal");
                         if (paramHorizontal != null && !paramHorizontal.IsReadOnly)
                         {
