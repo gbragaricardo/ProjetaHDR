@@ -68,6 +68,7 @@
                 <TextBox
                     Height="Auto"
                     VerticalAlignment="Center"
+                    Background="White"
                     BorderThickness="0"
                     Text="{Binding Username}" />
             </Border>
@@ -108,6 +109,7 @@
                 <PasswordBox
                     x:Name="PasswordInput"
                     Height="Auto"
+                    Background="White"
                     BorderThickness="0" />
             </Border>
 
