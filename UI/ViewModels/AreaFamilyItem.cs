@@ -113,8 +113,16 @@ namespace ProjetaHDR.UI.ViewModels
                 double k = areaElement.get_Parameter(new Guid("c8022a50-c2ba-4d9c-982e-97cbfc536fb6")).AsDouble();
                 double runoffCoef = areaElement.get_Parameter(new Guid("bee6c53d-9ca0-4a45-8fab-a710e1884587")).AsDouble();
                 int tr = areaElement.get_Parameter(new Guid("fd39346e-f1b6-42bc-8996-ab8a606aa983")).AsInteger();
+                int rainDurationMinutes = 5;
 
-                double rainIntensity = (k * (Math.Pow(tr, a))) / (Math.Pow((5 + b), c));
+                Parameter rainDurationParameter = areaElement.LookupParameter("PRJ DRE: Tempo de Concentracao");
+                if (rainDurationParameter != null && rainDurationParameter.HasValue) 
+                {
+                    rainDurationMinutes = rainDurationParameter.AsInteger();
+                }
+
+                double rainIntensity = (k * (Math.Pow(tr, a))) / (Math.Pow((rainDurationMinutes + b), c));
+
                 double areaFlowRate = ((rainIntensity * areaValue) / 60);
 
                 if (runoffCoef > 0)
