@@ -5,16 +5,13 @@ using ProjetaHDR.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ProjetaHDR
 {
     internal static class PipeMethods
     {
         
-        public static bool SetPipeSlope(IList<Element> pipesList)
+        public static bool SetPipeSlope(IList<Element> pipesList, Document doc)
         {
             string parameterName = "PRJ HDR: Inclinacao Tag";
 
@@ -31,6 +28,22 @@ namespace ProjetaHDR
 
                 if (slopeParameter == null || slopeParameter.IsReadOnly)
                     continue;
+
+                ElementId typeId = pipe.GetTypeId();
+                Element pipeType = doc.GetElement(typeId);
+
+                if (pipeType != null && pipeType.Name == "PVC Marrom Soldável")
+                {
+                    Parameter realPipeSlope = pipe.get_Parameter(BuiltInParameter.RBS_PIPE_SLOPE);
+                    if (realPipeSlope == null || realPipeSlope.HasValue == false || realPipeSlope.AsDouble() == 0)
+                        continue;
+
+                    double roundedValue = Math.Round(realPipeSlope.AsDouble() * 100, MidpointRounding.AwayFromZero);
+                    roundedValue = Math.Max(1, roundedValue);
+
+                    slopeParameter.Set(roundedValue + "%");
+                    continue;
+                }
 
                 Parameter parameterAbreviaturaSistema = pipe.get_Parameter(BuiltInParameter.RBS_DUCT_PIPE_SYSTEM_ABBREVIATION_PARAM);
                 string abreviaturaSistema = parameterAbreviaturaSistema.AsString();

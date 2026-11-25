@@ -31,19 +31,11 @@ namespace ProjetaHDR.Commands
                     return Result.Cancelled;
 
 
-                var IsHydraulic = PipeUtils.HasPvcMarromPipes(Context.Doc, unfilteredPipes);
+                var sanpipe = new FilterAndTagPipelines(Context.Doc, Context.Doc.ActiveView, "Inclinacao", LengthFilterOption, false);
 
-                if (IsHydraulic == true)
-                {
-                   return Result.Cancelled;
-                }
-                else
-                {
-                    var sanpipe = new FilterAndTagPipelines(Context.Doc, Context.Doc.ActiveView, "Inclinacao", LengthFilterOption, false);
+                sanpipe.PipelineSanitary(unfilteredPipes);
+                sanpipe.PipelineCreate();
 
-                    sanpipe.PipelineSanitary(unfilteredPipes);
-                    sanpipe.PipelineCreate();
-                }
 
                 transacao.Commit();
                 return Result.Succeeded;

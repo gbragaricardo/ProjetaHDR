@@ -49,7 +49,7 @@ namespace ProjetaHDR
         {
             if (TagMode == "Inclinacao")
             {
-                if (PipeMethods.SetPipeSlope(Pipes) == false)
+                if (PipeMethods.SetPipeSlope(Pipes, Doc) == false)
                 {
                     TaskDialog.Show("Erro", "Parâmetro \"PRJ HDR: Inclinacao Tag\" não encontrado");
                     return;
